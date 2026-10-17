@@ -51,7 +51,6 @@ function isProtectedAccount(user: MUser) {
 export const rpCommand = defineCommand({
 	name: 'rp',
 	description: 'Admin tools second set',
-	guildId: globalConfig.supportServerID,
 	options: [
 		// {
 		// 	type: 'SubcommandGroup',
@@ -410,9 +409,6 @@ export const rpCommand = defineCommand({
 		await interaction.defer();
 		const isAdmin = adminUser.isAdmin();
 		const isMod = isAdmin || adminUser.isMod();
-		if (!guildId || (globalConfig.isProduction && guildId.toString() !== globalConfig.supportServerID)) {
-			return rng.pick(gifs);
-		}
 		if (!isAdmin && !isMod) return rng.pick(gifs);
 
 		if (options.user_event) {
