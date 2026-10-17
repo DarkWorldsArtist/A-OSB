@@ -567,7 +567,7 @@ const pets: Pet[] = [
 	},
 	{
 		id: 46,
-		emoji: '<:Little_nightmare:758149284952014928>',
+		emoji: '<:Little_nightmare:1560880789422604399>',
 		chance: 3800,
 		name: 'Little nightmare',
 		type: 'BOSS',
@@ -575,7 +575,7 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill The Nightmare ${fm(
 				num
-			)} times to get the Little nightmare pet! <:Little_nightmare:758149284952014928>`,
+			)} times to get the Little nightmare pet! <:Little_nightmare:1560880789422604399>`,
 		bossKeys: ['nightmare']
 	},
 	{

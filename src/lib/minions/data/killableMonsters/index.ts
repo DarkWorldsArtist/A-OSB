@@ -323,7 +323,7 @@ export const NightmareMonster: KillableMonster = {
 	aliases: ['nightmare', 'the nightmare'],
 	timeToFinish: Time.Minute * 20,
 	table: Monsters.GeneralGraardor,
-	emoji: '<:Little_nightmare:758149284952014928>',
+	emoji: '<:Little_nightmare:1560880789422604399>',
 	wildy: false,
 	difficultyRating: 7,
 	notifyDrops: resolveItems([

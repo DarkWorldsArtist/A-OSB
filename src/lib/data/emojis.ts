@@ -18,7 +18,7 @@ export const skillEmoji = {
 	overall: '<:xp:1560872809322905683>',
 	magic: '<:magic:1560872598571581560>',
 	crafting: '<:crafting:1560872437829337189>',
-	agility: '<:agility:630911040355565568>',
+	agility: '<:agility:1560880738973253642>',
 	fletching: '<:fletching:1560872508104638465>',
 	cooking: '<:cooking:1560872423442616380>',
 	farming: '<:farming:1560872483459170425>',

@@ -758,7 +758,7 @@ ${result
 				'SELECT "minion.icon" as icon, COUNT(*)::int as qty FROM users WHERE "minion.icon" is not null group by "minion.icon" order by qty asc;'
 			);
 			return `**Current minion tiers and their number of users:**\n${Object.values(result)
-				.map(row => `${row.icon ?? '<:minion:763743627092164658>'} : ${row.qty}`)
+				.map(row => `${row.icon ?? '<:OSBot:1560873146704470197>'} : ${row.qty}`)
 				.join('\n')}`;
 		}
 	},
