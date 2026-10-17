@@ -12,7 +12,7 @@ export const gwdKillables: KillableMonster[] = [
 		aliases: Monsters.GeneralGraardor.aliases,
 		timeToFinish: Time.Minute * 5.1,
 		table: Monsters.GeneralGraardor,
-		emoji: '<:Pet_general_graardor:324127377376673792>',
+		emoji: '<:Pet_general_graardor:1560874177366589490>',
 		wildy: false,
 
 		difficultyRating: 7,
@@ -55,7 +55,7 @@ export const gwdKillables: KillableMonster[] = [
 		aliases: Monsters.CommanderZilyana.aliases,
 		timeToFinish: Time.Minute * 5.1,
 		table: Monsters.CommanderZilyana,
-		emoji: '<:Pet_zilyana:324127378248957952>',
+		emoji: '<:Pet_zilyana:1560874210447069254>',
 		wildy: false,
 
 		difficultyRating: 7,
@@ -116,7 +116,7 @@ export const gwdKillables: KillableMonster[] = [
 		aliases: Monsters.Kreearra.aliases,
 		timeToFinish: Time.Minute * 5.1,
 		table: Monsters.Kreearra,
-		emoji: '<:Pet_kreearra:324127377305239555>',
+		emoji: '<:Pet_kreearra:1560874186757505056>',
 		wildy: false,
 
 		difficultyRating: 7,
@@ -169,7 +169,7 @@ export const gwdKillables: KillableMonster[] = [
 		aliases: Monsters.KrilTsutsaroth.aliases,
 		timeToFinish: Time.Minute * 5.1,
 		table: Monsters.KrilTsutsaroth,
-		emoji: '<:Pet_kril_tsutsaroth:324127377527406594>',
+		emoji: '<:Pet_kril_tsutsaroth:1560874192444985344>',
 		wildy: false,
 
 		difficultyRating: 7,

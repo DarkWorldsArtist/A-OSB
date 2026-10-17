@@ -19,22 +19,22 @@ const buttonsData: Button[] = [
 	{
 		name: 'Scroll',
 		mod: (qty: number) => qty * 2,
-		emoji: '403018312906309632'
+		emoji: '1560874299332501625'
 	},
 	{
 		name: 'Dinhs',
 		mod: (qty: number) => qty * 3,
-		emoji: '403018312960835595'
+		emoji: '1560874312549015762'
 	},
 	{
 		name: 'DClaws',
 		mod: (qty: number) => qty * 5,
-		emoji: '403018313124282368'
+		emoji: '1560874316642652260'
 	},
 	{
 		name: 'TBow',
 		mod: (qty: number) => qty * 15,
-		emoji: '403018312402862081'
+		emoji: '1560874490936823859'
 	}
 ];
 

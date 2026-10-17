@@ -68,7 +68,7 @@ export const degradeableItems: DegradeableItem[] = [
 			cost: new Bank().add('Abyssal whip').freeze(),
 			charges: 10_000
 		},
-		emoji: '<:Abyssal_tentacle:1068551359755989033>'
+		emoji: '<:Abyssal_tentacle:1560872872610898063>'
 	},
 	{
 		item: Items.getOrThrow('Sanguinesti staff'),
@@ -88,7 +88,7 @@ export const degradeableItems: DegradeableItem[] = [
 		},
 		unchargedItem: Items.getOrThrow('Sanguinesti staff (uncharged)'),
 		convertOnCharge: true,
-		emoji: '<:Sanguinesti_staff_uncharged:455403545298993162>'
+		emoji: '<:Sanguinesti_staff_uncharged:1560873440569860246>'
 	},
 	{
 		item: Items.getOrThrow('Celestial ring'),
@@ -103,7 +103,7 @@ export const degradeableItems: DegradeableItem[] = [
 		},
 		unchargedItem: Items.getOrThrow('Celestial ring (uncharged)'),
 		convertOnCharge: true,
-		emoji: '<:Celestial_ring:1068551362587132084>'
+		emoji: '<:Celestial_ring:1560872913173876842>'
 	},
 	{
 		item: Items.getOrThrow('Ash sanctifier'),
@@ -117,7 +117,7 @@ export const degradeableItems: DegradeableItem[] = [
 			charges: 10
 		},
 		unchargedItem: Items.getOrThrow('Ash sanctifier'),
-		emoji: '<:Ash_sanctifier:1068551364168405032>'
+		emoji: '<:Ash_sanctifier:1560872887693348907>'
 	},
 	{
 		item: Items.getOrThrow('Serpentine helm'),
@@ -132,7 +132,7 @@ export const degradeableItems: DegradeableItem[] = [
 		},
 		unchargedItem: Items.getOrThrow('Serpentine helm (uncharged)'),
 		convertOnCharge: true,
-		emoji: '<:Serpentine_helm:1068491236123619379>'
+		emoji: '<:Serpentine_helm:1560872946510200882>'
 	},
 	{
 		item: Items.getOrThrow('Amulet of blood fury'),
@@ -147,7 +147,7 @@ export const degradeableItems: DegradeableItem[] = [
 		},
 		unchargedItem: Items.getOrThrow('Amulet of fury'),
 		convertOnCharge: true,
-		emoji: '<:Amulet_of_blood_fury:1068491286530752562>'
+		emoji: '<:Amulet_of_blood_fury:1560872882433687612>'
 	},
 	{
 		item: Items.getOrThrow("Tumeken's shadow"),
@@ -162,7 +162,7 @@ export const degradeableItems: DegradeableItem[] = [
 		},
 		unchargedItem: Items.getOrThrow("Tumeken's shadow (uncharged)"),
 		convertOnCharge: true,
-		emoji: '<:Tumekens_shadow:1068491239302901831>'
+		emoji: '<:Tumekens_shadow:1560872972011569264>'
 	},
 	{
 		item: Items.getOrThrow('Eye of ayak'),

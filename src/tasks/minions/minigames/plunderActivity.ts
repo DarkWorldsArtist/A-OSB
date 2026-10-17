@@ -42,7 +42,7 @@ export const plunderTask: MinionTask = {
 				Events.ServerNotification,
 				`**${user.badgedUsername}'s** minion, ${
 					user.minionName
-				}, just received a **Rocky** <:Rocky:324127378647285771> while doing the Pyramid Plunder, their Thieving level is ${user.skillsAsLevels.thieving}!`
+				}, just received a **Rocky** <:Rocky:1560874231791616112> while doing the Pyramid Plunder, their Thieving level is ${user.skillsAsLevels.thieving}!`
 			);
 		}
 

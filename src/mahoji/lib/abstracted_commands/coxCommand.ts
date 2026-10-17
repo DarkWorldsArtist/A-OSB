@@ -25,7 +25,7 @@ export async function coxBoostsCommand(user: MUser) {
 	const boostStr = [];
 	let workFromBank = false;
 	let boostPercent = 0;
-	boostStr.push('<:Twisted_bow:403018312402862081> Chambers of Xeric <:Olmlet:324127376873357316>\n');
+	boostStr.push('<:Twisted_bow:1560874490936823859> Chambers of Xeric <:Olmlet:1560874150753730600>\n');
 	boostStr.push(
 		'*Item boosts help reduce the time required to complete Chambers. Only one boost from each bullet point can be applied. The further left the higher the boost.*\n\n'
 	);
@@ -98,7 +98,7 @@ export async function coxStatsCommand(user: MUser) {
 	const normalTeam = await calcCoxDuration(Array(2).fill(user), false);
 	const cmSolo = await calcCoxDuration([user], true);
 	const cmTeam = await calcCoxDuration(Array(2).fill(user), true);
-	return `<:Twisted_bow:403018312402862081> Chambers of Xeric <:Olmlet:324127376873357316>
+	return `<:Twisted_bow:1560874490936823859> Chambers of Xeric <:Olmlet:1560874150753730600>
 **Normal:** ${minigameScores.raids} KC (Solo: ${Emoji.Skull} ${(await createTeam([user], false))[0].deathChance.toFixed(
 		1
 	)}% ${Emoji.CombatSword} ${calcWhatPercent(normalSolo.reductions[user.id], normalSolo.maxUserReduction).toFixed(
@@ -116,9 +116,9 @@ export async function coxStatsCommand(user: MUser) {
 **Total Uniques:** ${totalUniques} ${
 		totalUniques > 0 ? `(1 unique per ${Math.floor(totalPoints / totalUniques).toLocaleString()} pts)` : ''
 	}\n
-**Melee:** <:Elder_maul:403018312247803906> ${melee.toFixed(1)}%
-**Range:** <:Twisted_bow:403018312402862081> ${range.toFixed(1)}%
-**Mage:** <:Kodai_insignia:403018312264712193> ${mage.toFixed(1)}%
+**Melee:** <:Elder_maul:1560874346954620938> ${melee.toFixed(1)}%
+**Range:** <:Twisted_bow:1560874490936823859> ${range.toFixed(1)}%
+**Mage:** <:Kodai_insignia:1560874394233086033> ${mage.toFixed(1)}%
 **Total Gear Score:** ${Emoji.Gear} ${total.toFixed(1)}%\n
 Check \`/raid cox itemboosts\` for more information on Item boosts.`;
 }

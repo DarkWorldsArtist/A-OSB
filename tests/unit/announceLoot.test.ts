@@ -28,7 +28,7 @@ describe('announceLoot', () => {
 
 		expect(emit).toHaveBeenCalledWith(
 			Events.ServerNotification,
-			"**Magnaboy's** minion, <:minion:778418736180494347> Your minion, just received **1x Egg**, their Man KC is 12!"
+			"**Magnaboy's** minion, <:minion:1560872610794053773> Your minion, just received **1x Egg**, their Man KC is 12!"
 		);
 	});
 
@@ -53,7 +53,7 @@ describe('announceLoot', () => {
 		expect(getKCSpy).not.toHaveBeenCalled();
 		expect(emit).toHaveBeenCalledWith(
 			Events.ServerNotification,
-			"**Magnaboy's** minion, <:minion:778418736180494347> Your minion, just received **1x Avernic treads**, their Doom of Mokhaiotl Total Delves is 17!"
+			"**Magnaboy's** minion, <:minion:1560872610794053773> Your minion, just received **1x Avernic treads**, their Doom of Mokhaiotl Total Delves is 17!"
 		);
 	});
 });

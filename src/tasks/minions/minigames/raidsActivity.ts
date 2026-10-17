@@ -180,14 +180,14 @@ export const raidsTask: MinionTask = {
 				const purpleUnique = coxUniques.find(u => fakeLoot.has(u));
 				const fakeUserOlmlet = fakeLoot.has('Olmlet');
 				fakeUsersStr.push(
-					`${fakeUserOlmlet ? '<:Olmlet:324127376873357316>' : ''}${greenUnique ? `${Emoji.Green}` : ''}${purpleUnique ? `${Emoji.Purple}` : ''}User #${fakeID}: ${fakeLoot}\n`
+					`${fakeUserOlmlet ? '<:Olmlet:1560874150753730600>' : ''}${greenUnique ? `${Emoji.Green}` : ''}${purpleUnique ? `${Emoji.Purple}` : ''}User #${fakeID}: ${fakeLoot}\n`
 				);
 			}
 			const fakeUsersString = fakeUsersStr.join(' ');
 			const greenUnique = coxCMUniques.find(u => fakeUsersString.includes(u));
 			const purpleUnique = coxUniques.find(u => fakeUsersString.includes(u));
 			const fakeUserOlmlet = fakeUsersString.includes('Olmlet');
-			resultMessage += `\n${`\n${fakeUserOlmlet ? '<:Olmlet:324127376873357316>' : ''}${greenUnique ? `${Emoji.Green}` : ''}${purpleUnique ? `${Emoji.Purple}` : ''}Simulated users loot:\n||${fakeUsersStr.join('')}||`}`;
+			resultMessage += `\n${`\n${fakeUserOlmlet ? '<:Olmlet:1560874150753730600>' : ''}${greenUnique ? `${Emoji.Green}` : ''}${purpleUnique ? `${Emoji.Purple}` : ''}Simulated users loot:\n||${fakeUsersStr.join('')}||`}`;
 		}
 
 		// Filter out fake users and only retain the leader's results
