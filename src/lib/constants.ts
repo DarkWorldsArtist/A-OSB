@@ -17,17 +17,10 @@ type BotType = 'OSB' | 'BSO';
 export const BOT_TYPE: BotType = 'OSB' as 'BSO' | 'OSB';
 export const BOT_TYPE_LOWERCASE: 'bso' | 'osb' = BOT_TYPE.toLowerCase() as 'bso' | 'osb';
 const isProduction = process.env.NODE_ENV === 'production';
-const GENERAL_CHANNEL_ID =
-	BOT_TYPE === 'OSB'
-		? isProduction
-			? '346304390858145792'
-			: (process.env.GENERAL_CHANNEL ?? '1154056119019393035')
-		: isProduction
-			? '792691343284764693'
-			: (process.env.GENERAL_CHANNEL ?? '1154056119019393035');
-const OLDSCHOOLGG_TESTING_SERVER_ID = '940758552425955348';
+const GENERAL_CHANNEL_ID = process.env.GENERAL_CHANNEL ?? '1560852844402315264';
+const OLDSCHOOLGG_TESTING_SERVER_ID = '1520360916917551266';
 const TEST_SERVER_ID = process.env.TESTING_SERVER ?? OLDSCHOOLGG_TESTING_SERVER_ID;
-const TEST_SERVER_LOG_CHANNEL = process.env.TESTING_LOG_CHANNEL ?? '1042760447830536212';
+const TEST_SERVER_LOG_CHANNEL = process.env.TESTING_LOG_CHANNEL ?? '1560853458481975447';
 export const DELETED_USER_ID = '111111111111111111';
 
 interface ChannelConfig {
@@ -41,13 +34,13 @@ interface ChannelConfig {
 }
 
 const OSBChannelConfig: ChannelConfig = {
-	ServerGeneral: '342983479501389826',
-	Notifications: '469523207691436042',
-	GrandExchange: '682996313209831435',
-	EconomyLogs: '802029843712573510',
-	HelpAndSupport: '668073484731154462',
-	BotLogs: isProduction ? '1051725977320964197' : TEST_SERVER_LOG_CHANNEL,
-	GeneralChannel: isProduction ? GENERAL_CHANNEL_ID : (process.env.GENERAL_CHANNEL ?? GENERAL_CHANNEL_ID)
+	ServerGeneral: '1560852844402315264',
+	Notifications: '1560852866821001246',
+	GrandExchange: '1560852950631448596',
+	EconomyLogs: '1560853493449760850',
+	HelpAndSupport: '1560853458481975447',
+	BotLogs: '1560853458481975447',
+	GeneralChannel: GENERAL_CHANNEL_ID
 };
 
 const BSOChannelConfig: ChannelConfig = {
@@ -399,10 +392,10 @@ const globalConfigSchema = z.object({
 	isCI: z.coerce.boolean().default(false),
 	isProduction: z.boolean(),
 	timeZone: z.literal('UTC'),
-	adminUserIDs: z.array(z.string()).default(['425134194436341760', '157797566833098752']),
+	adminUserIDs: z.array(z.string()).default(['559881359582298123']),
 	maxingMessage: z.string().default('Congratulations on maxing!'),
 	moderatorLogsChannels: z.string().default(''),
-	supportServerID: z.string(),
+	supportServerID: z.string().default('1520360916917551266'),
 	minimumLoggedPerfDuration: z.number().default(400),
 	guildIdsToCache: z.array(z.string())
 });
@@ -414,7 +407,7 @@ if (!process.env.BOT_TOKEN && !process.env.CI) {
 }
 
 const guildId = {
-	OldschoolGG: '342983479501389826',
+	OldschoolGG: '1520360916917551266',
 	TestServer: TEST_SERVER_ID
 };
 
@@ -434,9 +427,9 @@ export const globalConfig = globalConfigSchema.parse({
 	isProduction,
 	timeZone: process.env.TZ,
 
-	moderatorLogsChannels: isProduction ? '830145040495411210' : GENERAL_CHANNEL_ID,
-	supportServerID: isProduction ? '342983479501389826' : TEST_SERVER_ID,
-	guildIdsToCache: [guildId.OldschoolGG, guildId.TestServer, TEST_SERVER_ID, ...emojiServers]
+	moderatorLogsChannels: '1560853458481975447',
+	supportServerID: '1520360916917551266',
+	guildIdsToCache: ['1520360916917551266', TEST_SERVER_ID, ...emojiServers]
 });
 
 if ((process.env.NODE_ENV === 'production') !== globalConfig.isProduction) {
