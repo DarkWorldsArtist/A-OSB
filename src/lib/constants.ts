@@ -436,7 +436,14 @@ if ((process.env.NODE_ENV === 'production') !== globalConfig.isProduction) {
 	throw new Error('The NODE_ENV and isProduction variables must match');
 }
 
-export const gitHash = process.env.TEST ? 'TESTGITHASH' : execSync('git rev-parse HEAD').toString().trim();
+export const gitHash = (() => {
+	if (process.env.TEST) return 'TESTGITHASH';
+	try {
+		return execSync('git rev-parse HEAD').toString().trim();
+	} catch {
+		return '286624a';
+	}
+})();
 const gitRemote = 'oldschoolgg/oldschoolbot';
 
 const GIT_BRANCH = BOT_TYPE === 'BSO' ? 'bso' : 'master';
