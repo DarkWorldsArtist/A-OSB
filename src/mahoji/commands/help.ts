@@ -1,5 +1,6 @@
 import { ButtonBuilder, ButtonStyle, ComponentType, EmbedBuilder } from '@oldschoolgg/discord';
 
+import { SUPPORT_PROJECT_MSG } from '@/lib/constants.js';
 import { mahojiInformationalButtons } from '@/lib/sharedComponents.js';
 
 export const helpCommand = defineCommand({
@@ -10,7 +11,7 @@ export const helpCommand = defineCommand({
 		return {
 			content: `🧑‍⚖️ **Rules:** You *must* follow our 5 simple rules, breaking any rule can result in a ban: <https://wiki.oldschool.gg/getting-started/rules/>
 
-<:patreonLogo:1560872627629985992> **Patreon:** If you're able too, please consider supporting my work on Patreon, it's highly appreciated and helps me hugely <https://www.patreon.com/cw/WizardAlabastor> ❤️
+<:patreonLogo:1560872627629985992> **Patreon:** ${SUPPORT_PROJECT_MSG} ❤️
 
 <:BSO:1560873088923738152> **BSO:** I run a 2nd bot called BSO (Bot School Old), which you can also play, it has lots of fun and unique changes, like 5x XP and infinitely stacking clues. Invite it and read the wiki below. Ask for more information in the support server if you need!
 

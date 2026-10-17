@@ -117,6 +117,9 @@ export const PatronRoleTiers = [
 	{ roleId: PatronRoles.Tier1, perkTier: PerkTier.Two, bit: 17, tierNumber: 1 }
 ] as const;
 
+export const PATREON_URL = 'https://www.patreon.com/cw/WizardAlabastor';
+export const SUPPORT_PROJECT_MSG = `If you are enjoying the game and want to support its ongoing development, you can do so [here](${PATREON_URL}).`;
+
 
 export enum ActivityGroup {
 	Skilling = 'Skilling',

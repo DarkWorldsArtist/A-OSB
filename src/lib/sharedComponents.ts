@@ -1,5 +1,7 @@
 import { ButtonBuilder, ButtonStyle, ComponentType } from '@oldschoolgg/discord';
 
+import { PATREON_URL } from '@/lib/constants.js';
+
 const buttonSource = [
 	{
 		label: 'Wiki',
@@ -9,7 +11,7 @@ const buttonSource = [
 	{
 		label: 'Patreon',
 		emoji: '1560872627629985992',
-		url: 'https://www.patreon.com/cw/WizardAlabastor'
+		url: PATREON_URL
 	},
 	{
 		label: 'Support Server',

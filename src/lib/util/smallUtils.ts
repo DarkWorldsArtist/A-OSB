@@ -4,7 +4,7 @@ import { objectEntries, stripEmojis, toTitleCase } from '@oldschoolgg/toolkit';
 import { type ArrayItemsResolved, type Bank, Items } from 'oldschooljs';
 import { clamp } from 'remeda';
 
-import { type BitField, BitFieldData } from '@/lib/constants.js';
+import { type BitField, BitFieldData, SUPPORT_PROJECT_MSG } from '@/lib/constants.js';
 import { skillEmoji } from '@/lib/data/emojis.js';
 import { type SkillNameType, SkillsArray } from '@/lib/skilling/types.js';
 import type { SkillRequirements, Skills } from '@/lib/types/index.js';
@@ -133,9 +133,7 @@ export function isValidSkill(skill: string): skill is SkillNameType {
 }
 
 export function patronMsg(tierNeeded: number) {
-	return `You need to be a Tier ${
-		tierNeeded - 1
-	} Patron to use this command. You can become a patron to support the bot here: <https://www.patreon.com/cw/WizardAlabastor>`;
+	return `You need to be a Tier ${tierNeeded - 1} Patron to use this command. ${SUPPORT_PROJECT_MSG}`;
 }
 
 export function isValidBitField(bit: number): bit is BitField {

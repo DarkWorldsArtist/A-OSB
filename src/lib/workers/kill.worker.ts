@@ -4,6 +4,7 @@ import { stringMatches } from '@oldschoolgg/toolkit';
 import { MathRNG } from 'node-rng';
 import { Bank, calcDropRatesFromBank, Misc, Monsters, resolveItems } from 'oldschooljs';
 
+import { SUPPORT_PROJECT_MSG } from '@/lib/constants.js';
 import killableMonsters from '@/lib/minions/data/killableMonsters/index.js';
 import { handleNexKills } from '@/lib/simulation/nex.js';
 import { simulatedKillables } from '@/lib/simulation/simulatedKillables.js';
@@ -26,7 +27,7 @@ export default async ({
 	if (osjsMonster) {
 		if (quantity > limit) {
 			return {
-				error: `The quantity you gave exceeds your limit of ${limit.toLocaleString()}! *You can increase your limit by up to 1 million by becoming a patron at <https://www.patreon.com/cw/WizardAlabastor>`
+				error: `The quantity you gave exceeds your limit of ${limit.toLocaleString()}! *${SUPPORT_PROJECT_MSG}*`
 			};
 		}
 
@@ -53,7 +54,7 @@ export default async ({
 	if (simulatedKillable) {
 		if (quantity > limit) {
 			return {
-				error: `The quantity you gave exceeds your limit of ${limit.toLocaleString()}! *You can increase your limit by up to 1 million by becoming a patron at <https://www.patreon.com/cw/WizardAlabastor>`
+				error: `The quantity you gave exceeds your limit of ${limit.toLocaleString()}! *${SUPPORT_PROJECT_MSG}*`
 			};
 		}
 
