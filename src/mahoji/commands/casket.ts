@@ -41,7 +41,7 @@ export const casketCommand = defineCommand({
 		await interaction.defer();
 		const limit = await determineLimit(user);
 		if (options.quantity > limit) {
-			return `The quantity you gave exceeds your limit of ${limit.toLocaleString()}! *You can increase your limit by up to 100,000 by becoming a patron at <https://www.patreon.com/oldschoolbot>.*`;
+			return `The quantity you gave exceeds your limit of ${limit.toLocaleString()}! *You can increase your limit by up to 100,000 by becoming a patron at <https://www.patreon.com/cw/WizardAlabastor>.*`;
 		}
 
 		const clueTier = ClueTiers.find(_tier => _tier.name.toLowerCase() === options.name.toLowerCase());

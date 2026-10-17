@@ -20,7 +20,7 @@ export async function minionBuyCommand(user: MUser, ironman: boolean): CommandRe
 
 🧑‍⚖️ **Rules:** You *must* follow our 5 simple rules, breaking any rule can result in a permanent ban - and "I didn't know the rules" is not a valid excuse, read them here: <https://wiki.oldschool.gg/getting-started/rules/>
 
-<:patreonLogo:1560872627629985992> **Patreon:** If you're able too, please consider supporting my work on Patreon, it's highly appreciated and helps me hugely <https://www.patreon.com/oldschoolbot> ❤️
+<:patreonLogo:1560872627629985992> **Patreon:** If you're able too, please consider supporting my work on Patreon, it's highly appreciated and helps me hugely <https://www.patreon.com/cw/WizardAlabastor> ❤️
 
 <:BSO:1560873088923738152> **BSO:** I run a 2nd bot called BSO (Bot School Old), which you can also play, it has lots of fun and unique changes, like 5x XP and infinitely stacking clues. Type \`/help\` for more information.
 

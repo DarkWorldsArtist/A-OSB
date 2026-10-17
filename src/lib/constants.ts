@@ -97,6 +97,27 @@ export const Roles = {
 	BSOTopFarmer: '894194259731828786'
 };
 
+export const PatronRoles = {
+	Tier1: '1534681590687465562',
+	Tier2: '1534681613319803151',
+	Tier3: '1534681630407393411',
+	Tier4: '1534681652838797372',
+	Tier5: '1534681668168974386',
+	Tier6: '1534682102648406036',
+	Tier7: '1534682122512502894'
+} as const;
+
+export const PatronRoleTiers = [
+	{ roleId: PatronRoles.Tier7, perkTier: PerkTier.Seven, bit: 23, tierNumber: 7 },
+	{ roleId: PatronRoles.Tier6, perkTier: PerkTier.Seven, bit: 22, tierNumber: 6 },
+	{ roleId: PatronRoles.Tier5, perkTier: PerkTier.Six, bit: 21, tierNumber: 5 },
+	{ roleId: PatronRoles.Tier4, perkTier: PerkTier.Five, bit: 20, tierNumber: 4 },
+	{ roleId: PatronRoles.Tier3, perkTier: PerkTier.Four, bit: 19, tierNumber: 3 },
+	{ roleId: PatronRoles.Tier2, perkTier: PerkTier.Three, bit: 18, tierNumber: 2 },
+	{ roleId: PatronRoles.Tier1, perkTier: PerkTier.Two, bit: 17, tierNumber: 1 }
+] as const;
+
+
 export enum ActivityGroup {
 	Skilling = 'Skilling',
 	Clue = 'Clue',
