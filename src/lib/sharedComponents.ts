@@ -1,24 +1,26 @@
 import { ButtonBuilder, ButtonStyle, ComponentType } from '@oldschoolgg/discord';
 
+import { PATREON_URL } from '@/lib/constants.js';
+
 const buttonSource = [
 	{
 		label: 'Wiki',
-		emoji: '802136964027121684',
+		emoji: '1560873226731651143',
 		url: 'https://wiki.oldschool.gg/'
 	},
 	{
 		label: 'Patreon',
-		emoji: '679334888792391703',
-		url: 'https://www.patreon.com/oldschoolbot'
+		emoji: '1560872627629985992',
+		url: PATREON_URL
 	},
 	{
 		label: 'Support Server',
-		emoji: '778418736180494347',
+		emoji: '1560872610794053773',
 		url: 'https://www.discord.gg/ob'
 	},
 	{
 		label: 'Bot Invite',
-		emoji: '778418736180494347',
+		emoji: '1560872610794053773',
 		url: 'http://www.oldschool.gg/invite/osb'
 	}
 ];

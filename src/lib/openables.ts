@@ -555,7 +555,7 @@ export const allOpenables: UnifiedOpenable[] = [
 		openedItem: Items.getOrThrow(11_918),
 		aliases: ['present', 'birthday present'],
 		output: new LootTable().oneIn(10, 'War ship').every('Slice of birthday cake'),
-		emoji: '<:birthdayPresent:680041979710668880>',
+		emoji: '<:birthdayPresent:1560873209472090245>',
 		allItems: resolveItems(['War ship', 'Slice of birthday cake'])
 	},
 	{

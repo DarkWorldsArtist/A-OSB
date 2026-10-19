@@ -16,7 +16,7 @@ export const miscBossKillables: KillableMonster[] = [
 		aliases: Monsters.GiantMole.aliases,
 		timeToFinish: Time.Minute * 1.6,
 		table: Monsters.GiantMole,
-		emoji: '<:Baby_mole:324127375858204672>',
+		emoji: '<:Baby_mole:1560874069275050004>',
 		wildy: false,
 		difficultyRating: 3,
 		itemsRequired: resolveItems(["Dharok's helm", "Dharok's platebody", "Dharok's platelegs", "Dharok's greataxe"]),
@@ -48,7 +48,7 @@ export const miscBossKillables: KillableMonster[] = [
 		aliases: Monsters.Vorkath.aliases,
 		timeToFinish: Time.Minute * 3.85,
 		table: Monsters.Vorkath,
-		emoji: '<:Vorki:400713309252222977>',
+		emoji: '<:Vorki:1560874268441714789>',
 		wildy: false,
 
 		difficultyRating: 8,
@@ -84,7 +84,7 @@ export const miscBossKillables: KillableMonster[] = [
 		aliases: Monsters.Zulrah.aliases,
 		timeToFinish: Time.Minute * 3.2,
 		table: Monsters.Zulrah,
-		emoji: '<:Pet_snakeling:324127377816944642>',
+		emoji: '<:Pet_snakeling:1560874206273470544>',
 		wildy: false,
 
 		difficultyRating: 8,
@@ -163,7 +163,7 @@ export const miscBossKillables: KillableMonster[] = [
 		aliases: Monsters.KalphiteQueen.aliases,
 		timeToFinish: Time.Minute * 3.1,
 		table: Monsters.KalphiteQueen,
-		emoji: '<:Kalphite_princess_2nd_form:324127376915300352>',
+		emoji: '<:Kalphite_princess_2nd_form:1560874132919554109>',
 		wildy: false,
 
 		difficultyRating: 7,
@@ -213,7 +213,7 @@ export const miscBossKillables: KillableMonster[] = [
 		aliases: Monsters.CorporealBeast.aliases,
 		table: Monsters.CorporealBeast,
 		timeToFinish: Time.Minute * 30,
-		emoji: '<:Pet_dark_core:324127377347313674>',
+		emoji: '<:Pet_dark_core:1560874172207337513>',
 		wildy: false,
 
 		difficultyRating: 6,
@@ -320,7 +320,7 @@ export const miscBossKillables: KillableMonster[] = [
 		aliases: Monsters.Cerberus.aliases,
 		timeToFinish: Time.Minute * 2.65,
 		table: Monsters.Cerberus,
-		emoji: '<:Hellpuppy:324127376185491458>',
+		emoji: '<:Hellpuppy:1560874107975766107>',
 		wildy: false,
 
 		difficultyRating: 7,
@@ -386,7 +386,7 @@ export const miscBossKillables: KillableMonster[] = [
 		aliases: Monsters.KingBlackDragon.aliases,
 		table: Monsters.KingBlackDragon,
 		timeToFinish: Time.Minute * 3.1,
-		emoji: '<:Prince_black_dragon:324127378538364928>',
+		emoji: '<:Prince_black_dragon:1560874219074617417>',
 		wildy: false,
 		difficultyRating: 6,
 		itemsRequired: deepResolveItems([

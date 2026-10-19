@@ -1,55 +1,55 @@
 import { globalConfig } from '@/lib/constants.js';
 
 export const skillEmoji = {
-	runecraft: '<:runecraft:630911040435257364>',
-	firemaking: '<:firemaking:630911040175210518>',
-	thieving: '<:thieving:630910829352452123>',
-	mining: '<:mining:630911040128811010>',
-	ranged: '<:ranged:630911040258834473>',
-	construction: '<:construction:630911040493715476>',
-	smithing: '<:smithing:630911040452034590>',
-	herblore: '<:herblore:630911040535658496>',
-	attack: '<:attack:630911039969427467>',
-	strength: '<:strength:630911040481263617>',
-	defence: '<:defence:630911040393052180>',
-	fishing: '<:fishing:630911040091193356>',
-	hitpoints: '<:hitpoints:630911040460292108>',
-	total: '<:xp:630911040510623745>',
-	overall: '<:xp:630911040510623745>',
-	magic: '<:magic:630911040334331917>',
-	crafting: '<:crafting:630911040460161047>',
-	agility: '<:agility:630911040355565568>',
-	fletching: '<:fletching:630911040544309258>',
-	cooking: '<:cooking:630911040426868756>',
-	farming: '<:farming:630911040355565599>',
-	slayer: '<:slayer:630911040560824330>',
-	prayer: '<:prayer:630911040426868746>',
-	woodcutting: '<:woodcutting:630911040099450892>',
-	hunter: '<:hunter:630911040166559784>',
-	cml: '<:CrystalMathLabs:364657225249062912>',
-	clock: '<:ehpclock:352323705210142721>',
-	combat: '<:combat:802136963956080650>'
+	runecraft: '<:runecraft:1560872697632919572>',
+	firemaking: '<:firemaking:1560872488445939804>',
+	thieving: '<:thieving:1560872792239513611>',
+	mining: '<:mining:1560872602493390950>',
+	ranged: '<:ranged:1560872667400118344>',
+	construction: '<:construction:1560872230869794819>',
+	smithing: '<:smithing:1560872750166577302>',
+	herblore: '<:herblore:1560872542837674106>',
+	attack: '<:attack:1560873192640487494>',
+	strength: '<:strength:1560872783012040754>',
+	defence: '<:defence:1560872441868189806>',
+	fishing: '<:fishing:1560872498625777795>',
+	hitpoints: '<:hitpoints:1560872547178913833>',
+	total: '<:xp:1560872809322905683>',
+	overall: '<:xp:1560872809322905683>',
+	magic: '<:magic:1560872598571581560>',
+	crafting: '<:crafting:1560872437829337189>',
+	agility: '<:agility:1560880738973253642>',
+	fletching: '<:fletching:1560872508104638465>',
+	cooking: '<:cooking:1560872423442616380>',
+	farming: '<:farming:1560872483459170425>',
+	slayer: '<:slayer:1560872731803787307>',
+	prayer: '<:prayer:1560872640795902062>',
+	woodcutting: '<:woodcutting:1560872813236191333>',
+	hunter: '<:hunter:1560872556041478194>',
+	cml: '<:CrystalMathLabs:1560873110171811890>',
+	clock: '<:ehpclock:1560874278193201202>',
+	combat: '<:combat:1560873221891563542>'
 };
 
 export const EmojiId = {
-	ClueScroll: '365003979840552960',
-	Farming: '630911040355565599',
-	Casket: '365003978678730772',
-	Seedpack: '977410792754413668',
-	Slayer: '630911040560824330',
-	MoneyBag: '493286312854683654',
-	BirdsNest: '692946556399124520',
-	Leagues: '660333438016028723',
-	Gear: '835314891950129202',
-	Minion: '778418736180494347',
-	MysteryBox: '680783258488799277',
-	Bank: '739459924693614653'
+	ClueScroll: '1560873105931374763',
+	Farming: '1560872483459170425',
+	Casket: '1560873097400160386',
+	Seedpack: '1560872942500323430',
+	Slayer: '1560872731803787307',
+	MoneyBag: '1560873137762074805',
+	BirdsNest: '1560872903610728509',
+	Leagues: '1560873034573680651',
+	Gear: '1560872517097488424',
+	Minion: '1560872610794053773',
+	MysteryBox: '1560872619081998437',
+	Bank: '1560873201092001823'
 };
 
 export const ReactEmoji = globalConfig.isProduction
 	? {
-			Happy: 'RSHappy:380915244760825857',
-			Sad: 'RSSad:380915244652036097',
+			Happy: 'RSHappy:1560874439707729990',
+			Sad: 'RSSad:1560874448544858122',
 			Gift: '🎁'
 		}
 	: {
@@ -59,11 +59,11 @@ export const ReactEmoji = globalConfig.isProduction
 		};
 
 export const miscEmojis = {
-	barrowsChests: '<:Dharoks_helm:403038864199122947>',
-	hespori: '<:Bottomless_compost_bucket:545978484078411777>',
-	bryophyta: '<:Bryophytas_essence:455835859799769108>',
-	crazyArchaeologist: '<:Fedora:456179157303427092>',
-	derangedArchaeologist: '<:Fedora:456179157303427092>',
-	mimic: '<:Casket:365003978678730772>',
-	obor: '<:Hill_giant_club:421045456194240523>'
+	barrowsChests: '<:Dharoks_helm:1560873703464640572>',
+	hespori: '<:Bottomless_compost_bucket:1560873484740075530>',
+	bryophyta: '<:Bryophytas_essence:1560873912496033832>',
+	crazyArchaeologist: '<:Fedora:1560873961812660244>',
+	derangedArchaeologist: '<:Fedora:1560873961812660244>',
+	mimic: '<:Casket:1560873097400160386>',
+	obor: '<:Hill_giant_club:1560873363159785515>'
 } as const;

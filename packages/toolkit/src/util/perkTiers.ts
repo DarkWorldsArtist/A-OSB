@@ -206,7 +206,7 @@ function bestTier(details: PerkTierEntitlement[]): PerkTierEntitlement | null {
 }
 
 export function getPatronTierLabel(tier: Pick<PatronTier, 'source' | 'number'>): string {
-	return `${tier.source === 'cyr' ? 'Cyr' : 'Magna'} Tier ${tier.number}`;
+	return `Tier ${tier.number} Patron`;
 }
 
 export function getUserPaidTiers(bits: number[] | null | undefined): PatronTier[] {

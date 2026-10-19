@@ -190,8 +190,8 @@ export const hunterTask: MinionTask = {
 				Events.ServerNotification,
 				`**${user.usernameOrMention}'s** minion, ${user.minionName}, just received a ${
 					loot.amount('Baby chinchompa') > 0
-						? '**Baby chinchompa** <:Baby_chinchompa_red:324127375539306497>'
-						: '**Herbi** <:Herbi:357773175318249472>'
+						? '**Baby chinchompa** <:Baby_chinchompa_red:1560874065005379654>'
+						: '**Herbi** <:Herbi:1560874112619118594>'
 				} while hunting a ${creature.name}, their Hunter level is ${currentLevel}!`
 			);
 		}

@@ -178,7 +178,7 @@ export const pickpocketTask: MinionTask = {
 				Events.ServerNotification,
 				`**${user.badgedUsername}'s** minion, ${
 					user.minionName
-				}, just received a **Rocky** <:Rocky:324127378647285771> while ${
+				}, just received a **Rocky** <:Rocky:1560874231791616112> while ${
 					obj.type === 'pickpockable' ? 'pickpocketing' : 'stealing'
 				} from ${obj.name}, their Thieving level is ${currentLevel}!`
 			);

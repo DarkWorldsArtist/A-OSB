@@ -2,7 +2,7 @@ import { Bank } from 'oldschooljs';
 
 import { MessageBuilder } from '@/discord/MessageBuilder.js';
 import { ClueTiers } from '@/lib/clues/clueTiers.js';
-import { PerkTier } from '@/lib/constants.js';
+import { PerkTier, SUPPORT_PROJECT_MSG } from '@/lib/constants.js';
 import { Workers } from '@/lib/workers/index.js';
 
 async function determineLimit(user: MUser) {
@@ -41,7 +41,7 @@ export const casketCommand = defineCommand({
 		await interaction.defer();
 		const limit = await determineLimit(user);
 		if (options.quantity > limit) {
-			return `The quantity you gave exceeds your limit of ${limit.toLocaleString()}! *You can increase your limit by up to 100,000 by becoming a patron at <https://www.patreon.com/oldschoolbot>.*`;
+			return `The quantity you gave exceeds your limit of ${limit.toLocaleString()}! *${SUPPORT_PROJECT_MSG}*`;
 		}
 
 		const clueTier = ClueTiers.find(_tier => _tier.name.toLowerCase() === options.name.toLowerCase());

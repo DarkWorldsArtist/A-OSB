@@ -20,63 +20,63 @@ export interface Pet {
 const pets: Pet[] = [
 	{
 		id: 1,
-		emoji: '<:Baby_chinchompa_red:324127375539306497>',
+		emoji: '<:Baby_chinchompa_red:1560874065005379654>',
 		chance: 95_898,
 		name: 'Baby Chinchompa',
 		type: 'SKILL',
 		altNames: ['CHINCHOMPA', 'BABYCHINCHOMPA', 'CHIN'],
 		formatFinish: (num: number) =>
 			`You had to catch ${fm(num)} Red Chinchompas to get the Baby Chinchompa Pet! ` +
-			`<:Baby_chinchompa_red:324127375539306497> You also got...\n${xpEmoji} ${fm(num * 265)} XP\n${gpEmoji} ${fm(
+			`<:Baby_chinchompa_red:1560874065005379654> You also got...\n${xpEmoji} ${fm(num * 265)} XP\n${gpEmoji} ${fm(
 				num * 1318
 			)} GP`
 	},
 	{
 		id: 2,
-		emoji: '<:Baby_mole:324127375858204672>',
+		emoji: '<:Baby_mole:1560874069275050004>',
 		chance: 3000,
 		name: 'Baby Mole',
 		type: 'BOSS',
 		altNames: ['BABYMOLE', 'MOLE', 'GIANTMOLE'],
 		formatFinish: (num: number) =>
-			`You had to kill ${fm(num)} Giant Moles to get the Baby Mole Pet! <:Baby_mole:324127375858204672>`,
+			`You had to kill ${fm(num)} Giant Moles to get the Baby Mole Pet! <:Baby_mole:1560874069275050004>`,
 		bossKeys: ['giantMole']
 	},
 	{
 		id: 3,
-		emoji: '<:Beaver:324127375761604611>',
+		emoji: '<:Beaver:1560874073225953375>',
 		chance: 69_846,
 		name: 'Beaver',
 		type: 'SKILL',
 		altNames: ['BEAVER', 'WC', 'WOODCUTTING'],
 		formatFinish: (num: number) =>
-			`You had to cut ${fm(num)} Magic Logs to get the Beaver Pet! <:Beaver:324127375761604611> ` +
+			`You had to cut ${fm(num)} Magic Logs to get the Beaver Pet! <:Beaver:1560874073225953375> ` +
 			`You also got...\n${xpEmoji} ${fm(num * 250)} XP\n${gpEmoji} ${fm(num * 1043)} GP`
 	},
 	{
 		id: 4,
-		emoji: '<:Bloodhound:324127375602483212>',
+		emoji: '<:Bloodhound:1560874078741733426>',
 		chance: 1000,
 		name: 'Bloodhound',
 		type: 'SPECIAL',
 		altNames: ['BLOODHOUND'],
 		formatFinish: (num: number) =>
-			`You had to complete ${fm(num)} Master Clues to get the Bloodhound Pet! <:Bloodhound:324127375602483212>`
+			`You had to complete ${fm(num)} Master Clues to get the Bloodhound Pet! <:Bloodhound:1560874078741733426>`
 	},
 	{
 		id: 5,
-		emoji: '<:Callisto_cub:324127376273440768>',
+		emoji: '<:Callisto_cub:1560874083153875074>',
 		chance: 2000,
 		name: 'Callisto Cub',
 		type: 'BOSS',
 		altNames: ['CALLISTO', 'CALLISTOCUB', 'CUB'],
 		formatFinish: (num: number) =>
-			`You had to slay Callisto ${fm(num)} times to get the Callisto Cub Pet! <:Callisto_cub:324127376273440768>`,
+			`You had to slay Callisto ${fm(num)} times to get the Callisto Cub Pet! <:Callisto_cub:1560874083153875074>`,
 		bossKeys: ['callisto']
 	},
 	{
 		id: 6,
-		emoji: '<:Giant_squirrel:324127376432824320>',
+		emoji: '<:Giant_squirrel:1560874103722745876>',
 		chance: 31_965,
 		name: 'Giant Squirrel',
 		type: 'SKILL',
@@ -84,13 +84,13 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to run around the Ardougne Rooftops ${fm(
 				num
-			)} times to get the Giant Squirrel Pet! <:Giant_squirrel:324127376432824320> You also got...\n${xpEmoji} ${fm(
+			)} times to get the Giant Squirrel Pet! <:Giant_squirrel:1560874103722745876> You also got...\n${xpEmoji} ${fm(
 				num * 570
-			)} XP\n<:ehpclock:352323705210142721> ${Math.round((num * 45) / 3600)} Hours of your time wasted!`
+			)} XP\n<:ehpclock:1560874278193201202> ${Math.round((num * 45) / 3600)} Hours of your time wasted!`
 	},
 	{
 		id: 7,
-		emoji: '<:Heron:324127376516841483>',
+		emoji: '<:Heron:1560874119728341145>',
 		chance: 136_108,
 		name: 'Heron',
 		type: 'SKILL',
@@ -98,13 +98,13 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to catch ${fm(
 				num
-			)} Monkfish to get the Heron Pet! <:Heron:324127376516841483> You also got...\n${xpEmoji} ${fm(
+			)} Monkfish to get the Heron Pet! <:Heron:1560874119728341145> You also got...\n${xpEmoji} ${fm(
 				num * 120
 			)} XP\n${gpEmoji} ${fm(num * 294)} GP`
 	},
 	{
 		id: 8,
-		emoji: '<:Kalphite_princess_2nd_form:324127376915300352>',
+		emoji: '<:Kalphite_princess_2nd_form:1560874132919554109>',
 		chance: 3000,
 		name: 'Kalphite Princess',
 		type: 'BOSS',
@@ -112,34 +112,34 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill the Kalphite Queen ${fm(
 				num
-			)} times to get the Kalphite Princess Pet! <:Kalphite_princess_2nd_form:324127376915300352>`,
+			)} times to get the Kalphite Princess Pet! <:Kalphite_princess_2nd_form:1560874132919554109>`,
 		bossKeys: ['kalphiteQueen']
 	},
 	{
 		id: 9,
-		emoji: '<:Noon:379595337234382848>',
+		emoji: '<:Noon:1560874146613694505>',
 		chance: 3000,
 		name: 'Noon',
 		type: 'BOSS',
 		altNames: ['GARGOYLE', 'NOON', 'DAWN', 'GG', 'MIDNIGHT'],
 		formatFinish: (num: number) =>
-			`You had to kill ${fm(num)} Grotesque Guardians to get the Noon Pet! <:Noon:379595337234382848>`,
+			`You had to kill ${fm(num)} Grotesque Guardians to get the Noon Pet! <:Noon:1560874146613694505>`,
 		bossKeys: ['grotesqueGuardians']
 	},
 	{
 		id: 10,
-		emoji: '<:Olmlet:324127376873357316>',
+		emoji: '<:Olmlet:1560874150753730600>',
 		chance: 3000,
 		name: 'Olmlet',
 		type: 'BOSS',
 		altNames: ['OLMLET', 'RAIDS', 'OLMLET', 'OLM'],
 		formatFinish: (num: number) =>
-			`You had to do ${fm(num)} Raids to get the Olmlet Pet! <:Olmlet:324127376873357316>`,
+			`You had to do ${fm(num)} Raids to get the Olmlet Pet! <:Olmlet:1560874150753730600>`,
 		bossKeys: ['chambersofXeric', 'chambersofXericChallengeMode']
 	},
 	{
 		id: 11,
-		emoji: '<:Pet_chaos_elemental:324127377070227456>',
+		emoji: '<:Pet_chaos_elemental:1560874154754834542>',
 		chance: 300,
 		name: 'Pet chaos elemental',
 		type: 'BOSS',
@@ -147,12 +147,12 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill the Chaos Elemental ${fm(
 				num
-			)} times to get the Chaos Elemental Pet! <:Pet_chaos_elemental:324127377070227456>`,
+			)} times to get the Chaos Elemental Pet! <:Pet_chaos_elemental:1560874154754834542>`,
 		bossKeys: ['chaosElemental', 'chaosFanatic']
 	},
 	{
 		id: 12,
-		emoji: '<:Pet_dagannoth_prime:324127376877289474>',
+		emoji: '<:Pet_dagannoth_prime:1560874159708307597>',
 		chance: 5000,
 		name: 'Pet dagannoth prime',
 		type: 'BOSS',
@@ -160,12 +160,12 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill Dagannoth Prime ${fm(
 				num
-			)} times to get the Dagannoth Prime Pet! <:Pet_dagannoth_prime:324127376877289474>`,
+			)} times to get the Dagannoth Prime Pet! <:Pet_dagannoth_prime:1560874159708307597>`,
 		bossKeys: ['dagannothPrime']
 	},
 	{
 		id: 13,
-		emoji: '<:Pet_dagannoth_rex:324127377091330049>',
+		emoji: '<:Pet_dagannoth_rex:1560874164179443742>',
 		chance: 5000,
 		name: 'Pet dagannoth rex',
 		type: 'BOSS',
@@ -173,12 +173,12 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill Dagannoth Rex ${fm(
 				num
-			)} times to get the Dagannoth Rex Pet! <:Pet_dagannoth_rex:324127377091330049>`,
+			)} times to get the Dagannoth Rex Pet! <:Pet_dagannoth_rex:1560874164179443742>`,
 		bossKeys: ['dagannothRex']
 	},
 	{
 		id: 14,
-		emoji: '<:Pet_dagannoth_supreme:324127377066164245>',
+		emoji: '<:Pet_dagannoth_supreme:1560874167904108638>',
 		chance: 5000,
 		name: 'Pet dagannoth supreme',
 		type: 'BOSS',
@@ -186,12 +186,12 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill Dagannoth Supreme ${fm(
 				num
-			)} times to get the Dagannoth Supreme Pet! <:Pet_dagannoth_supreme:324127377066164245>`,
+			)} times to get the Dagannoth Supreme Pet! <:Pet_dagannoth_supreme:1560874167904108638>`,
 		bossKeys: ['dagannothSupreme']
 	},
 	{
 		id: 15,
-		emoji: '<:Pet_dark_core:324127377347313674>',
+		emoji: '<:Pet_dark_core:1560874172207337513>',
 		chance: 5000,
 		name: 'Pet dark core',
 		type: 'BOSS',
@@ -199,12 +199,12 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to slay the Corporeal Beast ${fm(
 				num
-			)} times to get the Dark Core Pet! <:Pet_dark_core:324127377347313674>`,
+			)} times to get the Dark Core Pet! <:Pet_dark_core:1560874172207337513>`,
 		bossKeys: ['corporealBeast']
 	},
 	{
 		id: 16,
-		emoji: '<:Pet_general_graardor:324127377376673792>',
+		emoji: '<:Pet_general_graardor:1560874177366589490>',
 		chance: 5000,
 		name: 'Pet general graardor',
 		type: 'BOSS',
@@ -212,34 +212,34 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill General Graardor ${fm(
 				num
-			)} times to get the General Graardor Jr. Pet! <:Pet_general_graardor:324127377376673792>`,
+			)} times to get the General Graardor Jr. Pet! <:Pet_general_graardor:1560874177366589490>`,
 		bossKeys: ['generalGraardor']
 	},
 	{
 		id: 17,
-		emoji: '<:Pet_kraken:324127377477206016>',
+		emoji: '<:Pet_kraken:1560874181770485780>',
 		chance: 3000,
 		name: 'Pet kraken',
 		type: 'BOSS',
 		altNames: ['KRAKEN'],
 		formatFinish: (num: number) =>
-			`You had to slay the Kraken ${fm(num)} times to get the Kraken Pet! <:Pet_kraken:324127377477206016>`,
+			`You had to slay the Kraken ${fm(num)} times to get the Kraken Pet! <:Pet_kraken:1560874181770485780>`,
 		bossKeys: ['kraken']
 	},
 	{
 		id: 18,
-		emoji: '<:Pet_kreearra:324127377305239555>',
+		emoji: '<:Pet_kreearra:1560874186757505056>',
 		chance: 5000,
 		name: "Pet kree'arra",
 		type: 'BOSS',
 		altNames: ['KREE', 'ARMA', 'ARMADYL', 'KREEARRA'],
 		formatFinish: (num: number) =>
-			`You had to kill Kree'arra ${fm(num)} times to get the Kree'arra Pet! <:Pet_kreearra:324127377305239555>`,
+			`You had to kill Kree'arra ${fm(num)} times to get the Kree'arra Pet! <:Pet_kreearra:1560874186757505056>`,
 		bossKeys: ['kreeArra']
 	},
 	{
 		id: 19,
-		emoji: '<:Pet_kril_tsutsaroth:324127377527406594>',
+		emoji: '<:Pet_kril_tsutsaroth:1560874192444985344>',
 		chance: 5000,
 		name: "Pet k'ril tsutsaroth",
 		type: 'BOSS',
@@ -247,12 +247,12 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill K'ril Tsutsaroth ${fm(
 				num
-			)} times to get the K'ril Tsutsaroth Pet! <:Pet_kril_tsutsaroth:324127377527406594>`,
+			)} times to get the K'ril Tsutsaroth Pet! <:Pet_kril_tsutsaroth:1560874192444985344>`,
 		bossKeys: ['krilTsutsaroth']
 	},
 	{
 		id: 20,
-		emoji: '<:Pet_penance_queen:324127377649303553>',
+		emoji: '<:Pet_penance_queen:1560874197255852125>',
 		chance: 1000,
 		name: 'Pet Penance Queen',
 		type: 'SPECIAL',
@@ -260,11 +260,11 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to do ${fm(
 				num
-			)} High Level Gambles to get the Penance Queen Pet! <:Pet_penance_queen:324127377649303553>`
+			)} High Level Gambles to get the Penance Queen Pet! <:Pet_penance_queen:1560874197255852125>`
 	},
 	{
 		id: 21,
-		emoji: '<:Pet_smoke_devil:324127377493852162>',
+		emoji: '<:Pet_smoke_devil:1560874201622253669>',
 		chance: 3000,
 		name: 'Pet Smoke Devil',
 		type: 'BOSS',
@@ -272,23 +272,23 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill ${fm(
 				num
-			)} Thermonuclear Smoke Devil's to get the Smoke Devil Pet! <:Pet_smoke_devil:324127377493852162>`,
+			)} Thermonuclear Smoke Devil's to get the Smoke Devil Pet! <:Pet_smoke_devil:1560874201622253669>`,
 		bossKeys: ['thermonuclearSmokeDevil']
 	},
 	{
 		id: 22,
-		emoji: '<:Pet_snakeling:324127377816944642>',
+		emoji: '<:Pet_snakeling:1560874206273470544>',
 		chance: 4000,
 		name: 'Pet snakeling',
 		type: 'BOSS',
 		altNames: ['ZULRAH', 'SNAKELING'],
 		formatFinish: (num: number) =>
-			`You had to kill Zulrah ${fm(num)} times to get the Snakeling Pet! <:Pet_snakeling:324127377816944642>`,
+			`You had to kill Zulrah ${fm(num)} times to get the Snakeling Pet! <:Pet_snakeling:1560874206273470544>`,
 		bossKeys: ['zulrah']
 	},
 	{
 		id: 23,
-		emoji: '<:Pet_zilyana:324127378248957952>',
+		emoji: '<:Pet_zilyana:1560874210447069254>',
 		chance: 5000,
 		name: 'Pet zilyana',
 		type: 'BOSS',
@@ -296,12 +296,12 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill Commander Zilyana ${fm(
 				num
-			)} times to get the Zilyana Jr. Pet! <:Pet_zilyana:324127378248957952>`,
+			)} times to get the Zilyana Jr. Pet! <:Pet_zilyana:1560874210447069254>`,
 		bossKeys: ['commanderZilyana']
 	},
 	{
 		id: 24,
-		emoji: '<:Phoenix:324127378223792129>',
+		emoji: '<:Phoenix:1560874214745964584>',
 		chance: 5000,
 		name: 'Phoenix',
 		type: 'SPECIAL',
@@ -309,12 +309,12 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`It took you ${fm(
 				num
-			)} Wintertodt Supply Crate rolls to get the Phoenix Pet! <:Phoenix:324127378223792129>`,
+			)} Wintertodt Supply Crate rolls to get the Phoenix Pet! <:Phoenix:1560874214745964584>`,
 		bossKeys: ['wintertodt']
 	},
 	{
 		id: 25,
-		emoji: '<:Prince_black_dragon:324127378538364928>',
+		emoji: '<:Prince_black_dragon:1560874219074617417>',
 		chance: 3000,
 		name: 'Prince Black Dragon',
 		type: 'BOSS',
@@ -322,12 +322,12 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill the King Black Dragon ${fm(
 				num
-			)} times to get the Prince Black Dragon Pet! <:Prince_black_dragon:324127378538364928>`,
+			)} times to get the Prince Black Dragon Pet! <:Prince_black_dragon:1560874219074617417>`,
 		bossKeys: ['kingBlackDragon']
 	},
 	{
 		id: 26,
-		emoji: '<:Rift_guardian_fire:324127378588827648>',
+		emoji: '<:Rift_guardian_fire:1560874223742885989>',
 		chance: 1_793_283,
 		name: 'Rift Guardian',
 		type: 'SKILL',
@@ -335,11 +335,11 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to craft ${fm(
 				num
-			)} Nature Runes to get the Rift Guardian Pet! <:Rift_guardian_fire:324127378588827648>`
+			)} Nature Runes to get the Rift Guardian Pet! <:Rift_guardian_fire:1560874223742885989>`
 	},
 	{
 		id: 27,
-		emoji: '<:Rock_golem:324127378429313026>',
+		emoji: '<:Rock_golem:1560874227941376020>',
 		chance: 244_725,
 		name: 'Rock Golem',
 		type: 'SKILL',
@@ -347,11 +347,11 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to mine ${fm(
 				num
-			)} Paydirt at Motherlode Mine to get the Rock Golem Pet! <:Rock_golem:324127378429313026>`
+			)} Paydirt at Motherlode Mine to get the Rock Golem Pet! <:Rock_golem:1560874227941376020>`
 	},
 	{
 		id: 28,
-		emoji: '<:Rocky:324127378647285771>',
+		emoji: '<:Rocky:1560874231791616112>',
 		chance: 254_736,
 		name: 'Rocky',
 		type: 'SKILL',
@@ -359,13 +359,13 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to pickpocket that Ardougne Knight ${fm(
 				num
-			)} times to get the Rocky Pet! <:Rocky:324127378647285771> You also got...\n${xpEmoji} ${fm(
+			)} times to get the Rocky Pet! <:Rocky:1560874231791616112> You also got...\n${xpEmoji} ${fm(
 				num * 84
 			)} XP\n${gpEmoji} ${fm(num * 100)} GP`
 	},
 	{
 		id: 29,
-		emoji: '<:Scorpias_offspring:324127378773377024>',
+		emoji: '<:Scorpias_offspring:1560874236363411598>',
 		chance: 2000,
 		name: "Scorpia's Offspring",
 		type: 'BOSS',
@@ -373,23 +373,23 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill Scorpia ${fm(
 				num
-			)} times to get the Scorpia's Offspring Pet! <:Scorpias_offspring:324127378773377024>`,
+			)} times to get the Scorpia's Offspring Pet! <:Scorpias_offspring:1560874236363411598>`,
 		bossKeys: ['scorpia']
 	},
 	{
 		id: 30,
-		emoji: '<:Skotos:324127378890817546>',
+		emoji: '<:Skotos:1560874240549453857>',
 		chance: 65,
 		name: 'Skotos',
 		type: 'BOSS',
 		altNames: ['SKOTOS', 'SKOTIZO'],
 		formatFinish: (num: number) =>
-			`You had to kill Skotizo ${fm(num)} times to get the Skotos Pet! <:Skotos:324127378890817546>`,
+			`You had to kill Skotizo ${fm(num)} times to get the Skotos Pet! <:Skotos:1560874240549453857>`,
 		bossKeys: ['skotizo']
 	},
 	{
 		id: 31,
-		emoji: '<:Tangleroot:324127378978635778>',
+		emoji: '<:Tangleroot:1560874249890037810>',
 		chance: 6893,
 		name: 'Tangleroot',
 		type: 'SKILL',
@@ -397,24 +397,24 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to harvest ${fm(
 				num
-			)} Magic Trees to get the Tangleroot Pet! <:Tangleroot:324127378978635778> You also got...\n${xpEmoji} ${fm(
+			)} Magic Trees to get the Tangleroot Pet! <:Tangleroot:1560874249890037810> You also got...\n${xpEmoji} ${fm(
 				num * 13_768.3
 			)} XP\n${gpEmoji} -${fm(num * 116_894)} GP`
 	},
 	{
 		id: 32,
-		emoji: '<:Tzrekjad:324127379188613121>',
+		emoji: '<:Tzrekjad:1560874254277287956>',
 		chance: 200,
 		name: 'Tzrek-Jad',
 		type: 'BOSS',
 		altNames: ['JAD'],
 		formatFinish: (num: number) =>
-			`You had to kill Jad ${fm(num)} times to get the TzRek-Jad Pet! <:Tzrekjad:324127379188613121>`,
+			`You had to kill Jad ${fm(num)} times to get the TzRek-Jad Pet! <:Tzrekjad:1560874254277287956>`,
 		bossKeys: ['tzTokJad']
 	},
 	{
 		id: 33,
-		emoji: '<:Venenatis_spiderling:324127379092144129>',
+		emoji: '<:Venenatis_spiderling:1560874258995875950>',
 		chance: 2000,
 		name: 'Venenatis Spiderling',
 		type: 'BOSS',
@@ -422,23 +422,23 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill Venenatis ${fm(
 				num
-			)} times to get the Venenatis Spiderling Pet! <:Venenatis_spiderling:324127379092144129>`,
+			)} times to get the Venenatis Spiderling Pet! <:Venenatis_spiderling:1560874258995875950>`,
 		bossKeys: ['venenatis']
 	},
 	{
 		id: 34,
-		emoji: '<:Vetion_jr:324127378999738369>',
+		emoji: '<:Vetion_jr:1560874263777644595>',
 		chance: 2000,
 		name: "Vet'ion jr.",
 		type: 'BOSS',
 		altNames: ['VETION'],
 		formatFinish: (num: number) =>
-			`You had to kill Vet'ion ${fm(num)} times to get the Vet'ion Jr. Pet! <:Vetion_jr:324127378999738369>`,
+			`You had to kill Vet'ion ${fm(num)} times to get the Vet'ion Jr. Pet! <:Vetion_jr:1560874263777644595>`,
 		bossKeys: ['vetion']
 	},
 	{
 		id: 35,
-		emoji: '<:Abyssal_orphan:324127375774449664>',
+		emoji: '<:Abyssal_orphan:1560874060282339368>',
 		chance: 2560,
 		name: 'Abyssal Orphan',
 		type: 'BOSS',
@@ -446,33 +446,33 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill the Abyssal Sire ${fm(
 				num
-			)} times to get the Abyssal orphan Pet! <:Abyssal_orphan:324127375774449664>`,
+			)} times to get the Abyssal orphan Pet! <:Abyssal_orphan:1560874060282339368>`,
 		bossKeys: ['abyssalSire']
 	},
 	{
 		id: 36,
-		emoji: '<:Hellpuppy:324127376185491458>',
+		emoji: '<:Hellpuppy:1560874107975766107>',
 		chance: 3000,
 		name: 'Hellpuppy',
 		type: 'BOSS',
 		altNames: ['CERB', 'CERBERUS', 'HELLPUPPY'],
 		formatFinish: (num: number) =>
-			`You had to kill Cerberus ${fm(num)} times to get the Hellpuppy Pet! <:Hellpuppy:324127376185491458>`,
+			`You had to kill Cerberus ${fm(num)} times to get the Hellpuppy Pet! <:Hellpuppy:1560874107975766107>`,
 		bossKeys: ['cerberus']
 	},
 	{
 		id: 37,
-		emoji: '<:Chompy_chick:346196885859598337>',
+		emoji: '<:Chompy_chick:1560874089432748084>',
 		chance: 500,
 		name: 'Chompy chick',
 		type: 'SPECIAL',
 		altNames: ['CHOMPYCHICK'],
 		formatFinish: (num: number) =>
-			`You had to kill ${fm(num)} Chompy Birds to get the Chompy Chick Pet! <:Chompy_chick:346196885859598337>`
+			`You had to kill ${fm(num)} Chompy Birds to get the Chompy Chick Pet! <:Chompy_chick:1560874089432748084>`
 	},
 	{
 		id: 38,
-		emoji: '<:Jalnibrek:346196886119514113>',
+		emoji: '<:Jalnibrek:1560874128280649800>',
 		chance: 100,
 		name: 'Jal-nib-rek',
 		type: 'BOSS',
@@ -480,33 +480,33 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to complete the Inferno ${fm(
 				num
-			)} times to get the Jal-Nib-Rek Pet! <:Jalnibrek:346196886119514113>`,
+			)} times to get the Jal-Nib-Rek Pet! <:Jalnibrek:1560874128280649800>`,
 		bossKeys: ['tzKalZuk']
 	},
 	{
 		id: 39,
-		emoji: '<:Herbi:357773175318249472>',
+		emoji: '<:Herbi:1560874112619118594>',
 		chance: 6500,
 		name: 'Herbi',
 		type: 'SPECIAL',
 		altNames: ['HERBIBOAR', 'HERBI'],
 		formatFinish: (num: number) =>
-			`You had to track down ${fm(num)} Herbiboars to get the Herbi Pet! <:Herbi:357773175318249472>`
+			`You had to track down ${fm(num)} Herbiboars to get the Herbi Pet! <:Herbi:1560874112619118594>`
 	},
 	{
 		id: 40,
-		emoji: '<:Vorki:400713309252222977>',
+		emoji: '<:Vorki:1560874268441714789>',
 		chance: 3000,
 		name: 'Vorki',
 		type: 'SPECIAL',
 		altNames: ['VORKI', 'VORKATH'],
 		formatFinish: (num: number) =>
-			`You had to slay the almighty Vorkath ${fm(num)} times to get the Vorki Pet! <:Vorki:400713309252222977>`,
+			`You had to slay the almighty Vorkath ${fm(num)} times to get the Vorki Pet! <:Vorki:1560874268441714789>`,
 		bossKeys: ['vorkath']
 	},
 	{
 		id: 41,
-		emoji: '<:Lil_zik:479460344423776266>',
+		emoji: '<:Lil_zik:1560874136958541824>',
 		chance: 650,
 		name: "Lil' Zik",
 		type: 'BOSS',
@@ -514,12 +514,12 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to complete the Theatre of Blood ${fm(
 				num
-			)} times to get the Lil' Zik pet! <:Lil_zik:479460344423776266>`,
+			)} times to get the Lil' Zik pet! <:Lil_zik:1560874136958541824>`,
 		bossKeys: ['theatreofBlood']
 	},
 	{
 		id: 42,
-		emoji: '<:Ikkle_hydra:534941897228156948>',
+		emoji: '<:Ikkle_hydra:1560874124136681623>',
 		chance: 3000,
 		name: 'Ikkle hydra',
 		type: 'BOSS',
@@ -527,23 +527,23 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to slay the Alchemical Hydra ${fm(
 				num
-			)} times to get the Ikkle hydra pet! <:Ikkle_hydra:534941897228156948>`,
+			)} times to get the Ikkle hydra pet! <:Ikkle_hydra:1560874124136681623>`,
 		bossKeys: ['alchemicalHydra']
 	},
 	{
 		id: 43,
-		emoji: '<:Smolcano:604670895113633802>',
+		emoji: '<:Smolcano:1560874245368709230>',
 		chance: 3000,
 		name: 'Smolcano',
 		type: 'BOSS',
 		altNames: ['ZALCANO'],
 		formatFinish: (num: number) =>
-			`You had to take down Zalcano ${fm(num)} times to get the Smolcano pet! <:Smolcano:604670895113633802>`,
+			`You had to take down Zalcano ${fm(num)} times to get the Smolcano pet! <:Smolcano:1560874245368709230>`,
 		bossKeys: ['zalcano']
 	},
 	{
 		id: 44,
-		emoji: '<:Youngllef:604670894798798858>',
+		emoji: '<:Youngllef:1560874272334020765>',
 		chance: 800,
 		name: 'Youngllef',
 		type: 'BOSS',
@@ -551,23 +551,23 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to complete the Corrupted Gauntlet ${fm(
 				num
-			)} times to get the Youngllef pet! <:Youngllef:604670894798798858> This took you ${fm(num * 0.15)} hours.`,
+			)} times to get the Youngllef pet! <:Youngllef:1560874272334020765> This took you ${fm(num * 0.15)} hours.`,
 		bossKeys: ['theGauntlet', 'theCorruptedGauntlet']
 	},
 	{
 		id: 45,
-		emoji: '<:Sraracha:608231007803670529>',
+		emoji: '<:Sraracha:1560874486826410088>',
 		chance: 3000,
 		name: 'Sraracha',
 		type: 'BOSS',
 		altNames: ['SRARACHA', 'SARACHNIS', 'SARACH'],
 		formatFinish: (num: number) =>
-			`You had to kill Sarachnis ${fm(num)} times to get the Sraracha pet! <:Sraracha:608231007803670529>`,
+			`You had to kill Sarachnis ${fm(num)} times to get the Sraracha pet! <:Sraracha:1560874486826410088>`,
 		bossKeys: ['sarachnis']
 	},
 	{
 		id: 46,
-		emoji: '<:Little_nightmare:758149284952014928>',
+		emoji: '<:Little_nightmare:1560880789422604399>',
 		chance: 3800,
 		name: 'Little nightmare',
 		type: 'BOSS',
@@ -575,40 +575,40 @@ const pets: Pet[] = [
 		formatFinish: (num: number) =>
 			`You had to kill The Nightmare ${fm(
 				num
-			)} times to get the Little nightmare pet! <:Little_nightmare:758149284952014928>`,
+			)} times to get the Little nightmare pet! <:Little_nightmare:1560880789422604399>`,
 		bossKeys: ['nightmare']
 	},
 	{
 		id: 47,
-		emoji: '<:Lil_creator:798221383951319111>',
+		emoji: '<:Lil_creator:1560872590614994965>',
 		chance: 400,
 		name: "Lil' Creator",
 		type: 'SPECIAL',
 		altNames: ['LILDESTRUCTOR', 'LILCREATOR', 'SOULWARS'],
 		formatFinish: (num: number) =>
-			`You had to open ${fm(num)} Spoils of war to get the Lil' Creator! <:Lil_creator:798221383951319111>`,
+			`You had to open ${fm(num)} Spoils of war to get the Lil' Creator! <:Lil_creator:1560872590614994965>`,
 		bossKeys: ['soulwars']
 	},
 	{
 		id: 48,
-		emoji: '<:TinyTempor:824483631694217277>',
+		emoji: '<:TinyTempor:1560873174525149375>',
 		chance: 8000,
 		name: 'Tiny Tempor',
 		type: 'SPECIAL',
 		altNames: ['TINYTEMPOR', 'TEMPOROSS'],
 		formatFinish: (num: number) =>
-			`You had to spend ${fm(num)} Permits to get the Tiny Tempor! <:TinyTempor:824483631694217277>`,
+			`You had to spend ${fm(num)} Permits to get the Tiny Tempor! <:TinyTempor:1560873174525149375>`,
 		bossKeys: ['tempoross']
 	},
 	{
 		id: 49,
-		emoji: '<:Nexling:931565564151869460>',
+		emoji: '<:Nexling:1560874141652099092>',
 		chance: 500,
 		name: 'Nexling',
 		type: 'SPECIAL',
 		altNames: ['NEXLING'],
 		formatFinish: (num: number) =>
-			`You had to kill Nex ${fm(num)} times to get Nexling! <:Nexling:931565564151869460>`
+			`You had to kill Nex ${fm(num)} times to get Nexling! <:Nexling:1560874141652099092>`
 	},
 	{
 		id: 50,

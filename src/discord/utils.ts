@@ -81,13 +81,21 @@ export async function bulkUpdateCommands() {
 	const globalCommands = globalClient.allCommands.filter(i => !i.guildId).map(convertCommandToAPICommand);
 	const guildCommands = globalClient.allCommands.filter(i => Boolean(i.guildId)).map(convertCommandToAPICommand);
 
-	return Promise.all([
-		globalClient.rest.put(Routes.applicationCommands(globalClient.applicationId), { body: globalCommands }),
-		globalClient.rest.put(
-			Routes.applicationGuildCommands(globalClient.applicationId, globalConfig.supportServerID),
-			{
-				body: guildCommands
-			}
-		)
-	]);
+	const promises: Promise<unknown>[] = [
+		globalClient.rest.put(Routes.applicationCommands(globalClient.applicationId), { body: globalCommands })
+	];
+
+	if (guildCommands.length > 0 && globalConfig.supportServerID) {
+		promises.push(
+			globalClient.rest
+				.put(Routes.applicationGuildCommands(globalClient.applicationId, globalConfig.supportServerID), {
+					body: guildCommands
+				})
+				.catch(err => {
+					console.warn(`Could not sync guild commands to support server:`, err);
+				})
+		);
+	}
+
+	return Promise.all(promises);
 }

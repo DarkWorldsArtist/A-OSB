@@ -53,7 +53,7 @@ export const gauntletTask: MinionTask = {
 				Events.ServerNotification,
 				`**${user.badgedUsername}'s** minion, ${
 					user.minionName
-				}, just received a **Youngllef** <:Youngllef:604670894798798858> while doing the ${name} for the ${formatOrdinal(
+				}, just received a **Youngllef** <:Youngllef:1560874272334020765> while doing the ${name} for the ${formatOrdinal(
 					newKc
 				)} time!`
 			);

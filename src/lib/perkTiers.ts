@@ -9,7 +9,7 @@ import {
 } from '@oldschoolgg/toolkit';
 import { LRUCache } from 'lru-cache';
 
-import { BitField, PerkTier } from '@/lib/constants.js';
+import { BitField, globalConfig, PatronRoleTiers, PerkTier } from '@/lib/constants.js';
 import type { RobochimpUser } from '@/lib/roboChimp.js';
 export const RobochimpBitfieldEnum = {
 	MagnaTier1: RoboChimpBit.MagnaTier1,
@@ -131,6 +131,21 @@ export async function getUsersPerkTier({
 
 	const options = { courtesyTier: getCourtesyTier(user), legacyTier: getLegacyTier(user) };
 	const roboChimpCached = await Cache.getRoboChimpUser(user.id);
+
+	let discordPatronTier: PerkTier = PerkTier.Zero;
+	const supportMember = await Cache.getMember(globalConfig.supportServerID, user.id).catch(() => null);
+	if (supportMember && supportMember.roles) {
+		for (const roleTier of PatronRoleTiers) {
+			if (supportMember.roles.includes(roleTier.roleId)) {
+				discordPatronTier = roleTier.perkTier;
+				if (roboChimpCached && !roboChimpCached.bits.includes(roleTier.bit)) {
+					roboChimpCached.bits.push(roleTier.bit);
+				}
+				break;
+			}
+		}
+	}
+
 	const sharedTier = roboChimpCached
 		? getPerkTierEx(
 				{
@@ -142,7 +157,7 @@ export async function getUsersPerkTier({
 				options
 			)
 		: getPerkTierEx({ patreonBits: [] }, options);
-	const tier = Math.max(sharedTier, roboChimpCached?.perk_tier ?? PerkTier.Zero);
+	const tier = Math.max(sharedTier, roboChimpCached?.perk_tier ?? PerkTier.Zero, discordPatronTier);
 
 	setHotCache(user.id, tier);
 	await Cache.setPerkTier(user.id, tier);
