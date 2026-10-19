@@ -14,6 +14,7 @@ import type { ActivityTaskData } from '@/lib/types/minions.js';
 import { makeBankImage } from '@/lib/util/makeBankImage.js';
 import { minionStatsEmbed } from '@/lib/util/minionStatsEmbed.js';
 import { refreshUserCache } from '@/lib/util/refreshCache.js';
+import { processNextQueuedTrip } from '@/lib/tripQueue.js';
 import { minionStatusCommand } from '@/mahoji/lib/abstracted_commands/minionStatusCommand.js';
 
 const rareRolesSrc: [string, number, string][] = [
@@ -384,5 +385,11 @@ export async function onMinionActivityFinish(activity: ActivityTaskData) {
 			guild_id: activity.channelId ? (await Cache.getChannel(activity.channelId))?.guild_id : undefined,
 			activity: JSON.stringify(activity)
 		});
+	}
+
+	try {
+		await processNextQueuedTrip(activity.userID, activity.channelId);
+	} catch (err) {
+		Logging.logError(err as Error, { context: 'processNextQueuedTrip', activity: JSON.stringify(activity) });
 	}
 }

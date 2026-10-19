@@ -1,5 +1,3 @@
-import { Emoji } from '@oldschoolgg/toolkit';
-
 import { SUPPORT_PROJECT_MSG } from '@/lib/constants.js';
 
 export const patreonCommand = defineCommand({
@@ -7,6 +5,6 @@ export const patreonCommand = defineCommand({
 	description: 'Shows the patreon link for the bot, where you can donate.',
 	options: [],
 	run: async () => {
-		return `${SUPPORT_PROJECT_MSG} ${Emoji.PeepoOSBot}`;
+		return SUPPORT_PROJECT_MSG;
 	}
 });

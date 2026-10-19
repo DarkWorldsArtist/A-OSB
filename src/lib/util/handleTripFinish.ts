@@ -27,6 +27,7 @@ import {
 	makeNewSlayerTaskButton,
 	makeOpenCasketButton,
 	makeOpenSeedPackButton,
+	makeQueueTripButton,
 	makeRepeatTripButton,
 	makeTearsOfGuthixButton
 } from '@/lib/util/interactions.js';
@@ -302,6 +303,9 @@ export async function handleTripFinish(
 
 	const components: ButtonBuilder[] = [];
 	components.push(makeRepeatTripButton());
+	if (perkTier >= PerkTier.Four) {
+		components.push(makeQueueTripButton());
+	}
 
 	const itemsToAddWithCL = new Bank();
 	const itemsToRemove = new Bank();

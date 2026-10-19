@@ -256,9 +256,11 @@ export function hasCyrPerkTier(user: PerkTierInput, minimumTier: PerkTier | numb
 export function getCyrTripBonus(user: PerkTierInput | number[]): number {
 	// TODO: Make BonusMinute and Original Patron +2 minutes calculated here.
 	const input = Array.isArray(user) ? { patreonBits: user } : user;
-	if (hasCyrPerkTier(input, PerkTier.Four)) return 15 * 60 * 1000;
-	if (hasCyrPerkTier(input, PerkTier.Three)) return 10 * 60 * 1000;
-	if (hasCyrPerkTier(input, PerkTier.Two)) return 6 * 60 * 1000;
+	if (hasCyrPerkTier(input, PerkTier.Six)) return 25 * 60 * 1000;
+	if (hasCyrPerkTier(input, PerkTier.Five)) return 20 * 60 * 1000;
+	if (hasCyrPerkTier(input, PerkTier.Four)) return 16 * 60 * 1000;
+	if (hasCyrPerkTier(input, PerkTier.Three)) return 11 * 60 * 1000;
+	if (hasCyrPerkTier(input, PerkTier.Two)) return 7 * 60 * 1000;
 	if (hasCyrPerkTier(input, PerkTier.One)) return 3 * 60 * 1000;
 	return PerkTier.Zero;
 }

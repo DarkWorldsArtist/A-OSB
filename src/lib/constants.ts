@@ -479,10 +479,7 @@ export const META_CONSTANTS = {
 	GIT_DIFF_URL: `https://github.com/${gitRemote}/compare/${gitHash}...${GIT_BRANCH}`,
 	RENDERED_STR: ''
 };
-META_CONSTANTS.RENDERED_STR = `**Date/Time:** ${dateFm(META_CONSTANTS.STARTUP_DATE)}
-**Git Hash:** ${META_CONSTANTS.GIT_HASH.slice(0, 7)}
-**Commit:** <${META_CONSTANTS.GITHUB_URL}>
-**Code Difference:** <${META_CONSTANTS.GIT_DIFF_URL}>`;
+META_CONSTANTS.RENDERED_STR = `**Date/Time:** ${dateFm(META_CONSTANTS.STARTUP_DATE)}`;
 
 export const masteryKey = BOT_TYPE === 'OSB' ? 'osb_mastery' : 'bso_mastery';
 

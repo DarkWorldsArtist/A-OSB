@@ -13,10 +13,10 @@ import {
 describe('perk tiers', () => {
 	test('formats multiple paid tiers', () => {
 		expect(getPerkTierDisplay({ patreonBits: [RoboChimpBit.CyrTier3, RoboChimpBit.MagnaTier3] })).toBe(
-			'Cyr Tier 3, Magna Tier 3'
+			'Tier 3 Patron, Tier 3 Patron'
 		);
 		expect(getPerkTierDisplay({ patreonBits: [RoboChimpBit.MagnaTier1, RoboChimpBit.CyrTier1] })).toBe(
-			'Cyr Tier 1, Magna Tier 1'
+			'Tier 1 Patron, Tier 1 Patron'
 		);
 	});
 
@@ -36,9 +36,7 @@ describe('perk tiers', () => {
 		};
 
 		expect(getPerkTierEx(input, { now })).toBe(PerkTier.Five);
-		expect(getPerkTierDisplay(input, { now })).toBe(
-			'Temp Tier: **Tier 4** (Expires: 1970-01-01T00:00:11.000Z, 10 seconds remaining)'
-		);
+		expect(getPerkTierDisplay(input, { now })).toBe('Temporary: **Tier 4** (Expires: <t:11:R>)');
 	});
 
 	test('formats multiple unexpired premium tier entitlements', () => {
@@ -54,7 +52,7 @@ describe('perk tiers', () => {
 
 		expect(getPerkTierEx(input, { now })).toBe(PerkTier.Five);
 		expect(getPerkTierDisplay(input, { now })).toBe(
-			'Temp Tier: **Tier 4** (Expires: 1970-01-01T00:00:11.000Z, 10 seconds remaining), Temp Tier: Tier 2 (Expires: 1970-01-01T00:00:21.000Z, 20 seconds remaining)'
+			'Temporary: **Tier 4** (Expires: <t:11:R>), Temporary: Tier 2 (Expires: <t:21:R>)'
 		);
 	});
 
@@ -93,9 +91,11 @@ describe('perk tiers', () => {
 
 	test('computes cyr trip bonus from paid bits', () => {
 		expect(getCyrTripBonus([RoboChimpBit.CyrTier0])).toBe(Time.Minute * 3);
-		expect(getCyrTripBonus([RoboChimpBit.CyrTier1])).toBe(Time.Minute * 6);
-		expect(getCyrTripBonus([RoboChimpBit.CyrTier2])).toBe(Time.Minute * 10);
-		expect(getCyrTripBonus([RoboChimpBit.CyrTier3])).toBe(Time.Minute * 15);
+		expect(getCyrTripBonus([RoboChimpBit.CyrTier1])).toBe(Time.Minute * 7);
+		expect(getCyrTripBonus([RoboChimpBit.CyrTier2])).toBe(Time.Minute * 11);
+		expect(getCyrTripBonus([RoboChimpBit.CyrTier3])).toBe(Time.Minute * 16);
+		expect(getCyrTripBonus([RoboChimpBit.CyrTier4])).toBe(Time.Minute * 20);
+		expect(getCyrTripBonus([RoboChimpBit.CyrTier5])).toBe(Time.Minute * 25);
 		expect(getCyrTripBonus([])).toBe(0);
 	});
 });

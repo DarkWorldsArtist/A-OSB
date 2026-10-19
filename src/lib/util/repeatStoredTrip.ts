@@ -89,12 +89,12 @@ import { giantsFoundryAlloys } from '@/mahoji/lib/abstracted_commands/giantsFoun
 import puroOptions from '@/mahoji/lib/abstracted_commands/puroPuroCommand.js';
 import { slayerNewTaskCommand } from '@/mahoji/lib/abstracted_commands/slayerTaskCommand.js';
 
-const taskCanBeRepeated = (activity: Activity, user: MUser, taskIndex: number) => {
+export const taskCanBeRepeated = (activity: Activity, user?: MUser, taskIndex?: number) => {
 	const data = ActivityManager.convertStoredActivityToFlatActivity(activity);
-	if (data.type === activity_type_enum.Farming) {
+	if (user && data.type === activity_type_enum.Farming) {
 		return taskIndex === 0 && data.autoFarmed;
 	}
-	if (activity.type === activity_type_enum.ClueCompletion) {
+	if (user && activity.type === activity_type_enum.ClueCompletion) {
 		const realActivity = ActivityManager.convertStoredActivityToFlatActivity(activity) as ClueActivityTaskOptions;
 		return (
 			realActivity.implingID !== undefined ||

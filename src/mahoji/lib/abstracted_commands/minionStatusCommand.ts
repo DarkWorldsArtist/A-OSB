@@ -2,14 +2,15 @@ import { ButtonBuilder, ButtonStyle } from '@oldschoolgg/discord';
 import { stripNonAlphanumeric, toTitleCase } from '@oldschoolgg/toolkit';
 
 import { ClueTiers } from '@/lib/clues/clueTiers.js';
-import { BitField } from '@/lib/constants.js';
+import { BitField, PerkTier } from '@/lib/constants.js';
 import { EmojiId } from '@/lib/data/emojis.js';
 import { minionBuyButton } from '@/lib/sharedComponents.js';
 import {
 	makeAutoContractButton,
 	makeAutoSlayButton,
 	makeBirdHouseTripButton,
-	makeClaimDailyButton
+	makeClaimDailyButton,
+	makeQueueTripButton
 } from '@/lib/util/interactions.js';
 import { minionStatus } from '@/lib/util/minionStatus.js';
 import { makeRepeatTripButtons } from '@/lib/util/repeatStoredTrip.js';
@@ -54,6 +55,7 @@ async function fetchPinnedTrips(userID: string) {
 export async function minionStatusCommand(
 	user: MUser
 ): Promise<Required<Pick<BaseSendableMessage, 'content' | 'components'>>> {
+	const perkTier = await user.fetchPerkTier();
 	const currentActivity = await ActivityManager.getActivityOfUser(user.id);
 	const minionIsBusy = Boolean(currentActivity);
 	const birdhouseDetails = minionIsBusy ? { isReady: false } : user.fetchBirdhouseData();
@@ -87,6 +89,9 @@ export async function minionStatusCommand(
 				.setEmoji({ id: EmojiId.Minion })
 				.setStyle(ButtonStyle.Secondary)
 		);
+		if (perkTier >= PerkTier.Four) {
+			buttons.push(makeQueueTripButton());
+		}
 	}
 
 	if (!minionIsBusy && !user.bitfield.includes(BitField.DisableAutoSlayButton)) {

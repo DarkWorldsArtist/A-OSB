@@ -16,12 +16,7 @@ const buttonSource = [
 	{
 		label: 'Support Server',
 		emoji: '1560872610794053773',
-		url: 'https://www.discord.gg/ob'
-	},
-	{
-		label: 'Bot Invite',
-		emoji: '1560872610794053773',
-		url: 'http://www.oldschool.gg/invite/osb'
+		url: 'https://discord.gg/aADVmGc2t4'
 	}
 ];
 

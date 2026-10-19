@@ -7,8 +7,10 @@ import type { RobochimpUser } from '@/lib/roboChimp.js';
 
 export function patronMaxTripBonus(perkTier: PerkTier | 0) {
 	if (perkTier === PerkTier.Two) return Time.Minute * 3;
-	else if (perkTier === PerkTier.Three) return Time.Minute * 6;
-	else if (perkTier >= PerkTier.Four) return Time.Minute * 10;
+	if (perkTier === PerkTier.Three) return Time.Minute * 6;
+	if (perkTier === PerkTier.Four) return Time.Minute * 15;
+	if (perkTier === PerkTier.Five) return Time.Minute * 20;
+	if (perkTier >= PerkTier.Six) return Time.Minute * 25;
 	return 0;
 }
 
