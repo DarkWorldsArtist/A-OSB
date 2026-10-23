@@ -29,7 +29,8 @@ export async function minionKillCommand(
 	inputQuantity: number | undefined,
 	method: PvMMethod | undefined,
 	wilderness: boolean | undefined,
-	solo: boolean | undefined
+	solo: boolean | undefined,
+	takeEggs = false
 ): CommandResponse {
 	if (inputQuantity !== undefined && inputQuantity < 1) return 'Quantity must be greater than 0.';
 	if (await user.minionIsBusy()) {
@@ -145,6 +146,7 @@ export async function minionKillCommand(
 		iQty: inputQuantity,
 		duration: result.duration,
 		type: 'MonsterKilling',
+		takeEggs: takeEggs || undefined,
 		usingCannon: !usingCannon ? undefined : usingCannon,
 		cannonMulti: !cannonMulti ? undefined : cannonMulti,
 		chinning: !chinning ? undefined : chinning,
@@ -161,6 +163,7 @@ export async function minionKillCommand(
 		result.duration
 	)} to finish. Attack styles used: ${result.attackStyles.join(', ')}.`;
 
+	if (takeEggs) result.messages.push('Taking eggs instead of normal loot.');
 	if (result.messages.length > 0) {
 		response += `\n\n${result.messages.join(', ')}`;
 	}
