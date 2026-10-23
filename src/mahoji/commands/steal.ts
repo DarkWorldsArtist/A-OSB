@@ -139,14 +139,15 @@ export const stealCommand = defineCommand({
 			if (hasArdyHard) {
 				boosts.push('+10% chance of success from Ardougne Hard diary');
 			}
-
-			[successfulQuantity, damageTaken, xpReceived] = calcLootXPPickpocketing(
+			let dodgyNecklaceChargesUsed = 0;
+			[successfulQuantity, damageTaken, xpReceived, , dodgyNecklaceChargesUsed] = calcLootXPPickpocketing(
 				user.skillsAsLevels.thieving,
 				stealable,
 				quantity,
 				user.hasEquipped(['Thieving cape', 'Thieving cape(t)']),
 				hasArdyHard,
-				rng
+				rng,
+				user.user.dodgy_necklace_charges
 			);
 
 			if (user.hasEquipped(['Thieving cape', 'Thieving cape(t)'])) {

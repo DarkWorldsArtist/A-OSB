@@ -31,6 +31,7 @@ export type DegradeableItemColumns =
 	| 'tum_shadow_charges'
 	| 'ayak_charges'
 	| 'blood_essence_charges'
+	| 'dodgy_necklace_charges'
 	| 'trident_charges'
 	| 'scythe_of_vitur_charges'
 	| 'venator_bow_charges';

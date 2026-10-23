@@ -15,12 +15,14 @@ export function calcLootXPPickpocketing(
 	quantity: number,
 	hasThievingCape: boolean,
 	hasDiary: boolean,
-	rng: { percentChance: (percent: number) => boolean }
-): [number, number, number, number] {
+	rng: { percentChance: (percent: number) => boolean },
+	dodgyNecklaceCharges: number = 0
+): [number, number, number, number, number] {
 	let xpReceived = 0;
 
 	let successful = 0;
 	let damageTaken = 0;
+	let dodgyNecklaceChargesUsed = 0;
 	// Pickpocketing takes 2 ticks
 	const timeToPickpocket = (npc.customTickRate ?? 2.05) * 0.6;
 	// For future Ardougne Diary and Thieving cape
@@ -33,6 +35,14 @@ export function calcLootXPPickpocketing(
 		if (!rng.percentChance(chanceOfSuccess)) {
 			// The minion has just been stunned, and cant pickpocket for a few ticks, therefore
 			// they also miss out on the next few pickpockets depending on stun time. And take damage
+			if (
+				dodgyNecklaceChargesUsed < dodgyNecklaceCharges &&
+				rng.percentChance(25)
+			) {
+				dodgyNecklaceChargesUsed++;
+				continue;
+			}
+
 			damageTaken += npc.stunDamage!;
 			quantity -= Math.round(npc.stunTime! / timeToPickpocket);
 			continue;
@@ -42,7 +52,7 @@ export function calcLootXPPickpocketing(
 		xpReceived += npc.xp;
 	}
 
-	return [successful, damageTaken, xpReceived, chanceOfSuccess];
+	return [successful, damageTaken, xpReceived, chanceOfSuccess, dodgyNecklaceChargesUsed];
 }
 
 export const pickpocketTask: MinionTask = {
@@ -153,16 +163,13 @@ export const pickpocketTask: MinionTask = {
 		});
 		const xpRes = await user.addXP({ skillName: 'thieving', amount: xpReceived, duration });
 
-		let str = `${user}, ${user.minionName} finished ${
-			obj.type === 'pickpockable' ? 'pickpocketing' : 'stealing'
-		} from ${obj.name} ${successfulQuantity}x times, due to failures you missed out on ${
-			quantity - successfulQuantity
-		}x ${obj.type === 'pickpockable' ? 'pickpockets' : 'steals'}. ${xpRes}`;
+		let str = `${user}, ${user.minionName} finished ${obj.type === 'pickpockable' ? 'pickpocketing' : 'stealing'
+			} from ${obj.name} ${successfulQuantity}x times, due to failures you missed out on ${quantity - successfulQuantity
+			}x ${obj.type === 'pickpockable' ? 'pickpockets' : 'steals'}. ${xpRes}`;
 
 		if (obj.type === 'stall') {
-			str += `\n${
-				100 - obj.lootPercent!
-			}% of the loot was dropped in favour of enhancing amount of stalls stolen from.`;
+			str += `\n${100 - obj.lootPercent!
+				}% of the loot was dropped in favour of enhancing amount of stalls stolen from.`;
 		}
 
 		if (rogueOutfitBoostActivated) {
