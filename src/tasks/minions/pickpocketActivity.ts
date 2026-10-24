@@ -35,10 +35,7 @@ export function calcLootXPPickpocketing(
 		if (!rng.percentChance(chanceOfSuccess)) {
 			// The minion has just been stunned, and cant pickpocket for a few ticks, therefore
 			// they also miss out on the next few pickpockets depending on stun time. And take damage
-			if (
-				dodgyNecklaceChargesUsed < dodgyNecklaceCharges &&
-				rng.percentChance(25)
-			) {
+			if (dodgyNecklaceChargesUsed < dodgyNecklaceCharges && rng.percentChance(25)) {
 				dodgyNecklaceChargesUsed++;
 				continue;
 			}
@@ -163,13 +160,19 @@ export const pickpocketTask: MinionTask = {
 		});
 		const xpRes = await user.addXP({ skillName: 'thieving', amount: xpReceived, duration });
 
-		let str = `${user}, ${user.minionName} finished ${obj.type === 'pickpockable' ? 'pickpocketing' : 'stealing'
-			} from ${obj.name} ${successfulQuantity}x times, due to failures you missed out on ${quantity - successfulQuantity
-			}x ${obj.type === 'pickpockable' ? 'pickpockets' : 'steals'}. ${xpRes}`;
+		let str = `${user}, ${user.minionName} finished ${
+			obj.type === 'pickpockable' ? 'pickpocketing' : 'stealing'
+		} from ${obj.name} ${successfulQuantity}x times, due to failures you missed out on ${
+			quantity - successfulQuantity
+		}x ${obj.type === 'pickpockable' ? 'pickpockets' : 'steals'}. ${xpRes}`;
 
+		if (obj.type === 'pickpockable' && data.dodgyNecklaceChargesRemaining !== undefined) {
+			str += `\nDodgy necklace: consumed ${data.dodgyNecklaceChargesUsed ?? 0} charges; ${data.dodgyNecklaceChargesRemaining} charges remaining.`;
+		}
 		if (obj.type === 'stall') {
-			str += `\n${100 - obj.lootPercent!
-				}% of the loot was dropped in favour of enhancing amount of stalls stolen from.`;
+			str += `\n${
+				100 - obj.lootPercent!
+			}% of the loot was dropped in favour of enhancing amount of stalls stolen from.`;
 		}
 
 		if (rogueOutfitBoostActivated) {

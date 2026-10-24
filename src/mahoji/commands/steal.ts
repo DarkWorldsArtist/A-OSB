@@ -126,6 +126,7 @@ export const stealCommand = defineCommand({
 		let successfulQuantity = 0;
 		let xpReceived = 0;
 		let damageTaken = 0;
+		let dodgyNecklaceChargesUsed = 0;
 
 		let str = `${user.minionName} is now going to ${
 			stealable.type === 'pickpockable' ? 'pickpocket' : 'steal from'
@@ -139,7 +140,7 @@ export const stealCommand = defineCommand({
 			if (hasArdyHard) {
 				boosts.push('+10% chance of success from Ardougne Hard diary');
 			}
-			let dodgyNecklaceChargesUsed = 0;
+
 			[successfulQuantity, damageTaken, xpReceived, , dodgyNecklaceChargesUsed] = calcLootXPPickpocketing(
 				user.skillsAsLevels.thieving,
 				stealable,
@@ -176,6 +177,11 @@ export const stealCommand = defineCommand({
 				throw err;
 			}
 			const foodRemoved = removeFoodResult.foodRemoved;
+			if (dodgyNecklaceChargesUsed > 0) {
+				await user.update({
+					dodgy_necklace_charges: user.user.dodgy_necklace_charges - dodgyNecklaceChargesUsed
+				});
+			}
 
 			await ClientSettings.updateBankSetting('economyStats_thievingCost', foodRemoved);
 			str += ` Removed ${foodRemoved}.`;
@@ -238,7 +244,9 @@ export const stealCommand = defineCommand({
 			type: 'Pickpocket',
 			damageTaken,
 			successfulQuantity,
-			xpReceived
+			xpReceived,
+			dodgyNecklaceChargesUsed,
+			dodgyNecklaceChargesRemaining: user.user.dodgy_necklace_charges
 		});
 
 		if (boosts.length > 0) {
