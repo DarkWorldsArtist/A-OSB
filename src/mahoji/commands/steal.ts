@@ -2,7 +2,7 @@ import { bold } from '@oldschoolgg/discord';
 import { formatDuration, stringMatches, Time, UserError } from '@oldschoolgg/toolkit';
 import { Bank } from 'oldschooljs';
 
-import { quests } from '@/lib/minions/data/quests.js';
+import { QuestID, quests } from '@/lib/minions/data/quests.js';
 import removeFoodFromUser from '@/lib/minions/functions/removeFoodFromUser.js';
 import { Thieving } from '@/lib/skilling/skills/thieving/index.js';
 import { type Stealable, stealables } from '@/lib/skilling/skills/thieving/stealables.js';
@@ -42,6 +42,12 @@ export const stealCommand = defineCommand({
 			description: 'The quantity (defaults to max).',
 			required: false,
 			min_value: 1
+		},
+		{
+			type: 'Boolean',
+			name: 'shadow_veil',
+			description: 'Use Shadow Veil while pickpocketing.',
+			required: false
 		}
 	],
 	run: async ({ options, user, channelId, rng }) => {
@@ -58,6 +64,17 @@ export const stealCommand = defineCommand({
 				.join(', ')}.`;
 		}
 
+		if (options.shadow_veil) {
+			if (stealable.type !== 'pickpockable') {
+				return 'Shadow Veil can only be used while pickpocketing.';
+			}
+			if (user.skillLevel('magic') < 47) {
+				return 'You need 47 Magic to use Shadow Veil.';
+			}
+			if (!user.user.finished_quest_ids.includes(QuestID.AKingdomDivided)) {
+				return 'You need to complete A Kingdom Divided to use Shadow Veil.';
+			}
+		}
 		if (stealable.qpRequired && user.QP < stealable.qpRequired) {
 			return `You need at least **${stealable.qpRequired}** QP to ${
 				stealable.type === 'pickpockable' ? 'pickpocket' : 'steal from'
@@ -122,6 +139,22 @@ export const stealCommand = defineCommand({
 			} a ${stealable.name} is ${Math.floor(maxTripLength / timeToTheft)}.`;
 		}
 
+		const shadowVeilCastInterval = Math.max(50, user.skillLevel('magic')) * 600;
+
+		const shadowVeilCasts = options.shadow_veil ? Math.ceil(duration / shadowVeilCastInterval) : 0;
+
+		const shadowVeilRuneCost = new Bank();
+
+		if (shadowVeilCasts > 0) {
+			shadowVeilRuneCost
+				.add('Earth rune', shadowVeilCasts * 5)
+				.add('Fire rune', shadowVeilCasts * 5)
+				.add('Cosmic rune', shadowVeilCasts * 5);
+
+			if (!user.owns(shadowVeilRuneCost)) {
+				return `You need ${shadowVeilRuneCost} to use Shadow Veil for this trip.`;
+			}
+		}
 		const boosts = [];
 		let successfulQuantity = 0;
 		let xpReceived = 0;
@@ -148,7 +181,8 @@ export const stealCommand = defineCommand({
 				user.hasEquipped(['Thieving cape', 'Thieving cape(t)']),
 				hasArdyHard,
 				rng,
-				user.user.dodgy_necklace_charges
+				user.user.dodgy_necklace_charges,
+				options.shadow_veil ? user.skillLevel('magic') : 0
 			);
 
 			if (user.hasEquipped(['Thieving cape', 'Thieving cape(t)'])) {
@@ -177,6 +211,10 @@ export const stealCommand = defineCommand({
 				throw err;
 			}
 			const foodRemoved = removeFoodResult.foodRemoved;
+			if (shadowVeilCasts > 0) {
+				await user.removeItemsFromBank(shadowVeilRuneCost);
+				str += ` Used ${shadowVeilRuneCost} for ${shadowVeilCasts} Shadow Veil casts.`;
+			}
 			if (dodgyNecklaceChargesUsed > 0) {
 				await user.update({
 					dodgy_necklace_charges: user.user.dodgy_necklace_charges - dodgyNecklaceChargesUsed
@@ -246,7 +284,8 @@ export const stealCommand = defineCommand({
 			successfulQuantity,
 			xpReceived,
 			dodgyNecklaceChargesUsed,
-			dodgyNecklaceChargesRemaining: user.user.dodgy_necklace_charges
+			dodgyNecklaceChargesRemaining: user.user.dodgy_necklace_charges,
+			shadowVeilCasts
 		});
 
 		if (boosts.length > 0) {
