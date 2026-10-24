@@ -189,7 +189,11 @@ export const pickpocketTask: MinionTask = {
 			str += `\nShadow Veil: ${data.shadowVeilCasts} casts. ${shadowVeilXPMessage}`;
 		}
 		if (obj.type === 'pickpockable' && data.dodgyNecklaceChargesRemaining !== undefined) {
-			str += `\nDodgy necklace: consumed ${data.dodgyNecklaceChargesUsed ?? 0} charges; ${data.dodgyNecklaceChargesRemaining} charges remaining.`;
+			if ((data.dodgyNecklaceChargesUsed ?? 0) === 0 && data.dodgyNecklaceChargesRemaining === 0) {
+				str += '\nNo dodgy necklace charges available. Use `/minion charge` to add more.';
+			} else {
+				str += `\nDodgy necklace: consumed ${data.dodgyNecklaceChargesUsed ?? 0} charges; ${data.dodgyNecklaceChargesRemaining} charges remaining.`;
+			}
 		}
 		if (obj.type === 'stall') {
 			str += `\n${
