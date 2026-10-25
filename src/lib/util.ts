@@ -31,7 +31,7 @@ function createUsernameWithBadges(user: Pick<User, 'username' | 'badges' | 'mini
 	const badges = makeBadgeString(
 		user.badges,
 		user.minion_ironman,
-		user.bitfield.includes(BitField.OriginalCyrSupporter)
+		user.bitfield.includes(BitField.OriginalSupporter)
 	);
 	return `${badges ? `${badges} ` : ''}${user.username}`;
 }

@@ -87,10 +87,10 @@ describe('Open Command', async () => {
 		});
 	});
 
-	test('Open until uses unlimited default for Cyr original patrons with the toggle', async () => {
+	test('Open until uses unlimited default for original supporters with the toggle', async () => {
 		mockMathRandom(0.1);
 		const user = await createTestUser();
-		await user.update({ bitfield: { push: BitField.OriginalCyrSupporter } });
+		await user.update({ bitfield: { push: BitField.OriginalSupporter } });
 		await user.update({ bitfield: { push: BitField.UnlimitedOpenUntil } });
 		await user.addItemsToBank({ items: new Bank().add('Reward casket (beginner)', 10) });
 		const result = await user.runCommand(openCommand, {

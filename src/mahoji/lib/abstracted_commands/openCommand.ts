@@ -53,7 +53,7 @@ export async function abstractedOpenUntilCommand(
 
 	const perkTier = await user.fetchPerkTier();
 	const unlimitedEnabled = user.bitfield.includes(BitField.UnlimitedOpenUntil);
-	const chatMessage = Boolean(perkTier || user.bitfield.includes(BitField.OriginalCyrSupporter));
+	const chatMessage = true;
 	name = name.replace(regex, '$1');
 	const openableItem = allOpenables.find(o => o.aliases.some(alias => stringMatches(alias, name)));
 	if (!openableItem) return "That's not a valid item.";
@@ -106,7 +106,7 @@ export async function abstractedOpenUntilCommand(
 	let targetCount = 0;
 	const maxOpenLimit = maxOpenQuantity ?? amountOfThisOpenableOwned;
 	let realMax = Math.max(10_000, perkTier * 10_000);
-	if (perkTier > 4 || user.bitfield.includes(BitField.OriginalCyrSupporter)) realMax = 100_000;
+	if (perkTier > 4 || user.bitfield.includes(BitField.OriginalSupporter)) realMax = 100_000;
 	const max = Math.min(realMax, amountOfThisOpenableOwned, maxOpenLimit);
 	const yielder = new FriendlyTask(`OpenUntil`, {
 		yieldAfterMs: 50,
@@ -189,8 +189,7 @@ async function finalizeOpening({
 		.map(({ openedItem }) => `${newOpenableScores.amount(openedItem.id)}x ${openedItem.name}`)
 		.join(', ');
 
-	const perkTier = await user.fetchPerkTier();
-	const components: ButtonBuilder[] = buildClueButtons(loot, perkTier, user);
+	const components: ButtonBuilder[] = buildClueButtons(loot, user);
 
 	const response = new MessageBuilder()
 		.setContent(

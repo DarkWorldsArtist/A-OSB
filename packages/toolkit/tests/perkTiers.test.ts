@@ -1,22 +1,19 @@
 import { describe, expect, test } from 'vitest';
 
 import {
-	getCyrTripBonus,
 	getPerkTierDetails,
 	getPerkTierDisplay,
 	getPerkTierEx,
+	hasPatronPerkTier,
 	PerkTier,
-	RoboChimpBit,
-	Time
+	RoboChimpBit
 } from '../src/index.js';
 
 describe('perk tiers', () => {
-	test('formats multiple paid tiers', () => {
-		expect(getPerkTierDisplay({ patreonBits: [RoboChimpBit.CyrTier3, RoboChimpBit.MagnaTier3] })).toBe(
-			'Tier 3 Patron, Tier 3 Patron'
-		);
-		expect(getPerkTierDisplay({ patreonBits: [RoboChimpBit.MagnaTier1, RoboChimpBit.CyrTier1] })).toBe(
-			'Tier 1 Patron, Tier 1 Patron'
+	test('formats paid tiers', () => {
+		expect(getPerkTierDisplay({ patreonBits: [RoboChimpBit.PatronTier3] })).toBe('Tier 3 Patron');
+		expect(getPerkTierDisplay({ patreonBits: [RoboChimpBit.PatronTier1, RoboChimpBit.PatronTier3] })).toBe(
+			'Tier 3 Patron, Tier 1 Patron'
 		);
 	});
 
@@ -27,10 +24,10 @@ describe('perk tiers', () => {
 		expect(getPerkTierDisplay({ patreonBits: [] })).toBe('None');
 	});
 
-	test('uses highest unexpired premium tier', () => {
+	test('uses highest unexpired timed tier', () => {
 		const now = 1000;
 		const input = {
-			patreonBits: [RoboChimpBit.MagnaTier1],
+			patreonBits: [RoboChimpBit.PatronTier1],
 			premiumTier: 5,
 			premiumExpiry: now + 10_000
 		};
@@ -39,7 +36,7 @@ describe('perk tiers', () => {
 		expect(getPerkTierDisplay(input, { now })).toBe('Temporary: **Tier 4** (Expires: <t:11:R>)');
 	});
 
-	test('formats multiple unexpired premium tier entitlements', () => {
+	test('formats multiple unexpired timed tier entitlements', () => {
 		const now = 1000;
 		const input = {
 			patreonBits: [],
@@ -56,12 +53,12 @@ describe('perk tiers', () => {
 		);
 	});
 
-	test('ignores expired premium tier', () => {
+	test('ignores expired timed tier', () => {
 		const now = 1000;
 		expect(
 			getPerkTierEx(
 				{
-					patreonBits: [RoboChimpBit.MagnaTier1],
+					patreonBits: [RoboChimpBit.PatronTier1],
 					premiumTier: 5,
 					premiumExpiry: now - 1
 				},
@@ -71,31 +68,26 @@ describe('perk tiers', () => {
 	});
 
 	test('formats legacy tiers above paid tiers', () => {
-		expect(getPerkTierDisplay({ patreonBits: [RoboChimpBit.MagnaTier1] }, { legacyTier: 4 })).toBe(
+		expect(getPerkTierDisplay({ patreonBits: [RoboChimpBit.PatronTier1] }, { legacyTier: 4 })).toBe(
 			'🔴 **Legacy** __Tier 3__'
 		);
 	});
 
 	test('returns entitlement details', () => {
-		const details = getPerkTierDetails({ patreonBits: [RoboChimpBit.CyrTier3] });
+		const details = getPerkTierDetails({ patreonBits: [RoboChimpBit.PatronTier3] });
 		expect(details).toEqual([
 			{
 				tier: PerkTier.Four,
 				source: 'patreon',
-				beneficiary: 'cyr',
-				bit: RoboChimpBit.CyrTier3,
+				bit: RoboChimpBit.PatronTier3,
 				patronTier: 3
 			}
 		]);
 	});
 
-	test('computes cyr trip bonus from paid bits', () => {
-		expect(getCyrTripBonus([RoboChimpBit.CyrTier0])).toBe(Time.Minute * 3);
-		expect(getCyrTripBonus([RoboChimpBit.CyrTier1])).toBe(Time.Minute * 7);
-		expect(getCyrTripBonus([RoboChimpBit.CyrTier2])).toBe(Time.Minute * 11);
-		expect(getCyrTripBonus([RoboChimpBit.CyrTier3])).toBe(Time.Minute * 16);
-		expect(getCyrTripBonus([RoboChimpBit.CyrTier4])).toBe(Time.Minute * 20);
-		expect(getCyrTripBonus([RoboChimpBit.CyrTier5])).toBe(Time.Minute * 25);
-		expect(getCyrTripBonus([])).toBe(0);
+	test('checks hasPatronPerkTier', () => {
+		expect(hasPatronPerkTier({ patreonBits: [RoboChimpBit.PatronTier3] }, PerkTier.Four)).toBe(true);
+		expect(hasPatronPerkTier({ patreonBits: [RoboChimpBit.PatronTier1] }, PerkTier.Four)).toBe(false);
+		expect(hasPatronPerkTier({ patreonBits: [] }, PerkTier.Two)).toBe(false);
 	});
 });

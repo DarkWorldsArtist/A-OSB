@@ -143,7 +143,7 @@ After becoming an ironman:
 		BitField.DisabledRandomEvents,
 		BitField.AlwaysSmallBank,
 		BitField.PatronTier6,
-		BitField.OriginalCyrSupporter
+		BitField.OriginalSupporter
 	];
 
 	const createOptions: Required<Pick<Prisma.UserCreateInput, KeysThatArentReset>> = {

@@ -998,7 +998,6 @@ export const toolsCommand = defineCommand({
 				);
 			}
 			if (patron.mostdrops) {
-				if ((await user.fetchPerkTier()) < PerkTier.Four) return patronMsg(PerkTier.Four);
 				return mostDrops(user, patron.mostdrops.item, String(patron.mostdrops.filter));
 			}
 			if (patron.sacrificed_bank) {
@@ -1034,7 +1033,6 @@ export const toolsCommand = defineCommand({
 				return minionStats(user);
 			}
 			if (patron.activity_export) {
-				if ((await user.fetchPerkTier()) < PerkTier.Four) return patronMsg(PerkTier.Four);
 				const promise = activityExport(user);
 				await interaction.confirmation(
 					'I will send a file containing ALL of your activities, intended for advanced users who want to use the data. Anyone in this channel will be able to see and download the file, are you sure you want to do this?'

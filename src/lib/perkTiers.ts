@@ -1,5 +1,4 @@
 import {
-	getCyrTripBonus,
 	getPerkTierDetails,
 	getPerkTierEx,
 	getPerkTierDisplay as getSharedPerkDisplay,
@@ -12,21 +11,14 @@ import { LRUCache } from 'lru-cache';
 import { BitField, globalConfig, PatronRoleTiers, PerkTier } from '@/lib/constants.js';
 import type { RobochimpUser } from '@/lib/roboChimp.js';
 export const RobochimpBitfieldEnum = {
-	MagnaTier1: RoboChimpBit.MagnaTier1,
-	MagnaTier2: RoboChimpBit.MagnaTier2,
-	MagnaTier3: RoboChimpBit.MagnaTier3,
-	MagnaTier4: RoboChimpBit.MagnaTier4,
-	MagnaTier5: RoboChimpBit.MagnaTier5,
-	MagnaTier6: RoboChimpBit.MagnaTier6,
-	CyrTier0: RoboChimpBit.CyrTier0,
-	CyrTier1: RoboChimpBit.CyrTier1,
-	CyrTier2: RoboChimpBit.CyrTier2,
-	CyrTier3: RoboChimpBit.CyrTier3,
-	CyrTier4: RoboChimpBit.CyrTier4,
-	CyrTier5: RoboChimpBit.CyrTier5,
-	CyrTier6: RoboChimpBit.CyrTier6,
-	CyrTier7: RoboChimpBit.CyrTier7,
-	CyrsOriginalPatrons: RoboChimpBit.CyrsOriginalPatrons,
+	PatronTier1: RoboChimpBit.PatronTier1,
+	PatronTier2: RoboChimpBit.PatronTier2,
+	PatronTier3: RoboChimpBit.PatronTier3,
+	PatronTier4: RoboChimpBit.PatronTier4,
+	PatronTier5: RoboChimpBit.PatronTier5,
+	PatronTier6: RoboChimpBit.PatronTier6,
+	PatronTier7: RoboChimpBit.PatronTier7,
+	OriginalSupporter: RoboChimpBit.OriginalSupporter,
 	BonusMinute: RoboChimpBit.BonusMinute
 } as const;
 
@@ -53,8 +45,6 @@ export function getPerkTierCached(userId: string) {
 	}
 	return null;
 }
-
-export { getCyrTripBonus };
 
 export function getCourtesyTier(user: MUser): PerkTier {
 	const tiers: number[] = [];
@@ -87,7 +77,6 @@ function userPerkInput(roboUser: RobochimpUser, patreonBits: number[] = roboUser
 	return {
 		patreonBits,
 		premiumTier: roboUser.premium_balance_tier,
-		premiumIsCyr: roboUser.premium_balance_is_cyr,
 		premiumExpiry: roboUser.premium_balance_expiry_date
 	};
 }
@@ -151,7 +140,6 @@ export async function getUsersPerkTier({
 				{
 					patreonBits: roboChimpCached.bits,
 					premiumTier: roboChimpCached.premium_balance_tier,
-					premiumIsCyr: roboChimpCached.premium_balance_is_cyr,
 					premiumExpiry: roboChimpCached.premium_balance_expiry_date
 				},
 				options

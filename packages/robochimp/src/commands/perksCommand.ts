@@ -1,9 +1,10 @@
 import { formatDuration, Time } from '@oldschoolgg/toolkit';
 
-import { applyPremiumTimeGrant, calculatePremiumTimeGrant, fetchPremiumTimeBalance } from '@/lib/premiumTime.js';
-import { cyrTiers, hasCyrPerkTier, type PatronTier } from '@/util.js';
+import { applyPatronTimeGrant, calculatePatronTimeGrant, fetchPatronTimeBalance } from '@/lib/patronTime.js';
+import { Bits, patronTiers } from '@/util.js';
 
-type GiftTier = { tier: PatronTier; duration: number; isCyr?: boolean };
+const tier4PlusBits = [Bits.PatronTier4, Bits.PatronTier5, Bits.PatronTier6, Bits.PatronTier7] as const;
+const tier5PlusBits = [Bits.PatronTier5, Bits.PatronTier6, Bits.PatronTier7] as const;
 
 function hasCurrentMonthGift(lastGift: bigint | null, now = Date.now()) {
 	if (lastGift === null) return false;
@@ -12,38 +13,14 @@ function hasCurrentMonthGift(lastGift: bigint | null, now = Date.now()) {
 	return giftDate.getUTCFullYear() === nowDate.getUTCFullYear() && giftDate.getUTCMonth() === nowDate.getUTCMonth();
 }
 
-function getGiftTier(user: {
-	bits: number[];
-	premium_balance_tier: number | null;
-	premium_balance_is_cyr: boolean | null;
-	premium_balance_expiry_date: bigint | null;
-}): GiftTier | null {
-	const perkInput = {
-		patreonBits: user.bits,
-		premiumTier: user.premium_balance_tier,
-		premiumIsCyr: user.premium_balance_is_cyr,
-		premiumExpiry: user.premium_balance_expiry_date
-	};
-	const cyrTier2 = cyrTiers.find(tier => tier.number === 2);
-	const cyrTier3 = cyrTiers.find(tier => tier.number === 3);
-	const cyrTier4 = cyrTiers.find(tier => tier.number === 4);
-	const cyrTier5 = cyrTiers.find(tier => tier.number === 5);
-	const cyrTier6 = cyrTiers.find(tier => tier.number === 6);
-	if (!cyrTier2 || !cyrTier3 || !cyrTier4 || !cyrTier5 || !cyrTier6) return null;
-
-	let duration = Time.Week;
-	let tier: PatronTier | null = null;
-	if (hasCyrPerkTier(perkInput, cyrTier4.perkTier)) {
-		tier = cyrTier2;
+function getGiftTier(bits: readonly number[]) {
+	if (tier5PlusBits.some(bit => bits.includes(bit))) {
+		return patronTiers.find(tier => tier.number === 3) ?? null;
 	}
-	if (hasCyrPerkTier(perkInput, cyrTier5.perkTier)) {
-		tier = cyrTier3;
-		if (hasCyrPerkTier(perkInput, cyrTier6.perkTier)) {
-			duration = Time.Day * 14;
-		}
+	if (tier4PlusBits.some(bit => bits.includes(bit))) {
+		return patronTiers.find(tier => tier.number === 2) ?? null;
 	}
-
-	return tier ? { tier, duration, isCyr: true } : null;
+	return null;
 }
 
 export const perksCommand = defineCommand({
@@ -72,16 +49,13 @@ export const perksCommand = defineCommand({
 				},
 				select: {
 					bits: true,
-					premium_balance_tier: true,
-					premium_balance_is_cyr: true,
-					premium_balance_expiry_date: true,
 					last_patreon_gift: true
 				}
 			});
-			const giftTier = getGiftTier(donor);
+			const giftTier = getGiftTier(donor.bits);
 
 			if (!giftTier) {
-				return "You need Cyr's Tier 4 or higher to donate patron time.";
+				return 'You need Tier 4 or higher to donate patron time.';
 			}
 
 			if (hasCurrentMonthGift(donor.last_patreon_gift)) {
@@ -90,26 +64,20 @@ export const perksCommand = defineCommand({
 
 			const targetUser = await globalClient.fetchRUser(options.donate_tier.user.user.id);
 			const now = Date.now();
-			const currentBalance = await fetchPremiumTimeBalance(targetUser.id);
-			// premium_balance_tier is always active when is_active = true;
-			if (currentBalance.is_active && giftTier.tier.perkTier < currentBalance.premium_balance_tier!) {
-				return 'You cannot donate Perks to a user with a higher tier.';
-			}
-
-			const grant = calculatePremiumTimeGrant({
+			const currentBalance = await fetchPatronTimeBalance(targetUser.id);
+			const grant = calculatePatronTimeGrant({
 				currentBalance,
-				timeMs: giftTier.duration,
-				tier: giftTier.tier.perkTier,
-				isCyr: giftTier.isCyr === true,
+				timeMs: Time.Week,
+				tier: giftTier.perkTier,
 				now
 			});
 
 			await interaction.confirmation(
-				`Donate ${formatDuration(giftTier.duration)} of ${giftTier.isCyr ? 'Cyr' : 'Patron'} Tier ${giftTier.tier.number} perks to ${targetUser.mention}? This uses your monthly Patreon gift, it will reset on the 1st.`
+				`Donate 1 week of Tier ${giftTier.number} patron to ${targetUser.mention}? This uses your monthly Patreon gift.`
 			);
 
 			await roboChimpClient.$transaction(async tx => {
-				await applyPremiumTimeGrant({
+				await applyPatronTimeGrant({
 					client: tx,
 					userID: targetUser.id,
 					grant
@@ -126,7 +94,7 @@ export const perksCommand = defineCommand({
 
 			await Promise.all([globalClient.fetchRUser(targetUser.id), globalClient.fetchRUser(user.id)]);
 
-			return `Donated ${formatDuration(giftTier.duration)} of Cyr Tier ${giftTier.tier.number} patron to ${targetUser.mention}. They have ${formatDuration(
+			return `Donated 1 week of Tier ${giftTier.number} patron to ${targetUser.mention}. They have ${formatDuration(
 				grant.remainingTime
 			)} remaining.`;
 		}

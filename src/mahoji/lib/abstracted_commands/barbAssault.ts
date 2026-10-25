@@ -194,8 +194,7 @@ export async function barbAssaultGambleCommand(interaction: MInteraction, user: 
 			)} High gamble! They are the ${formatOrdinal(amount + 1)} to it.`
 		);
 	}
-	const perkTier = await user.fetchPerkTier();
-	const components: ButtonBuilder[] = buildClueButtons(loot, perkTier, user);
+	const components: ButtonBuilder[] = buildClueButtons(loot, user);
 
 	const response = new MessageBuilder()
 		.setContent(str)

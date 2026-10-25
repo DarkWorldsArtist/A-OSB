@@ -175,7 +175,7 @@ export class MUserClass extends BaseUser {
 	}
 
 	async calcMaxGearPresets() {
-		return this.perkTier * 2 + 4;
+		return (await this.fetchPerkTier()) * 2 + 4;
 	}
 
 	get perkTier() {

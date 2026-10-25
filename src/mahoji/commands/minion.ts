@@ -72,8 +72,9 @@ export async function getUserInfo(user: MUser) {
 	const task = await ActivityManager.getActivityOfUser(user.id);
 	const taskText = task ? `${task.type}` : 'None';
 
+	const perkTier = await user.fetchPerkTier();
 	const result = {
-		perkTier: user.perkTier,
+		perkTier,
 		isBlacklisted: await user.isBlacklisted(),
 		badges: user.badgesString,
 		isIronman: user.isIronman,
@@ -90,19 +91,19 @@ export async function getUserInfo(user: MUser) {
 	);
 
 	const perkTierDisplay = user.getPerkTierDisplay(roboChimpUser);
-	const premiumTimeActive = Boolean(
+	const patronTimeActive = Boolean(
 		roboChimpUser.premium_balance_tier &&
 			roboChimpUser.premium_balance_expiry_date &&
 			roboChimpUser.premium_balance_expiry_date > Date.now()
 	);
 
-	result.perkDebugInfo.push(`**Raw perk tier**: ${user.perkTier}`);
+	result.perkDebugInfo.push(`**Raw perk tier**: ${result.perkTier}`);
 	result.perkDebugInfo.push(`**Robo perk tier**: ${roboChimpUser.perk_tier}`);
 
 	if (roboChimpUser.premium_balance_tier || roboChimpUser.premium_balance_expiry_date) {
-		result.perkDebugInfo.push(`**Premium Balance Tier**: ${roboChimpUser.premium_balance_tier}`);
+		result.perkDebugInfo.push(`**Patron Time Tier**: ${roboChimpUser.premium_balance_tier}`);
 		result.perkDebugInfo.push(
-			`**Premium Balance Expiry**: ${premiumTimeActive ? '🟢' : '🔴'} ${roboChimpUser.premium_balance_expiry_date} (${formatDuration(Number(roboChimpUser.premium_balance_expiry_date))}))`
+			`**Patron Time Expiry**: ${patronTimeActive ? '🟢' : '🔴'} ${roboChimpUser.premium_balance_expiry_date} (${formatDuration(Number(roboChimpUser.premium_balance_expiry_date))}))`
 		);
 	}
 

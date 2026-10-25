@@ -386,17 +386,11 @@ async function globalButtonInteractionHandler({
 		if (!Farming.isPatchName(patchType)) {
 			return { content: 'Invalid patch type.', ephemeral: true };
 		}
-		const perkTier = await user.fetchPerkTier();
-		if (perkTier < 4) {
-			return { content: 'You cannot use this button.', ephemeral: true };
-		}
 		return runCommand({
 			commandName: 'farming',
 			args: {
-				patron: {
-					harvest: {
-						patch: patchType
-					}
+				harvest: {
+					patch_name: patchType
 				}
 			},
 			...options

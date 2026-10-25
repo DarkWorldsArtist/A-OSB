@@ -10,10 +10,7 @@ import { RobochimpBitfieldEnum } from '@/lib/perkTiers.js';
 import { MUserStats } from '@/lib/structures/MUserStats.js';
 
 export type RobochimpUser = User;
-type RoboChimpPerkData = Pick<
-	RobochimpUser,
-	'bits' | 'premium_balance_tier' | 'premium_balance_is_cyr' | 'premium_balance_expiry_date'
->;
+type RoboChimpPerkData = Pick<RobochimpUser, 'bits' | 'premium_balance_tier' | 'premium_balance_expiry_date'>;
 
 function bestPremium(users: RoboChimpPerkData[]) {
 	const now = Date.now();
@@ -36,7 +33,6 @@ function mergeRoboChimpPerks(users: RobochimpUser[]): RobochimpUser[] {
 		...user,
 		bits,
 		premium_balance_tier: premium?.premium_balance_tier ?? null,
-		premium_balance_is_cyr: premium?.premium_balance_is_cyr ?? null,
 		premium_balance_expiry_date: premium?.premium_balance_expiry_date ?? null
 	}));
 }
@@ -56,7 +52,11 @@ const defaultTriviaQuestions: TriviaQuestion[] = [
 	{ id: 10001, question: 'What is the maximum combat level achievable in Old School RuneScape?', answers: ['126'] },
 	{ id: 10002, question: 'What level in a skill is required to equip a Skillcape?', answers: ['99'] },
 	{ id: 10003, question: 'How many Quest Points are required to wear the Quest Point Cape?', answers: ['300'] },
-	{ id: 10004, question: 'What is the maximum amount of coins a single stack can hold?', answers: ['2,147,483,647', '2147483647'] },
+	{
+		id: 10004,
+		question: 'What is the maximum amount of coins a single stack can hold?',
+		answers: ['2,147,483,647', '2147483647']
+	},
 	{ id: 10005, question: 'Which boss drops the Twisted Bow?', answers: ['Great Olm', 'Olm'] },
 	{ id: 10006, question: 'What Slayer level is required to kill Abyssal Demons?', answers: ['85'] },
 	{ id: 10007, question: 'What Slayer level is required to kill Cerberus?', answers: ['91'] },
@@ -93,10 +93,10 @@ const clKey: keyof User = BOT_TYPE === 'OSB' ? 'osb_cl_percent' : 'bso_cl_percen
 const levelKey: keyof User = BOT_TYPE === 'OSB' ? 'osb_total_level' : 'bso_total_level';
 const totalXPKey: keyof User = BOT_TYPE === 'OSB' ? 'osb_total_xp' : 'bso_total_xp';
 
-export async function syncOriginalCyrSupporterBit(user: MUser, roboChimpUser: RobochimpUser) {
-	if (!roboChimpUser.bits.includes(RobochimpBitfieldEnum.CyrsOriginalPatrons)) return;
+export async function syncOriginalSupporterBit(user: MUser, roboChimpUser: RobochimpUser) {
+	if (!roboChimpUser.bits.includes(RobochimpBitfieldEnum.OriginalSupporter)) return;
 
-	if (user.bitfield.includes(BitField.OriginalCyrSupporter)) return;
+	if (user.bitfield.includes(BitField.OriginalSupporter)) return;
 
 	await prisma.user.update({
 		where: {
@@ -104,7 +104,7 @@ export async function syncOriginalCyrSupporterBit(user: MUser, roboChimpUser: Ro
 		},
 		data: {
 			bitfield: {
-				push: BitField.OriginalCyrSupporter
+				push: BitField.OriginalSupporter
 			}
 		}
 	});
@@ -159,7 +159,7 @@ export async function roboChimpSyncData(user: MUser, newCL?: Bank) {
 	if (!isDeepEqual(newUser.store_bitfield, user.user.store_bitfield)) {
 		await user.update({ store_bitfield: newUser.store_bitfield });
 	}
-	await syncOriginalCyrSupporterBit(user, newUser);
+	await syncOriginalSupporterBit(user, newUser);
 	await Cache.setRoboChimpUser(newUser);
 	return newUser;
 }

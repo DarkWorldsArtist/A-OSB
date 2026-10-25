@@ -132,7 +132,6 @@ const tripFinishEffects: TripFinishEffect[] = [
 	},
 	{
 		name: 'Birdhouse Button',
-		requiredPerkTier: PerkTier.Two,
 		fn: async ({ user, components }) => {
 			const birdHousedetails = user.fetchBirdhouseData();
 			if (birdHousedetails.isReady && !user.bitfield.includes(BitField.DisableBirdhouseRunButton)) {
@@ -142,7 +141,6 @@ const tripFinishEffects: TripFinishEffect[] = [
 	},
 	{
 		name: 'Autocontract Button',
-		requiredPerkTier: PerkTier.Two,
 		fn: async ({ user, components }) => {
 			if (user.bitfield.includes(BitField.DisableAutoFarmContractButton)) return;
 			const canRun = Boolean(await canRunAutoContract(user));
@@ -162,7 +160,6 @@ const tripFinishEffects: TripFinishEffect[] = [
 	},
 	{
 		name: 'Claim Daily Button',
-		requiredPerkTier: PerkTier.Two,
 		fn: async ({ user, components }) => {
 			if (user.bitfield.includes(BitField.DisableDailyButton)) return;
 
@@ -174,7 +171,6 @@ const tripFinishEffects: TripFinishEffect[] = [
 	},
 	{
 		name: 'Tears of Guthix Button',
-		requiredPerkTier: PerkTier.Two,
 		fn: async ({ user, components, lastTearsOfGuthixTimestamp }) => {
 			if (user.bitfield.includes(BitField.DisableTearsOfGuthixButton)) return;
 			const lastPlayedDate = Number(lastTearsOfGuthixTimestamp);
@@ -190,14 +186,12 @@ const tripFinishEffects: TripFinishEffect[] = [
 	},
 	{
 		name: 'Clue Buttons',
-		requiredPerkTier: PerkTier.Two,
-		fn: async ({ user, components, loot, perkTier }) => {
-			components.push(...buildClueButtons(loot ?? null, perkTier, user));
+		fn: async ({ user, components, loot }) => {
+			components.push(...buildClueButtons(loot ?? null, user));
 		}
 	},
 	{
 		name: 'Slayer Task Button',
-		requiredPerkTier: PerkTier.Two,
 		fn: async ({ user, components, data }) => {
 			const { currentTask } = await user.fetchSlayerInfo();
 			if (
@@ -212,7 +206,6 @@ const tripFinishEffects: TripFinishEffect[] = [
 	},
 	{
 		name: 'Open Seed Pack Button',
-		requiredPerkTier: PerkTier.Two,
 		fn: async ({ components, loot }) => {
 			if (loot?.has('Seed pack')) {
 				components.push(makeOpenSeedPackButton());
@@ -294,10 +287,7 @@ export async function handleTripFinish(
 
 	const perkTier = await user.fetchPerkTier();
 
-	const { last_tears_of_guthix_timestamp, last_daily_timestamp } =
-		perkTier > PerkTier.One
-			? await user.fetchStats()
-			: { last_tears_of_guthix_timestamp: null, last_daily_timestamp: null };
+	const { last_tears_of_guthix_timestamp, last_daily_timestamp } = await user.fetchStats();
 
 	const messages: string[] = inputMessages ?? [];
 

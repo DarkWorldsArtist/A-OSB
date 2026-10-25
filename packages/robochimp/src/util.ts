@@ -2,24 +2,22 @@ import type { PatronTier, RoboChimpBit as RoboChimpBitValue } from '@oldschoolgg
 import {
 	RoboChimpBit,
 	roboChimpBitData,
-	cyrTiers as sharedCyrTiers,
-	magnaTiers as sharedMagnaTiers,
 	paidTiers as sharedPaidTiers,
-	allPatronBits as sharedPatronBits
+	allPatronBits as sharedPatronBits,
+	patronTiers as sharedPatronTiers
 } from '@oldschoolgg/toolkit';
 
-export type { PaidTierSource, PatronTier } from '@oldschoolgg/toolkit';
-export { formatUserPaidTiers, getPatronTierLabel, getUserPaidTiers, hasCyrPerkTier } from '@oldschoolgg/toolkit';
+export type { PatronTier } from '@oldschoolgg/toolkit';
+export { formatUserPaidTiers, getPatronTierLabel, getUserPaidTiers, hasPatronPerkTier } from '@oldschoolgg/toolkit';
 
 export const Bits = RoboChimpBit;
 export type Bits = RoboChimpBitValue;
 export const bitsDescriptions = roboChimpBitData;
 
 export const allPatronBits: number[] = [...sharedPatronBits];
-export const magnaTiers: PatronTier[] = [...sharedMagnaTiers];
-export const cyrTiers: PatronTier[] = [...sharedCyrTiers];
+export const patronTiers: PatronTier[] = [...sharedPatronTiers];
 export const paidTiers: PatronTier[] = [...sharedPaidTiers];
-export const tiers = magnaTiers;
+export const tiers: PatronTier[] = patronTiers;
 
 export const CHANNELS = {
 	BLACKLIST_LOGS: '782459317218967602',

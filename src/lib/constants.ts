@@ -120,7 +120,6 @@ export const PatronRoleTiers = [
 export const PATREON_URL = 'https://www.patreon.com/cw/WizardAlabastor';
 export const SUPPORT_PROJECT_MSG = `If you are enjoying the game and want to support its ongoing development, you can do so [here](${PATREON_URL}).`;
 
-
 export enum ActivityGroup {
 	Skilling = 'Skilling',
 	Clue = 'Clue',
@@ -190,7 +189,7 @@ export enum BitField {
 	HasRiteOfVileTransference = 59,
 	DisableRiteOfVileTransference = 60,
 
-	OriginalCyrSupporter = 199
+	OriginalSupporter = 199
 }
 
 export interface IBitFieldData {
@@ -227,7 +226,7 @@ export const BitFieldData: Record<BitField, IBitFieldData> = {
 	[BitField.UsedSirenicTablet]: { name: 'Used Sirenic Tablet', protected: false, userConfigurable: false },
 	[BitField.UsedStrangledTablet]: { name: 'Used Strangled Tablet', protected: false, userConfigurable: false },
 	[BitField.SelfGamblingLocked]: { name: 'Self Gambling Lock', protected: false, userConfigurable: true },
-	[BitField.OriginalCyrSupporter]: { name: "One of Cyr's first Patrons", protected: true, userConfigurable: false },
+	[BitField.OriginalSupporter]: { name: 'Original Supporter', protected: true, userConfigurable: false },
 
 	[BitField.BypassAgeRestriction]: { name: 'Bypassed Age Restriction', protected: false, userConfigurable: false },
 	[BitField.HasPermanentEventBackgrounds]: {
@@ -248,7 +247,7 @@ export const BitFieldData: Record<BitField, IBitFieldData> = {
 		userConfigurable: true
 	},
 	[BitField.UnlimitedOpenUntil]: {
-		name: 'OpenUntil unlimited by default (P)',
+		name: 'OpenUntil unlimited by default',
 		protected: false,
 		userConfigurable: true
 	},

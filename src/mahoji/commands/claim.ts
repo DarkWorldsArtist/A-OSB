@@ -4,7 +4,7 @@ import { stringMatches } from '@oldschoolgg/toolkit';
 import { Bank, Items } from 'oldschooljs';
 
 import { MessageBuilder } from '@/discord/MessageBuilder.js';
-import { BitField, BOT_TYPE, BSO_MAX_TOTAL_LEVEL, Channel } from '@/lib/constants.js';
+import { BitField, BOT_TYPE, BSO_MAX_TOTAL_LEVEL, Channel, PerkTier } from '@/lib/constants.js';
 import { calcCLDetails } from '@/lib/data/Collections.js';
 import { HolidayItems } from '@/lib/data/holidayItems.js';
 import { getReclaimableItemsOfUser } from '@/lib/reclaimableItems.js';
@@ -31,6 +31,7 @@ const claimables = [
 					push: BitField.BothBotsMaxedFreeTierOnePerks
 				}
 			});
+			await Cache.setPerkTier(user.id, PerkTier.Two);
 			return 'You claimed free T1 patron perks in OSB for being maxed in both bots. You can claim this on BSO too for free patron perks on BSO.';
 		}
 	},

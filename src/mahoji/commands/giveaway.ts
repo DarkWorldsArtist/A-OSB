@@ -5,7 +5,7 @@ import { chunk } from 'remeda';
 
 import type { Giveaway } from '@/prisma/main.js';
 import { giveawayCache } from '@/lib/cache.js';
-import { BitField, patronFeatures } from '@/lib/constants.js';
+import { BitField } from '@/lib/constants.js';
 import { EmojiId } from '@/lib/data/emojis.js';
 import { baseFilters, filterableTypes } from '@/lib/data/filterables.js';
 import { marketPriceOfBank } from '@/lib/marketPrices.js';
@@ -100,9 +100,9 @@ export const giveawayCommand = defineCommand({
 		if (user.isIronman) return 'You cannot do giveaways!';
 
 		let maxGiveaways = 10;
-		const cyrFan = user.bitfield.includes(BitField.OriginalCyrSupporter);
+		const isOriginalSupporter = user.bitfield.includes(BitField.OriginalSupporter);
 		const perkTier = await user.fetchPerkTier();
-		if (cyrFan) {
+		if (isOriginalSupporter) {
 			if (perkTier >= 2) maxGiveaways += 5 * (perkTier - 1);
 		} else if (perkTier >= 3) {
 			maxGiveaways += 5 * (perkTier - 2);
@@ -116,7 +116,7 @@ export const giveawayCommand = defineCommand({
 				}
 			});
 			if (existingGiveaways.length >= maxGiveaways && !userHasUnlimitedGiveaways(user)) {
-				return `You cannot have more than ${cyrFan ? Emoji.Seer : ''} ${maxGiveaways} giveaways active at a time.`;
+				return `You cannot have more than ${isOriginalSupporter ? Emoji.Seer : ''} ${maxGiveaways} giveaways active at a time.`;
 			}
 
 			if (!guildId && !interaction.guildId) {
@@ -247,13 +247,9 @@ export const giveawayCommand = defineCommand({
 				return Emoji.RedX;
 			}
 
-			const perkTier = await user.fetchPerkTier();
-
 			const lines = giveaways.map(
 				(g: Giveaway) =>
-					`${
-						perkTier >= patronFeatures.ShowEnteredInGiveawayList.tier ? `${getEmoji(g)} ` : ''
-					}[${toKMB(marketPriceOfBank(new Bank(g.loot as ItemBank)))} giveaway ending ${time(
+					`${getEmoji(g)} [${toKMB(marketPriceOfBank(new Bank(g.loot as ItemBank)))} giveaway ending ${time(
 						g.finish_date,
 						'R'
 					)}](${messageLink(g.channel_id, g.message_id)})`
