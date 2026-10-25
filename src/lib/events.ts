@@ -6,6 +6,7 @@ import { cryptoRng } from 'node-rng/crypto';
 import { type ItemBank, Items, toKMB } from 'oldschooljs';
 
 import type { command_name_enum } from '@/prisma/main/enums.js';
+import { recordBondPlaytimeFromActivity } from '@/lib/bonds.js';
 import { CHAT_PET_COOLDOWN_CACHE, lastRoboChimpSyncCache, RARE_ROLES_CACHE } from '@/lib/cache.js';
 import { CONSTANTS, globalConfig } from '@/lib/constants.js';
 import pets from '@/lib/data/pets.js';
@@ -366,6 +367,12 @@ export async function onMessage(msg: IMessage) {
 }
 
 export async function onMinionActivityFinish(activity: ActivityTaskData) {
+	try {
+		await recordBondPlaytimeFromActivity(activity.userID, activity.duration);
+	} catch (err) {
+		Logging.logError(err as Error, { context: 'recordBondPlaytimeFromActivity', activity: JSON.stringify(activity) });
+	}
+
 	try {
 		const lastSyncTime = lastRoboChimpSyncCache.get(activity.userID) ?? 0;
 		const hasBeen30MinsSinceLast = Date.now() - lastSyncTime > Time.Minute * 30;

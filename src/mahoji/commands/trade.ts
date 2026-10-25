@@ -2,6 +2,7 @@ import { Events } from '@oldschoolgg/toolkit';
 import { Bank } from 'oldschooljs';
 
 import { filterOption } from '@/discord/index.js';
+import { flagSuspiciousBondEconomyActivity } from '@/lib/bonds.js';
 import itemIsTradeable from '@/lib/util/itemIsTradeable.js';
 import { parseBank } from '@/lib/util/parseStringBank.js';
 import { tradePlayerItems } from '@/lib/util/tradePlayerItems.js';
@@ -131,6 +132,12 @@ Both parties must click confirm to make the trade.`,
 				type: 'trade'
 			}
 		});
+		await flagSuspiciousBondEconomyActivity(
+			senderUser.id,
+			recipientUser.id,
+			'trade',
+			`sent: ${itemsSent} | received: ${itemsReceived}`
+		);
 		globalClient.emit(
 			Events.EconomyLog,
 			`${senderUser.mention} sold ${itemsSent} to ${recipientUser.mention} for ${itemsReceived}.`

@@ -1,6 +1,7 @@
 import { Bank } from 'oldschooljs';
 
 import { choicesOf } from '@/discord/index.js';
+import { flagSuspiciousBondEconomyActivity } from '@/lib/bonds.js';
 import { BitField } from '@/lib/constants.js';
 import itemIsTradeable from '@/lib/util/itemIsTradeable.js';
 import { capeGambleCommand, capeGambleStatsCommand } from '@/mahoji/lib/abstracted_commands/capegamble.js';
@@ -243,6 +244,12 @@ export const gambleCommand = defineCommand({
 					type: 'gri'
 				}
 			});
+			await flagSuspiciousBondEconomyActivity(
+				senderUser.id,
+				recipientuser.id,
+				'gri',
+				`${loot}`
+			);
 			const debug = new Bank();
 			for (const t of bank) debug.add(t[0].id);
 
