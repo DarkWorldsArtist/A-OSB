@@ -1,5 +1,4 @@
 import { formatDuration, reduceNumByPercent, Time } from '@oldschoolgg/toolkit';
-import { Monsters } from 'oldschooljs';
 
 import { choicesOf } from '@/discord/index.js';
 import { PVM_METHODS } from '@/lib/constants.js';
@@ -93,18 +92,9 @@ export const minionKCommand = defineCommand({
 			name: 'solo',
 			description: 'Solo (if its a group boss)',
 			required: false
-		},
-		{
-			type: 'Boolean',
-			name: 'take_eggs',
-			description: 'Take Maggot King eggs instead of normal loot.',
-			required: false
 		}
 	],
 	run: async ({ options, user, channelId, interaction, rng }) => {
-		if (options.take_eggs && findMonster(options.name)?.id !== Monsters.MaggotKing.id) {
-			return 'The take_eggs option is only available for Maggot King.';
-		}
 		if (options.show_info) {
 			return interaction.returnStringOrFile(await monsterInfo(user, options.name));
 		}
@@ -117,8 +107,7 @@ export const minionKCommand = defineCommand({
 			options.quantity,
 			options.method,
 			options.wilderness,
-			options.solo,
-			options.take_eggs
+			options.solo
 		);
 	}
 });
