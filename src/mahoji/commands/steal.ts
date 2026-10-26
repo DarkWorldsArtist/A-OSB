@@ -2,12 +2,14 @@ import { bold } from '@oldschoolgg/discord';
 import { formatDuration, stringMatches, Time, UserError } from '@oldschoolgg/toolkit';
 import { Bank } from 'oldschooljs';
 
+import { BitField } from '@/lib/constants.js';
 import { QuestID, quests } from '@/lib/minions/data/quests.js';
 import removeFoodFromUser from '@/lib/minions/functions/removeFoodFromUser.js';
 import { Thieving } from '@/lib/skilling/skills/thieving/index.js';
 import { type Stealable, stealables } from '@/lib/skilling/skills/thieving/stealables.js';
 import { calcLootXPChest } from '@/lib/skilling/skills/thieving/thievingUtils.js';
 import type { PickpocketActivityTaskOptions } from '@/lib/types/minions.js';
+import { determineRunes } from '@/lib/util/determineRunes.js';
 import { formatTripDuration } from '@/lib/util/minionUtils.js';
 import { calcLootXPPickpocketing } from '@/tasks/minions/pickpocketActivity.js';
 
@@ -143,7 +145,7 @@ export const stealCommand = defineCommand({
 
 		const shadowVeilCasts = options.shadow_veil ? Math.ceil(duration / shadowVeilCastInterval) : 0;
 
-		const shadowVeilRuneCost = new Bank();
+		let shadowVeilRuneCost = new Bank();
 
 		if (shadowVeilCasts > 0) {
 			shadowVeilRuneCost
@@ -151,6 +153,7 @@ export const stealCommand = defineCommand({
 				.add('Fire rune', shadowVeilCasts * 5)
 				.add('Cosmic rune', shadowVeilCasts * 5);
 
+			shadowVeilRuneCost = determineRunes(user, shadowVeilRuneCost);
 			if (!user.owns(shadowVeilRuneCost)) {
 				return `You need ${shadowVeilRuneCost} to use Shadow Veil for this trip.`;
 			}
@@ -181,7 +184,7 @@ export const stealCommand = defineCommand({
 				user.hasEquipped(['Thieving cape', 'Thieving cape(t)']),
 				hasArdyHard,
 				rng,
-				user.user.dodgy_necklace_charges,
+				user.bitfield.includes(BitField.DisableDodgyNecklace) ? 0 : user.user.dodgy_necklace_charges,
 				options.shadow_veil ? user.skillLevel('magic') : 0
 			);
 
@@ -217,11 +220,16 @@ export const stealCommand = defineCommand({
 			}
 			if (dodgyNecklaceChargesUsed > 0) {
 				await user.update({
-					dodgy_necklace_charges: user.user.dodgy_necklace_charges - dodgyNecklaceChargesUsed
+					dodgy_necklace_charges: {
+						decrement: dodgyNecklaceChargesUsed
+					}
 				});
 			}
 
-			await ClientSettings.updateBankSetting('economyStats_thievingCost', foodRemoved);
+			await ClientSettings.updateBankSetting(
+				'economyStats_thievingCost',
+				new Bank(foodRemoved).add(shadowVeilRuneCost)
+			);
 			str += ` Removed ${foodRemoved}.`;
 		} else if (stealable.type === 'stall') {
 			// Up to 5% fail chance, random

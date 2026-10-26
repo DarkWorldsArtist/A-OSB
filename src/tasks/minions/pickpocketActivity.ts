@@ -185,14 +185,22 @@ export const pickpocketTask: MinionTask = {
 			quantity - successfulQuantity
 		}x ${obj.type === 'pickpockable' ? 'pickpockets' : 'steals'}. ${xpRes}`;
 
-		if (shadowVeilXPMessage) {
-			str += `\nShadow Veil: ${data.shadowVeilCasts} casts. ${shadowVeilXPMessage}`;
+		if ((data.shadowVeilCasts ?? 0) > 0) {
+			str += `\nShadow Veil: ${data.shadowVeilCasts} casts.`;
+
+			if (shadowVeilXPMessage) {
+				str += ` ${shadowVeilXPMessage}`;
+			}
 		}
-		if (obj.type === 'pickpockable' && data.dodgyNecklaceChargesRemaining !== undefined) {
-			if ((data.dodgyNecklaceChargesUsed ?? 0) === 0 && data.dodgyNecklaceChargesRemaining === 0) {
-				str += '\nNo dodgy necklace charges available. Use `/minion charge` to add more.';
-			} else {
-				str += `\nDodgy necklace: consumed ${data.dodgyNecklaceChargesUsed ?? 0} charges; ${data.dodgyNecklaceChargesRemaining} charges remaining.`;
+		if (
+			obj.type === 'pickpockable' &&
+			(data.dodgyNecklaceChargesUsed ?? 0) > 0 &&
+			data.dodgyNecklaceChargesRemaining !== undefined
+		) {
+			str += `\nDodgy necklace: consumed ${data.dodgyNecklaceChargesUsed} charges; ${data.dodgyNecklaceChargesRemaining} charges remaining.`;
+
+			if (data.dodgyNecklaceChargesRemaining === 0) {
+				str += '\nYour dodgy necklace charges have run out. Use `/minion charge` to add more.';
 			}
 		}
 		if (obj.type === 'stall') {

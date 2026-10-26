@@ -188,6 +188,7 @@ export enum BitField {
 	Boring = 58,
 	HasRiteOfVileTransference = 59,
 	DisableRiteOfVileTransference = 60,
+	DisableDodgyNecklace = 61,
 
 	OriginalSupporter = 199
 }
@@ -345,6 +346,11 @@ export const BitFieldData: Record<BitField, IBitFieldData> = {
 	},
 	[BitField.DisableRiteOfVileTransference]: {
 		name: 'Disable Rite of vile transference boost',
+		protected: false,
+		userConfigurable: true
+	},
+	[BitField.DisableDodgyNecklace]: {
+		name: 'Disable Dodgy Necklace',
 		protected: false,
 		userConfigurable: true
 	},
