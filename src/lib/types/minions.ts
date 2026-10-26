@@ -262,6 +262,9 @@ export interface PickpocketActivityTaskOptions extends ActivityTaskOptions {
 	xpReceived: number;
 	successfulQuantity: number;
 	damageTaken: number;
+	dodgyNecklaceChargesUsed?: number;
+	dodgyNecklaceChargesRemaining?: number;
+	shadowVeilCasts?: number;
 }
 
 export interface BuryingActivityTaskOptions extends ActivityTaskOptions {

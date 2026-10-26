@@ -15,12 +15,16 @@ export function calcLootXPPickpocketing(
 	quantity: number,
 	hasThievingCape: boolean,
 	hasDiary: boolean,
-	rng: { percentChance: (percent: number) => boolean }
-): [number, number, number, number] {
+	rng: { percentChance: (percent: number) => boolean },
+	dodgyNecklaceCharges: number = 0,
+	shadowVeilMagicLevel: number = 0
+): [number, number, number, number, number] {
 	let xpReceived = 0;
 
 	let successful = 0;
 	let damageTaken = 0;
+	let dodgyNecklaceChargesUsed = 0;
+	const startingQuantity = quantity;
 	// Pickpocketing takes 2 ticks
 	const timeToPickpocket = (npc.customTickRate ?? 2.05) * 0.6;
 	// For future Ardougne Diary and Thieving cape
@@ -31,8 +35,21 @@ export function calcLootXPPickpocketing(
 
 	for (let i = 0; i < quantity; i++) {
 		if (!rng.percentChance(chanceOfSuccess)) {
+			const elapsedTicks = (i + startingQuantity - quantity) * (npc.customTickRate ?? 2);
+
+			const shadowVeilActive =
+				shadowVeilMagicLevel >= 47 && elapsedTicks % Math.max(50, shadowVeilMagicLevel) < shadowVeilMagicLevel;
+
+			if (shadowVeilActive && rng.percentChance(15)) {
+				continue;
+			}
 			// The minion has just been stunned, and cant pickpocket for a few ticks, therefore
 			// they also miss out on the next few pickpockets depending on stun time. And take damage
+			if (dodgyNecklaceChargesUsed < dodgyNecklaceCharges && rng.percentChance(25)) {
+				dodgyNecklaceChargesUsed++;
+				continue;
+			}
+
 			damageTaken += npc.stunDamage!;
 			quantity -= Math.round(npc.stunTime! / timeToPickpocket);
 			continue;
@@ -42,7 +59,7 @@ export function calcLootXPPickpocketing(
 		xpReceived += npc.xp;
 	}
 
-	return [successful, damageTaken, xpReceived, chanceOfSuccess];
+	return [successful, damageTaken, xpReceived, chanceOfSuccess, dodgyNecklaceChargesUsed];
 }
 
 export const pickpocketTask: MinionTask = {
@@ -152,6 +169,15 @@ export const pickpocketTask: MinionTask = {
 			itemsToAdd: loot
 		});
 		const xpRes = await user.addXP({ skillName: 'thieving', amount: xpReceived, duration });
+		let shadowVeilXPMessage = '';
+
+		if ((data.shadowVeilCasts ?? 0) > 0) {
+			shadowVeilXPMessage = await user.addXP({
+				skillName: 'magic',
+				amount: data.shadowVeilCasts! * 58,
+				duration
+			});
+		}
 
 		let str = `${user}, ${user.minionName} finished ${
 			obj.type === 'pickpockable' ? 'pickpocketing' : 'stealing'
@@ -159,6 +185,24 @@ export const pickpocketTask: MinionTask = {
 			quantity - successfulQuantity
 		}x ${obj.type === 'pickpockable' ? 'pickpockets' : 'steals'}. ${xpRes}`;
 
+		if ((data.shadowVeilCasts ?? 0) > 0) {
+			str += `\nShadow Veil: ${data.shadowVeilCasts} casts.`;
+
+			if (shadowVeilXPMessage) {
+				str += ` ${shadowVeilXPMessage}`;
+			}
+		}
+		if (
+			obj.type === 'pickpockable' &&
+			(data.dodgyNecklaceChargesUsed ?? 0) > 0 &&
+			data.dodgyNecklaceChargesRemaining !== undefined
+		) {
+			str += `\nDodgy necklace: consumed ${data.dodgyNecklaceChargesUsed} charges; ${data.dodgyNecklaceChargesRemaining} charges remaining.`;
+
+			if (data.dodgyNecklaceChargesRemaining === 0) {
+				str += '\nYour dodgy necklace charges have run out. Use `/minion charge` to add more.';
+			}
+		}
 		if (obj.type === 'stall') {
 			str += `\n${
 				100 - obj.lootPercent!
