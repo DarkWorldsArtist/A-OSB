@@ -18,6 +18,7 @@ export const BOT_TYPE: BotType = 'OSB' as 'BSO' | 'OSB';
 export const BOT_TYPE_LOWERCASE: 'bso' | 'osb' = BOT_TYPE.toLowerCase() as 'bso' | 'osb';
 const isProduction = process.env.NODE_ENV === 'production';
 const GENERAL_CHANNEL_ID = process.env.GENERAL_CHANNEL ?? '1560852844402315264';
+const NOTIFICATIONS_CHANNEL_ID = process.env.NOTIFICATIONS_CHANNEL ?? '1560852866821001246';
 const OLDSCHOOLGG_TESTING_SERVER_ID = '1520360916917551266';
 const TEST_SERVER_ID = process.env.TESTING_SERVER ?? OLDSCHOOLGG_TESTING_SERVER_ID;
 const TEST_SERVER_LOG_CHANNEL = process.env.TESTING_LOG_CHANNEL ?? '1560853458481975447';
@@ -35,7 +36,7 @@ interface ChannelConfig {
 
 const OSBChannelConfig: ChannelConfig = {
 	ServerGeneral: '1560852844402315264',
-	Notifications: '1560852866821001246',
+	Notifications: NOTIFICATIONS_CHANNEL_ID,
 	GrandExchange: '1560852950631448596',
 	EconomyLogs: '1560853493449760850',
 	HelpAndSupport: '1560853458481975447',
@@ -45,7 +46,7 @@ const OSBChannelConfig: ChannelConfig = {
 
 const BSOChannelConfig: ChannelConfig = {
 	ServerGeneral: '342983479501389826',
-	Notifications: '1042760447830536212',
+	Notifications: NOTIFICATIONS_CHANNEL_ID,
 	GrandExchange: '738780181946171493',
 	EconomyLogs: '802029843712573510',
 	HelpAndSupport: '970752140324790384',
@@ -55,7 +56,7 @@ const BSOChannelConfig: ChannelConfig = {
 
 const TestChannelConfig: ChannelConfig = {
 	ServerGeneral: TEST_SERVER_LOG_CHANNEL,
-	Notifications: TEST_SERVER_LOG_CHANNEL,
+	Notifications: NOTIFICATIONS_CHANNEL_ID,
 	GrandExchange: TEST_SERVER_LOG_CHANNEL,
 	EconomyLogs: TEST_SERVER_LOG_CHANNEL,
 	HelpAndSupport: TEST_SERVER_LOG_CHANNEL,
