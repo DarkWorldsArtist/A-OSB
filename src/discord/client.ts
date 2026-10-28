@@ -67,10 +67,18 @@ client.on('interactionCreate', async itx => {
 });
 
 client.on('serverNotification', async (message: string) => {
-	await globalClient.sendMessage(Channel.Notifications, {
-		content: message,
-		allowedMentions: { parse: [], users: [], roles: [] }
-	});
+	Logging.logDebug(`Sending server notification to channel ${Channel.Notifications}: ${message}`);
+	try {
+		await globalClient.sendMessage(Channel.Notifications, {
+			content: message,
+			allowedMentions: { parse: [], users: [], roles: [] }
+		});
+	} catch (err) {
+		Logging.logError(err as Error, {
+			msg: `Failed to send server notification to channel ${Channel.Notifications}`,
+			notification: message
+		});
+	}
 });
 
 client.on('economyLog', async (message: string) => {
