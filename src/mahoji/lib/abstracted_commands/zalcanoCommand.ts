@@ -52,6 +52,7 @@ export async function zalcanoCommand(rng: RNGProvider, user: MUser, channelId: s
 	else if (kc > 20) healAmountNeeded = 5 * 12;
 
 	const maxTripLength = await user.calcMaxTripLength('Zalcano');
+	const inputQuantity = quantity;
 	if (!quantity) quantity = Math.floor(maxTripLength / baseTime);
 	quantity = Math.max(1, quantity);
 	const duration = quantity * baseTime;
@@ -75,6 +76,7 @@ export async function zalcanoCommand(rng: RNGProvider, user: MUser, channelId: s
 		userID: user.id,
 		channelId,
 		quantity,
+		iQty: inputQuantity,
 		duration,
 		type: 'Zalcano',
 		performance: calcPerformance(kcLearned, skillPercentage),

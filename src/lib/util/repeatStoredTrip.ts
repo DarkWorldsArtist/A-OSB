@@ -217,7 +217,7 @@ const tripHandlers: {
 		commandName: 'laps',
 		args: (data: AgilityActivityTaskOptions) => ({
 			name: courses.find(c => c.id === data.courseID)?.name ?? data.courseID.toString(),
-			quantity: data.quantity,
+			quantity: data.iQty,
 			alch: Boolean(data.alch)
 		})
 	},
@@ -324,14 +324,14 @@ const tripHandlers: {
 				data.method === CookingMethodEnum.KarambwanShop
 					? 'Karambwan Shop Cook + Drop'
 					: Items.itemNameFromId(data.cookableID),
-			quantity: data.quantity
+			quantity: data.iQty
 		})
 	},
 	[activity_type_enum.Crafting]: {
 		commandName: 'craft',
 		args: (data: CraftingActivityTaskOptions) => ({
 			name: Items.itemNameFromId(data.craftableID),
-			quantity: data.quantity
+			quantity: data.iQty
 		})
 	},
 	[activity_type_enum.Cyclops]: {
@@ -396,7 +396,7 @@ const tripHandlers: {
 		commandName: 'light',
 		args: (data: FiremakingActivityTaskOptions) => ({
 			name: Items.itemNameFromId(data.burnableID),
-			quantity: data.quantity
+			quantity: data.iQty
 		})
 	},
 	[activity_type_enum.Fishing]: {
@@ -419,7 +419,7 @@ const tripHandlers: {
 	},
 	[activity_type_enum.Fletching]: {
 		commandName: 'fletch',
-		args: (data: FletchingActivityTaskOptions) => ({ name: data.fletchableName, quantity: data.quantity })
+		args: (data: FletchingActivityTaskOptions) => ({ name: data.fletchableName, quantity: data.iQty })
 	},
 	[activity_type_enum.Gauntlet]: {
 		commandName: 'minigames',
@@ -457,7 +457,7 @@ const tripHandlers: {
 		commandName: 'mix',
 		args: (data: HerbloreActivityTaskOptions) => ({
 			name: Items.itemNameFromId(data.mixableID),
-			quantity: data.quantity,
+			quantity: data.iQty,
 			zahur: data.zahur
 		})
 	},
@@ -544,8 +544,8 @@ const tripHandlers: {
 		args: (data: NexTaskOptions) => {
 			return {
 				name: 'nex',
-				quantity: data.quantity,
-				solo: data.users.length === 1
+				quantity: (data.users?.length ?? 1) === 1 ? data.iQty : undefined,
+				solo: (data.users?.length ?? 1) === 1
 			};
 		}
 	},
@@ -553,7 +553,7 @@ const tripHandlers: {
 		commandName: 'k',
 		args: (data: ZalcanoActivityTaskOptions) => ({
 			name: 'zalcano',
-			quantity: data.quantity
+			quantity: data.iQty
 		})
 	},
 	[activity_type_enum.Tempoross]: {
@@ -566,14 +566,14 @@ const tripHandlers: {
 		commandName: 'k',
 		args: (data: MinigameActivityTaskOptionsWithNoChanges) => ({
 			name: 'wintertodt',
-			quantity: data.quantity
+			quantity: data.iQty
 		})
 	},
 	[activity_type_enum.Nightmare]: {
 		commandName: 'k',
 		args: (data: NightmareActivityTaskOptions) => ({
 			name: data.isPhosani ? 'phosani nightmare' : data.method === 'mass' ? 'mass nightmare' : 'solo nightmare',
-			quantity: data.quantity
+			quantity: data.iQty
 		})
 	},
 	[activity_type_enum.Offering]: {
@@ -625,9 +625,9 @@ const tripHandlers: {
 				cox: {
 					start: {
 						challenge_mode: data.challengeMode,
-						type: data.isFakeMass ? 'fakemass' : data.users.length === 1 ? 'solo' : 'mass',
+						type: data.isFakeMass ? 'fakemass' : (data.users?.length ?? 1) === 1 ? 'solo' : 'mass',
 						max_team_size: data.maxSizeInput,
-						quantity: data.quantity
+						quantity: data.iQty
 					}
 				}
 			};
@@ -662,7 +662,7 @@ const tripHandlers: {
 		commandName: 'smith',
 		args: (data: SmithingActivityTaskOptions) => ({
 			name: Items.itemNameFromId(data.smithedBarID),
-			quantity: data.quantity
+			quantity: data.iQty
 		})
 	},
 	[activity_type_enum.SoulWars]: {
@@ -675,8 +675,8 @@ const tripHandlers: {
 			tob: {
 				start: {
 					hard_mode: data.hardMode,
-					solo: data.solo,
-					quantity: data.quantity
+					solo: data.solo ?? (data.users?.length ?? 1) === 1,
+					quantity: data.iQty
 				}
 			}
 		})
@@ -712,7 +712,10 @@ const tripHandlers: {
 	[activity_type_enum.Woodcutting]: {
 		commandName: 'chop',
 		args: (data: WoodcuttingActivityTaskOptions) => ({
-			name: Items.itemNameFromId(data.logID),
+			name:
+				typeof data.logID === 'number'
+					? Items.itemNameFromId(data.logID)
+					: (Items.getItem(data.logID)?.name ?? data.logID),
 			quantity: data.iQty,
 			powerchop: data.powerchopping,
 			forestry_events: data.forestry,
@@ -768,10 +771,10 @@ const tripHandlers: {
 		args: (data: TOAOptions) => ({
 			toa: {
 				start: {
-					raid_level: data.raidLevel,
-					max_team_size: data.users.length,
-					solo: data.users.length === 1,
-					quantity: data.quantity
+					raid_level: data.raidLevel ?? 1,
+					max_team_size: data.users?.length ?? 1,
+					solo: (data.users?.length ?? 1) === 1,
+					quantity: data.iQty
 				}
 			}
 		})
@@ -782,7 +785,7 @@ const tripHandlers: {
 			underwater: {
 				agility_thieving: {
 					training_skill: data.trainingSkill,
-					minutes: data.minutes ?? Math.max(1, Math.floor(data.duration / Time.Minute)),
+					minutes: data.iQty,
 					no_stams: data.noStams
 				}
 			}
@@ -793,7 +796,7 @@ const tripHandlers: {
 		args: (data: ActivityTaskOptionsWithQuantity) => ({
 			underwater: {
 				drift_net_fishing: {
-					minutes: data.minutes ?? Math.max(1, Math.floor(data.duration / Time.Minute))
+					minutes: data.iQty
 				}
 			}
 		})

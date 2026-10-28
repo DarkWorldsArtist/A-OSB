@@ -295,7 +295,8 @@ export async function coxCommand(
 		challengeMode: isChallengeMode,
 		maxSizeInput: isFakeMass ? fakeUsers : maxSize,
 		isFakeMass,
-		quantity
+		quantity,
+		iQty: _quantity
 	});
 
 	const raidName = isChallengeMode ? 'Challenge Mode Chambers of Xeric' : 'Regular Chambers of Xeric';

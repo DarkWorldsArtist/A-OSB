@@ -168,6 +168,7 @@ export const lapsCommand = defineCommand({
 			userID: user.id,
 			channelId,
 			quantity,
+			iQty: quantity ? quantity : undefined,
 			duration,
 			type: 'Agility',
 			alch:
