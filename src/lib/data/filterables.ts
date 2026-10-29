@@ -840,6 +840,26 @@ export const baseFilters: Filterable[] = [
 		items: () => food
 	},
 	{
+		name: 'Fruit',
+		aliases: ['fruit'],
+		items: () =>
+			resolveItems([
+				'Coconut',
+				'Dragonfruit',
+				'Banana',
+				'Orange',
+				'Pineapple',
+				'Strawberry',
+				'Watermelon',
+				'Tomato',
+				'Papaya fruit',
+				'Grapes',
+				'Lemon',
+				'Lime',
+				'Peach'
+			])
+	},
+	{
 		name: 'Wintertodt',
 		aliases: ['wintertodt', 'todt', 'wt'],
 		items: () => wintertodtCL
