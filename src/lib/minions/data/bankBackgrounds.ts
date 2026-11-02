@@ -22,6 +22,7 @@ export type BankBackground = {
 	alternateImages?: { id: number }[];
 	storeBitField?: StoreBitfield;
 	owners?: string[];
+	aliases?: string[];
 } & (
 	| {
 			hasPurple: true;
@@ -666,6 +667,7 @@ const backgroundImages: BankBackground[] = [
 	{
 		id: 1021,
 		name: 'Drunkenbeer CustomBG',
+		aliases: ['bg drunk', 'drunk', 'drunkenbeer'],
 		image: null,
 		available: false,
 		owners: ['497738919803355161']
@@ -673,6 +675,7 @@ const backgroundImages: BankBackground[] = [
 	{
 		id: 1022,
 		name: 'Alabastor CustomBG',
+		aliases: ['bg standard', 'bg purp', 'alabastor', 'standard', 'purp'],
 		image: null,
 		available: false,
 		owners: ['559881359582298123'],
