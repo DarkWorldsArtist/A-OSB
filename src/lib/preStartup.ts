@@ -2,6 +2,7 @@ import { cleanString, replaceWhitespaceAndUppercase } from '@oldschoolgg/toolkit
 import { type ItemBank, Items } from 'oldschooljs';
 
 import { CUSTOM_PRICE_CACHE } from '@/lib/cache.js';
+import { bankImageTask } from '@/lib/canvas/bankImage.js';
 import { syncCollectionLogSlotTable } from '@/lib/collection-log/databaseCl.js';
 import { badges, globalConfig } from '@/lib/constants.js';
 import { GrandExchange } from '@/lib/grandExchange.js';
@@ -52,6 +53,7 @@ export const preStartup = async () => {
 		GrandExchange.init(),
 		cacheGEPrices(),
 		syncCollectionLogSlotTable(),
-		updateBadgeTable()
+		updateBadgeTable(),
+		bankImageTask.ready ? Promise.resolve() : bankImageTask.init().then(() => (bankImageTask.ready = true))
 	]);
 };
