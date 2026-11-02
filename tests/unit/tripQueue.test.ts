@@ -137,8 +137,12 @@ describe('Trip Queueing System', () => {
 			expect(describeActivity({ type: 'Gauntlet' as any, data: { corrupted: false } })).toBe('The Gauntlet');
 			expect(describeActivity({ type: 'Wintertodt' as any })).toBe('Wintertodt');
 			expect(describeActivity({ type: 'Tempoross' as any })).toBe('Tempoross');
-			expect(describeActivity({ type: 'Nightmare' as any, data: { isPhosani: true } })).toBe("Phosani's Nightmare");
+			expect(describeActivity({ type: 'Nightmare' as any, data: { isPhosani: true } })).toBe(
+				"Phosani's Nightmare"
+			);
 			expect(describeActivity({ type: 'Nightmare' as any, data: { isPhosani: false } })).toBe('The Nightmare');
+			expect(describeActivity({ type: 'MotherlodeMining' as any })).toBe('Motherlode Mine');
+			expect(describeActivity({ type: 'TitheFarm' as any })).toBe('Tithe Farm');
 		});
 	});
 });

@@ -328,7 +328,16 @@ export function doMonsterTrip(data: newOptions) {
 	// Loot
 	const finalQuantity = quantity - newSuperiorCount;
 
-	const loot = wiped ? new Bank() : monster.table.kill(finalQuantity, killOptions);
+	const guaranteesVorkathHead =
+		!wiped && monster.id === Monsters.Vorkath.id && currentKC < 50 && currentKC + quantity >= 50;
+
+	const loot = wiped ? new Bank() : monster.table.kill(finalQuantity - (guaranteesVorkathHead ? 1 : 0), killOptions);
+
+	if (guaranteesVorkathHead) {
+		const milestoneLoot = monster.table.kill(1, killOptions);
+		milestoneLoot.set("Vorkath's head", 1);
+		loot.add(milestoneLoot);
+	}
 	if (!wiped) {
 		if (monster.specialLoot) {
 			monster.specialLoot({ loot, ownedItems: gearBank.bank, quantity: finalQuantity, cl: data.cl, bitfield });
