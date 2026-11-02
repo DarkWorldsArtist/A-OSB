@@ -14,6 +14,7 @@ import { BitFieldData, MAX_LEVEL, PerkTier } from '@/lib/constants.js';
 import { degradeableItems } from '@/lib/degradeableItems.js';
 import { diaries } from '@/lib/diaries.js';
 import { calculateMastery } from '@/lib/mastery.js';
+import backgroundImages from '@/lib/minions/data/bankBackgrounds.js';
 import { effectiveMonsters } from '@/lib/minions/data/killableMonsters/index.js';
 import { blowpipeCommand, blowpipeDarts } from '@/lib/minions/functions/blowpipeCommand.js';
 import { degradeableItemsCommand } from '@/lib/minions/functions/degradeableItemsCommand.js';
@@ -198,7 +199,10 @@ export const minionCommand = defineCommand({
 					description: 'The name of the bank background you want.',
 					autocomplete: async ({ value, user }: StringAutoComplete) => {
 						const allAccounts = await findGroupOfUser(user.id);
-						const bankImages = bankImageTask.backgroundImages;
+						const bankImages =
+							bankImageTask.backgroundImages.length > 0
+								? bankImageTask.backgroundImages
+								: backgroundImages;
 						const owned = bankImages
 							.filter(
 								bg =>
