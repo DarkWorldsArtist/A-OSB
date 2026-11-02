@@ -66,7 +66,7 @@ import { determineRunes } from '@/lib/util/determineRunes.js';
 import { fetchUserStats } from '@/lib/util/fetchUserStats.js';
 import { getKCByName } from '@/lib/util/getKCByName.js';
 import { hasMonsterRequirements } from '@/lib/util/hasMonsterRequirements.js';
-import { hasSkillReqsRaw } from '@/lib/util/smallUtils.js';
+import { findGroupOfUser, hasSkillReqsRaw } from '@/lib/util/smallUtils.js';
 import { type TransactItemsArgs, transactItemsFromBank } from '@/lib/util/transactItemsFromBank.js';
 import type { JsonKeys } from '@/lib/util.js';
 import { getParsedStashUnits } from '@/mahoji/lib/abstracted_commands/stashUnitsCommand.js';
@@ -748,8 +748,14 @@ Charge your items using ${globalClient.mentionCommand('minion', 'charge')}.`
 		if (background.bitfield && this.bitfield.includes(background.bitfield)) {
 			return;
 		}
-		if (!background.storeBitField && !background.perkTierNeeded && !background.bitfield) {
+		if (!background.storeBitField && !background.perkTierNeeded && !background.bitfield && !background.owners) {
 			return;
+		}
+		if (background.owners) {
+			const userIDs = await findGroupOfUser(this.id);
+			if (background.owners.some(owner => userIDs.includes(owner))) {
+				return;
+			}
 		}
 		return resetBackground();
 	}

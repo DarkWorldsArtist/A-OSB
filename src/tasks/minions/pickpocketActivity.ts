@@ -238,7 +238,7 @@ export const pickpocketTask: MinionTask = {
 			});
 		}
 
-		handleTripFinish({
+		return handleTripFinish({
 			user,
 			channelId,
 			message,

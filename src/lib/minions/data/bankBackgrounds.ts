@@ -21,6 +21,7 @@ export type BankBackground = {
 	transparent?: true;
 	alternateImages?: { id: number }[];
 	storeBitField?: StoreBitfield;
+	owners?: string[];
 } & (
 	| {
 			hasPurple: true;
@@ -463,6 +464,220 @@ const backgroundImages: BankBackground[] = [
 		perkTierNeeded: PerkTier.Four,
 		gpCost: 10_000_000,
 		storeBitField: StoreBitfield.HalloweenItemIconPack
+	},
+	{
+		id: 504,
+		name: 'Skipper',
+		image: null,
+		available: true,
+		gpCost: 10_000_000,
+		perkTierNeeded: PerkTier.Four,
+		transparent: true
+	},
+	{
+		id: 505,
+		name: 'Remy',
+		image: null,
+		available: true,
+		gpCost: 10_000_000,
+		perkTierNeeded: PerkTier.Four,
+		transparent: true
+	},
+	{
+		id: 506,
+		name: 'Peepo Scooter',
+		image: null,
+		available: true,
+		perkTierNeeded: PerkTier.Four,
+		gpCost: 10_000_000
+	},
+	{
+		id: 507,
+		name: 'Ignecarus',
+		image: null,
+		available: true,
+		gpCost: 500_000_000,
+		perkTierNeeded: PerkTier.Four
+	},
+	{
+		id: 508,
+		name: 'Maledict Mortimer',
+		image: null,
+		available: true,
+		perkTierNeeded: PerkTier.Four
+	},
+	{
+		id: 1000,
+		name: 'Kiddo CustomBG',
+		image: null,
+		available: false,
+		owners: ['775241966677131306']
+	},
+	{
+		id: 1001,
+		name: 'Timebrawler CustomBG',
+		image: null,
+		available: false,
+		owners: ['235883747658956802'],
+		purpleImage: null,
+		hasPurple: true
+	},
+	{
+		id: 1002,
+		name: 'Serg CustomBG',
+		image: null,
+		available: false,
+		owners: ['797618464176996372']
+	},
+	{
+		id: 1003,
+		name: 'TastyPum CustomBG',
+		image: null,
+		available: false,
+		owners: ['794368001856110594']
+	},
+	{
+		id: 1004,
+		name: 'Jersey CustomBG',
+		image: null,
+		available: false,
+		owners: ['252113050704805890']
+	},
+	{
+		id: 1005,
+		name: 'Abyssalcrow8 CustomBG',
+		image: null,
+		available: false,
+		owners: ['268901875158351872']
+	},
+	{
+		id: 1006,
+		name: 'Benny CustomBG',
+		image: null,
+		available: false,
+		owners: ['507686806624534529']
+	},
+	{
+		id: 1007,
+		name: 'Hekla CustomBG',
+		image: null,
+		available: false,
+		owners: ['255767128051810305']
+	},
+	{
+		id: 1008,
+		name: 'Mylife CustomBG',
+		image: null,
+		available: false,
+		owners: ['251536370613485568']
+	},
+	{
+		id: 1009,
+		name: 'Cyrillax CustomBG',
+		image: null,
+		hasPurple: true,
+		purpleImage: null,
+		available: false,
+		owners: ['425134194436341760']
+	},
+	{
+		id: 1010,
+		name: 'theshadyhobo CustomBG',
+		image: null,
+		available: false,
+		owners: ['343104695209951255']
+	},
+	{
+		id: 1011,
+		name: 'Turbo CustomBG',
+		image: null,
+		available: false,
+		owners: ['288054683161853952'],
+		purpleImage: null,
+		hasPurple: true
+	},
+	{
+		id: 1012,
+		name: 'Fishy CustomBG',
+		image: null,
+		available: false,
+		owners: ['212931609123487744']
+	},
+	{
+		id: 1013,
+		name: 'Beans CustomBG',
+		image: null,
+		available: false,
+		owners: ['134922117081858050']
+	},
+	{
+		id: 1014,
+		name: 'Coolbop CustomBG',
+		image: null,
+		available: false,
+		owners: ['198993057323024384']
+	},
+	{
+		id: 1015,
+		name: 'Thievious CustomBG',
+		image: null,
+		available: false,
+		owners: ['411025849966526470']
+	},
+	{
+		id: 1016,
+		name: 'Rickturpentine CustomBG',
+		image: null,
+		available: false,
+		owners: ['604278562320810009']
+	},
+	{
+		id: 1017,
+		name: 'boyo CustomBG',
+		image: null,
+		available: false,
+		owners: ['505593989584519169'],
+		purpleImage: null,
+		hasPurple: true
+	},
+	{
+		id: 1018,
+		name: 'DT CustomBG',
+		image: null,
+		available: false,
+		owners: ['310150823986593803']
+	},
+	{
+		id: 1019,
+		name: 'Xavier CustomBG',
+		image: null,
+		available: false,
+		owners: ['304309559068196867'],
+		purpleImage: null,
+		hasPurple: true
+	},
+	{
+		id: 1020,
+		name: 'Salty CustomBG',
+		image: null,
+		available: false,
+		owners: ['603327620234608661']
+	},
+	{
+		id: 1021,
+		name: 'Drunkenbeer CustomBG',
+		image: null,
+		available: false,
+		owners: ['497738919803355161']
+	},
+	{
+		id: 1022,
+		name: 'Alabastor CustomBG',
+		image: null,
+		available: false,
+		owners: ['559881359582298123'],
+		purpleImage: null,
+		hasPurple: true
 	}
 ];
 
