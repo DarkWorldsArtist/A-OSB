@@ -2,7 +2,7 @@ import { stringMatches } from '@oldschoolgg/toolkit';
 import { Bank, resolveItems, toKMB } from 'oldschooljs';
 
 import { bankImageTask } from '@/lib/canvas/bankImage.js';
-import { formatSkillRequirements } from '@/lib/util/smallUtils.js';
+import { findGroupOfUser, formatSkillRequirements } from '@/lib/util/smallUtils.js';
 
 export async function bankBgCommand(interaction: MInteraction, user: MUser, name: string) {
 	const bankImages = bankImageTask.backgroundImages;
@@ -28,6 +28,16 @@ export async function bankBgCommand(interaction: MInteraction, user: MUser, name
 			bankBackground: selectedImage.id
 		});
 		return `Your bank background is now **${selectedImage.name}**!`;
+	}
+
+	if (selectedImage.owners) {
+		const userIDs = await findGroupOfUser(user.id);
+		if (selectedImage.owners.some(owner => userIDs.includes(owner))) {
+			await user.update({
+				bankBackground: selectedImage.id
+			});
+			return `Your bank background is now **${selectedImage.name}**!`;
+		}
 	}
 
 	if (selectedImage.sacValueRequired) {

@@ -11,11 +11,11 @@ import { CHAT_PET_COOLDOWN_CACHE, lastRoboChimpSyncCache, RARE_ROLES_CACHE } fro
 import { CONSTANTS, globalConfig } from '@/lib/constants.js';
 import pets from '@/lib/data/pets.js';
 import { roboChimpSyncData } from '@/lib/roboChimp.js';
+import { processNextQueuedTrip } from '@/lib/tripQueue.js';
 import type { ActivityTaskData } from '@/lib/types/minions.js';
 import { makeBankImage } from '@/lib/util/makeBankImage.js';
 import { minionStatsEmbed } from '@/lib/util/minionStatsEmbed.js';
 import { refreshUserCache } from '@/lib/util/refreshCache.js';
-import { processNextQueuedTrip } from '@/lib/tripQueue.js';
 import { minionStatusCommand } from '@/mahoji/lib/abstracted_commands/minionStatusCommand.js';
 
 const rareRolesSrc: [string, number, string][] = [
@@ -370,7 +370,10 @@ export async function onMinionActivityFinish(activity: ActivityTaskData) {
 	try {
 		await recordBondPlaytimeFromActivity(activity.userID, activity.duration);
 	} catch (err) {
-		Logging.logError(err as Error, { context: 'recordBondPlaytimeFromActivity', activity: JSON.stringify(activity) });
+		Logging.logError(err as Error, {
+			context: 'recordBondPlaytimeFromActivity',
+			activity: JSON.stringify(activity)
+		});
 	}
 
 	try {

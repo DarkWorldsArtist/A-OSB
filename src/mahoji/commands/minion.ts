@@ -27,7 +27,7 @@ import { getAllKillCounts, getKCByName } from '@/lib/util/getKCByName.js';
 import { minionStatsEmbed } from '@/lib/util/minionStatsEmbed.js';
 import { getPeakTimesString } from '@/lib/util/peaks.js';
 import { refreshUserCache } from '@/lib/util/refreshCache.js';
-import { isValidNickname, patronMsg } from '@/lib/util/smallUtils.js';
+import { findGroupOfUser, isValidNickname, patronMsg } from '@/lib/util/smallUtils.js';
 import {
 	achievementDiaryCommand,
 	claimAchievementDiaryCommand
@@ -197,9 +197,14 @@ export const minionCommand = defineCommand({
 					name: 'name',
 					description: 'The name of the bank background you want.',
 					autocomplete: async ({ value, user }: StringAutoComplete) => {
+						const allAccounts = await findGroupOfUser(user.id);
 						const bankImages = bankImageTask.backgroundImages;
 						const owned = bankImages
-							.filter(bg => bg.storeBitField && user.user.store_bitfield.includes(bg.storeBitField))
+							.filter(
+								bg =>
+									(bg.storeBitField && user.user.store_bitfield.includes(bg.storeBitField)) ||
+									bg.owners?.some(i => allAccounts.includes(i))
+							)
 							.map(bg => bg.id);
 						return bankImages
 							.filter(bg => user.isModOrAdmin() || bg.available || owned.includes(bg.id))

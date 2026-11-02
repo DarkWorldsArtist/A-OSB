@@ -58,7 +58,7 @@ export async function recordBondPlaytimeFromActivity(userId: string, durationMs:
 		}
 	});
 
-	await Cache.setRoboChimpUser(userId, updatedUser);
+	await Cache.setRoboChimpUser(updatedUser);
 }
 
 export async function syncLocalUserBondPlaytime(userId: string) {
@@ -98,7 +98,7 @@ export async function syncLocalUserBondPlaytime(userId: string) {
 		}
 	});
 
-	await Cache.setRoboChimpUser(userId, updated);
+	await Cache.setRoboChimpUser(updated);
 	return updated;
 }
 
@@ -164,8 +164,7 @@ export async function redeemUserBonds(
 
 	const useFromGifted = Math.min(giftedBonds, quantity);
 	const useFromEarned = quantity - useFromGifted;
-	const baseExpiry =
-		hasActiveBalance && roboUser.premium_balance_tier === BOND_PERK_TIER ? currentExpiry! : now;
+	const baseExpiry = hasActiveBalance && roboUser.premium_balance_tier === BOND_PERK_TIER ? currentExpiry! : now;
 	const newExpiry = baseExpiry + durationToAdd;
 
 	const updatedUser = await roboChimpClient.user.update({
@@ -180,7 +179,7 @@ export async function redeemUserBonds(
 		}
 	});
 
-	await Cache.setRoboChimpUser(user.id, updatedUser);
+	await Cache.setRoboChimpUser(updatedUser);
 	await getUsersPerkTier({ user, forceNoCache: true });
 
 	const remainingTotal = updatedUser.bonds + updatedUser.gifted_bonds;
@@ -319,10 +318,7 @@ export async function giftUserBonds(
 		})
 	]);
 
-	await Promise.all([
-		Cache.setRoboChimpUser(sender.id, updatedSender),
-		Cache.setRoboChimpUser(recipient.id, updatedRecipient)
-	]);
+	await Promise.all([Cache.setRoboChimpUser(updatedSender), Cache.setRoboChimpUser(updatedRecipient)]);
 
 	try {
 		const [senderGroup, recipientGroup] = await Promise.all([
