@@ -9,6 +9,7 @@ import type { UnderwaterAgilityThievingTrainingSkill } from '@/lib/skilling/skil
 import type { CookingMethodEnum } from '@/lib/skilling/skills/cooking/cooking.js';
 import type { IPatchData } from '@/lib/skilling/skills/farming/utils/types.js';
 import type { SharkLureQuantity } from '@/lib/skilling/skills/fishing/fishingUtil.js';
+import type { Rumour, RumourHunterID, RumourOption } from '@/lib/skilling/skills/hunter/rumours/util.js';
 import type { TwitcherGloves } from '@/lib/skilling/skills/woodcutting/woodcutting.js';
 import type { Peak } from '@/lib/util/peaks.js';
 
@@ -318,6 +319,14 @@ export interface HunterActivityTaskOptions extends ActivityTaskOptions {
 	usingHuntPotion?: boolean;
 	wildyPeak?: Peak | null;
 	usingStaminaPotion: boolean;
+}
+
+export interface RumourActivityTaskOptions extends ActivityTaskOptions {
+	type: 'Rumour';
+	tier: RumourOption;
+	hunter?: RumourHunterID;
+	quantity: number;
+	rumours: Rumour[];
 }
 
 export interface AlchingActivityTaskOptions extends ActivityTaskOptions {
@@ -707,6 +716,7 @@ export type ActivityTaskData =
 	| EnchantingActivityTaskOptions
 	| ConstructionActivityTaskOptions
 	| HunterActivityTaskOptions
+	| RumourActivityTaskOptions
 	| ZalcanoActivityTaskOptions
 	| SawmillActivityTaskOptions
 	| ButlerActivityTaskOptions
