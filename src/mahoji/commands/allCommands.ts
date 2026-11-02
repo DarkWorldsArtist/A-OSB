@@ -67,6 +67,7 @@ import { raidCommand } from '@/mahoji/commands/raid.js';
 import { redeemCommand } from '@/mahoji/commands/redeem.js';
 import { rollCommand } from '@/mahoji/commands/roll.js';
 import { rpCommand } from '@/mahoji/commands/rp.js';
+import { rumourCommand } from '@/mahoji/commands/rumour.js';
 import { runecraftCommand } from '@/mahoji/commands/runecraft.js';
 import { sacrificeCommand } from '@/mahoji/commands/sacrifice.js';
 import { sellCommand } from '@/mahoji/commands/sell.js';
@@ -120,6 +121,7 @@ export const allCommandsDONTIMPORT: AnyCommand[] = [
 	giveawayCommand,
 	helpCommand,
 	huntCommand,
+	rumourCommand,
 	giftCommand,
 	inviteCommand,
 	kcCommand,
