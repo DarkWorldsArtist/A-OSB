@@ -44,6 +44,7 @@ export const mixologyHerbs: MixologyHerb[] = baseHerbs.flatMap(({ base, paste, q
 ]);
 
 export interface MixologyContract {
+	id: number;
 	name: string;
 	pasteSequence: MixologyPaste[];
 	requiredLevel: number;
@@ -57,6 +58,7 @@ export interface WeightedItem {
 
 export const mixologyContracts: MixologyContract[] = [
 	{
+		id: 0,
 		name: 'Alco-AugmentAtor',
 		pasteSequence: ['Aga', 'Aga', 'Aga'],
 		requiredLevel: 60,
@@ -64,6 +66,7 @@ export const mixologyContracts: MixologyContract[] = [
 		weight: 5
 	},
 	{
+		id: 1,
 		name: 'Mammoth-Might Mix',
 		pasteSequence: ['Mox', 'Mox', 'Mox'],
 		requiredLevel: 60,
@@ -71,6 +74,7 @@ export const mixologyContracts: MixologyContract[] = [
 		weight: 5
 	},
 	{
+		id: 2,
 		name: 'LipLack Liquor',
 		pasteSequence: ['Lye', 'Lye', 'Lye'],
 		requiredLevel: 60,
@@ -78,6 +82,7 @@ export const mixologyContracts: MixologyContract[] = [
 		weight: 5
 	},
 	{
+		id: 3,
 		name: 'Mystic Mana Amalgam',
 		pasteSequence: ['Mox', 'Mox', 'Aga'],
 		requiredLevel: 63,
@@ -85,6 +90,7 @@ export const mixologyContracts: MixologyContract[] = [
 		weight: 4
 	},
 	{
+		id: 4,
 		name: "Marley's MoonLight",
 		pasteSequence: ['Mox', 'Mox', 'Lye'],
 		requiredLevel: 66,
@@ -92,6 +98,7 @@ export const mixologyContracts: MixologyContract[] = [
 		weight: 4
 	},
 	{
+		id: 5,
 		name: 'Azure Aura Mix',
 		pasteSequence: ['Aga', 'Aga', 'Mox'],
 		requiredLevel: 69,
@@ -99,6 +106,7 @@ export const mixologyContracts: MixologyContract[] = [
 		weight: 4
 	},
 	{
+		id: 6,
 		name: 'AquaLux Amalgam',
 		pasteSequence: ['Aga', 'Lye', 'Aga'],
 		requiredLevel: 72,
@@ -106,6 +114,7 @@ export const mixologyContracts: MixologyContract[] = [
 		weight: 4
 	},
 	{
+		id: 7,
 		name: 'MegaLite Liquid',
 		pasteSequence: ['Mox', 'Lye', 'Lye'],
 		requiredLevel: 75,
@@ -113,6 +122,7 @@ export const mixologyContracts: MixologyContract[] = [
 		weight: 4
 	},
 	{
+		id: 8,
 		name: 'Anti-Leech Lotion',
 		pasteSequence: ['Aga', 'Lye', 'Lye'],
 		requiredLevel: 78,
@@ -120,6 +130,7 @@ export const mixologyContracts: MixologyContract[] = [
 		weight: 4
 	},
 	{
+		id: 9,
 		name: 'MixALot',
 		pasteSequence: ['Mox', 'Aga', 'Lye'],
 		requiredLevel: 81,
