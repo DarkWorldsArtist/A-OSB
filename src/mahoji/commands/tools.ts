@@ -910,8 +910,7 @@ export const toolsCommand = defineCommand({
 				{
 					type: 'Subcommand',
 					name: 'fixbank',
-					description:
-						'Fix known broken item IDs in your account by remapping them to the correct IDs, including active G.E. listings.'
+					description: 'Fix known broken item IDs in your account, including active G.E. listings.'
 				}
 			]
 		},
