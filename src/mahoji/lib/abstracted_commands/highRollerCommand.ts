@@ -12,6 +12,7 @@ import { Bank, type Item, Items, toKMB } from 'oldschooljs';
 import { drawHighRollerImage } from '@/lib/canvas/highRollerImage.js';
 import { BitField } from '@/lib/constants.js';
 import { marketPriceOrBotPrice } from '@/lib/marketPrices.js';
+import { trackGamblingTransaction } from '@/lib/util/gambling.js';
 import { mahojiParseNumber } from '@/mahoji/mahojiSettings.js';
 
 type HighRollerPayoutMode = 'winner_takes_all' | 'top_three';
@@ -462,6 +463,18 @@ async function payoutWinners({
 				}
 			});
 			payoutsMessages.push(`🏆 ${winner.user.badgedUsername} receives ${toKMB(amount)} GP.`);
+		}
+
+		for (const [index, result] of sortedResults.entries()) {
+			await trackGamblingTransaction(
+				{
+					userID: result.user.id,
+					type: 'high_roller',
+					amountStaked: stake,
+					pnl: (payouts[index] ?? 0) - stake
+				},
+				tx
+			);
 		}
 	});
 

@@ -18,3 +18,5 @@ All participants, including the host, are charged their stake as soon as the gam
 ## Winning
 
 Once the lobby locks in, each participant rolls a random tradeable item that is worth at least 1 GP. The item with the highest value wins the pot (or secures a place in the top-three split). The command summarises the rolls and automatically pays the winners when the round ends.
+
+Completed pots record each participant's stake and profit or loss in the dated gambling tracking. Profit or loss is the payout received minus the stake paid.
