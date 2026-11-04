@@ -190,6 +190,7 @@ export enum BitField {
 	HasRiteOfVileTransference = 59,
 	DisableRiteOfVileTransference = 60,
 	DisableDodgyNecklace = 61,
+	CompostWarning = 62,
 
 	OriginalSupporter = 199
 }
@@ -294,6 +295,11 @@ export const BitFieldData: Record<BitField, IBitFieldData> = {
 	},
 	[BitField.DisableAutoFarmButton]: {
 		name: 'Disable Auto Farm Button',
+		protected: false,
+		userConfigurable: true
+	},
+	[BitField.CompostWarning]: {
+		name: 'Compost Warning',
 		protected: false,
 		userConfigurable: true
 	},
