@@ -44,7 +44,6 @@ export interface BuildSummaryResult {
 interface CandidateEvaluationResult {
 	success: boolean;
 	error?: string;
-	blockedResponse?: Awaited<CommandResponse>;
 	plannedStep?: PlannedAutoFarmStep;
 	updatedTotalDuration?: number;
 	skippedTripLength?: boolean;
@@ -221,13 +220,6 @@ export async function evaluateCandidateForPatch({
 		compostTier
 	});
 	if (!prepared.success) {
-		if (prepared.reason === 'missing_compost') {
-			return {
-				success: false,
-				error: prepared.error,
-				blockedResponse: { content: prepared.error, allowedMentions: { users: [user.id] } }
-			};
-		}
 		return { success: false, error: prepared.error };
 	}
 
@@ -315,7 +307,6 @@ export async function selectCandidateForPatch({
 	updatedTotalDuration: number;
 	firstError: string | null;
 	skippedDueToTripLength: boolean;
-	blockedResponse: Awaited<CommandResponse> | null;
 }> {
 	let planned = false;
 	let currentTotalDuration = totalDuration;
@@ -335,15 +326,6 @@ export async function selectCandidateForPatch({
 			patches
 		});
 		if (!result.success) {
-			if (result.blockedResponse) {
-				return {
-					planned,
-					updatedTotalDuration: currentTotalDuration,
-					firstError: errorsForPatch[0] ?? null,
-					skippedDueToTripLength: skippedThisPatch,
-					blockedResponse: result.blockedResponse
-				};
-			}
 			if (result.skippedTripLength) {
 				skippedThisPatch = true;
 				skippedPatchNamesDueToTripLength.add(patch.friendlyName);
@@ -366,7 +348,6 @@ export async function selectCandidateForPatch({
 		planned,
 		updatedTotalDuration: currentTotalDuration,
 		firstError: errorsForPatch[0] ?? null,
-		skippedDueToTripLength: skippedThisPatch,
-		blockedResponse: null
+		skippedDueToTripLength: skippedThisPatch
 	};
 }

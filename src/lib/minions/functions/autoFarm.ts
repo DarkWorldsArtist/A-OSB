@@ -36,7 +36,6 @@ export interface PrepareAutoFarmResult {
 	firstPrepareError: string | null;
 	errorString: string;
 	autoFarmPlan: AutoFarmStepData[];
-	blockedResponse: Awaited<CommandResponse> | null;
 }
 
 export async function planAutoFarmTrip(
@@ -129,22 +128,6 @@ export async function planAutoFarmTrip(
 			plannedSteps
 		});
 
-		if (selection.blockedResponse) {
-			const autoFarmPlan = buildAutoFarmPlan(plannedSteps, Date.now());
-			return {
-				plannedSteps,
-				totalDuration: selection.updatedTotalDuration,
-				totalCost,
-				maxTripLength,
-				skippedDueToTripLength: skippedDueToTripLength || selection.skippedDueToTripLength,
-				skippedPatchNamesDueToTripLength: [...skippedPatchNamesDueToTripLength],
-				firstPrepareError,
-				errorString,
-				autoFarmPlan,
-				blockedResponse: selection.blockedResponse
-			};
-		}
-
 		totalDuration = selection.updatedTotalDuration;
 		skippedDueToTripLength = skippedDueToTripLength || selection.skippedDueToTripLength;
 		if (!selection.planned && selection.firstError && !firstPrepareError) {
@@ -163,8 +146,7 @@ export async function planAutoFarmTrip(
 		skippedPatchNamesDueToTripLength: [...skippedPatchNamesDueToTripLength],
 		firstPrepareError,
 		errorString,
-		autoFarmPlan,
-		blockedResponse: null
+		autoFarmPlan
 	};
 }
 
@@ -188,13 +170,8 @@ export async function autoFarm(
 		skippedPatchNamesDueToTripLength,
 		firstPrepareError,
 		errorString,
-		autoFarmPlan,
-		blockedResponse
+		autoFarmPlan
 	} = planning;
-
-	if (blockedResponse) {
-		return blockedResponse;
-	}
 
 	if (plannedSteps.length === 0) {
 		if (firstPrepareError !== null) {

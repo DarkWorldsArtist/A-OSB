@@ -154,7 +154,7 @@ export async function minionStatusCommand(
 	}
 
 	return {
-		content: status ?? '',
+		content: status,
 		components: buttons
 	};
 }

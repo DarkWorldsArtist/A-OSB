@@ -146,7 +146,6 @@ async function main() {
 					slayerUnlocks: [],
 					favoriteFood: [EItem.SHARK],
 					bitfield: [],
-					hasWildyEliteDiary: false,
 					rng: MathRNG,
 					currentPeak: { peakTier: PeakTier.Medium, startTime: Date.now(), finishTime: Date.now() + 1000 }
 				});
