@@ -168,21 +168,9 @@ export function calculateGlassblowingPlan({
 		};
 	}
 
-	if (availableMoltenGlass <= 0) {
-		return { success: false, error: 'You need Molten glass to glassblow items.' };
-	}
-
-	const itemsPerHour = itemsPerHourCap;
-	const maxHoursByGlass = availableMoltenGlass / itemsPerHour;
-	const adjustedHours = Math.min(hours, maxHoursByGlass);
-	const itemsMade = Math.floor(itemsPerHour * adjustedHours);
-
-	if (itemsMade < 1) {
-		return { success: false, error: 'You need more Molten glass to glassblow any items.' };
-	}
-
+	const itemsMade = Math.min(availableMoltenGlass, Math.floor(itemsPerHourCap * hours));
 	const moltenGlassUsed = itemsMade;
 	const craftingXp = itemsMade * product.xp;
 
-	return { success: true, hours: adjustedHours, itemsMade, craftingXp, moltenGlassUsed };
+	return { success: true, hours, itemsMade, craftingXp, moltenGlassUsed };
 }

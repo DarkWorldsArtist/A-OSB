@@ -13,6 +13,7 @@ Stealing artefacts is a thieving minigame that focuses on delivery runs for coin
 - Each delivery awards coins (500-1,000 per delivery).
 - Your deliveries per hour depend on whether you have access to the teleport efficiency route and whether you bring stamina or wear Graceful.
 - Not wearing Graceful applies a **-30%** penalty, and skipping stamina applies another **-30%** penalty.
+- Selecting `stamina:true` consumes one **Stamina potion(4)** per eight minutes, rounded up, at the start of the trip. You must have enough potions for the full trip.
 - Teleport efficiency raises the base delivery rate (requires **Kharedst's memoirs** or **Book of the dead** in your bank/equipment).
 
 ### Starting a trip
@@ -23,7 +24,7 @@ Stealing artefacts is a thieving minigame that focuses on delivery runs for coin
 
 ## Glassblowing while stealing artefacts
 
-You can glassblow while doing deliveries to gain Crafting XP without reducing your Thieving XP rates. The trip duration will be capped if you run out of Molten glass for the selected product.
+You can glassblow while doing deliveries to gain Crafting XP without reducing your Thieving XP rates. Glassblowing stops when your Molten glass runs out, but your minion continues stealing artefacts for the full trip. If you have no Molten glass left, the trip proceeds without glassblowing.
 
 Start glassblowing by adding the `glassblow_product` option:
 
