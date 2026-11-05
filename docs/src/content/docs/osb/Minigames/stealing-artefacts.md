@@ -15,6 +15,7 @@ Stealing artefacts is a thieving minigame that focuses on delivery runs for coin
 - Not wearing Graceful applies a **-30%** penalty, and skipping stamina applies another **-30%** penalty.
 - Selecting `stamina:true` consumes one **Stamina potion(4)** per eight minutes, rounded up, at the start of the trip. You must have enough potions for the full trip.
 - Teleport efficiency raises the base delivery rate (requires **Kharedst's memoirs** or **Book of the dead** in your bank/equipment).
+- If you explicitly select `teleport:true` without either book, the trip will not start and explains the missing requirement. Leaving the option blank automatically uses teleport efficiency when available; otherwise the trip proceeds without the boost and explains the missing requirement. Selecting `teleport:false` disables teleport efficiency without a warning.
 
 ### Starting a trip
 

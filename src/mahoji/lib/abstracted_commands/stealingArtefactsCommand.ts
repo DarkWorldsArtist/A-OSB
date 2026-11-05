@@ -37,6 +37,13 @@ export async function stealingArtefactsCommand(
 		hasBook: user.hasEquippedOrInBank('Book of the dead'),
 		questCompleted: true
 	});
+	let teleportNote = '';
+	if (teleportOptionEnabled && !teleportEligible) {
+		const requirement =
+			"You need Kharedst's memoirs or Book of the dead in your bank or equipment to use teleport efficiency.";
+		if (options.teleport === true) return requirement;
+		teleportNote = `\nTeleport efficiency was not applied. ${requirement}`;
+	}
 
 	const maxTripLength = await user.calcMaxTripLength('StealingArtefacts');
 	const hasGraceful = user.hasGracefulEquipped();
@@ -138,5 +145,5 @@ export async function stealingArtefactsCommand(
 
 	return `${user.minionName} is now stealing artefacts for ${formatTripDuration(user, duration)} (${deliveries} deliveries expected).${glassblowNote}${
 		itemsToRemove.length > 0 ? ` Removed ${itemsToRemove} from your bank.` : ''
-	}${boosts.length > 0 ? `\nBoosts: ${boosts.join(', ')}.` : ''}`;
+	}${boosts.length > 0 ? `\nBoosts: ${boosts.join(', ')}.` : ''}${teleportNote}`;
 }
