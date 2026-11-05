@@ -33,14 +33,12 @@ export async function stealingArtefactsCommand(
 	const teleportOptionEnabled = options.teleport ?? true;
 	const teleportEligible = canUseStealingArtefactsTeleport({
 		teleportOptionEnabled,
-		hasMemoirs: user.hasEquippedOrInBank("Kharedst's memoirs"),
 		hasBook: user.hasEquippedOrInBank('Book of the dead'),
 		questCompleted: true
 	});
 	let teleportNote = '';
 	if (teleportOptionEnabled && !teleportEligible) {
-		const requirement =
-			"You need Kharedst's memoirs or Book of the dead in your bank or equipment to use teleport efficiency.";
+		const requirement = 'You need a Book of the dead in your bank or equipment to use teleport efficiency.';
 		if (options.teleport === true) return requirement;
 		teleportNote = `\nTeleport efficiency was not applied. ${requirement}`;
 	}
