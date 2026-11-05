@@ -625,11 +625,11 @@ export const cluesMediumCL = resolveItems([
 	"Green d'hide chaps (g)",
 	"Green d'hide chaps (t)",
 	'Saradomin mitre',
-	'Saradomin cloak',
+	10446,
 	'Guthix mitre',
 	'Guthix cloak',
 	'Zamorak mitre',
-	'Zamorak cloak',
+	10450,
 	'Ancient mitre',
 	'Ancient cloak',
 	'Ancient stole',
@@ -1279,6 +1279,15 @@ export const mahoganyHomesCL = resolveItems([
 	"Amy's saw",
 	'Plank sack',
 	'Hosidius blueprints'
+]);
+export const masteringMixologyCL = resolveItems([
+	'Prescription goggles',
+	'Alchemist labcoat',
+	'Alchemist pants',
+	'Alchemist gloves',
+	"Alchemist's amulet",
+	'Reagent pouch',
+	'Chugging barrel (disassembled)'
 ]);
 export const pestControlCL = resolveItems([
 	'Void knight mace',
