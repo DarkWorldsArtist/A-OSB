@@ -169,8 +169,8 @@ export const MasteringMixologyContractTask: MinionTask = {
 			`**Paste Used:** ${pasteSummary}`,
 			...(digweedsUsed > 0
 				? [
-					`You found ${digweedsUsed}x Digweed, doubling the XP and points from ${digweedsUsed === 1 ? 'that potion' : 'those potions'}.`
-				]
+						`You found ${digweedsUsed}x Digweed, doubling the XP and points from ${digweedsUsed === 1 ? 'that potion' : 'those potions'}.`
+					]
 				: [])
 		].join('\n');
 
