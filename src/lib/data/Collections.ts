@@ -87,6 +87,7 @@ import {
 	lastManStandingCL,
 	magicTrainingArenaCL,
 	mahoganyHomesCL,
+	masteringMixologyCL,
 	miscellaneousCL,
 	monkeyBackpacksCL,
 	motherlodeMineCL,
@@ -957,9 +958,11 @@ export const allCollectionLogs: ICollection = {
 				isActivity: true,
 				fmtProg: mgProg('mahogany_homes')
 			},
-			///	'Mastering Mixology': {
-			///		items: CollectionLog.MasteringMixology.items
-			///	},
+			'Mastering Mixology': {
+				items: masteringMixologyCL,
+				isActivity: true,
+				fmtProg: mgProg('mastering_mixology')
+			},
 			'Pest Control': {
 				items: pestControlCL,
 				isActivity: true,
