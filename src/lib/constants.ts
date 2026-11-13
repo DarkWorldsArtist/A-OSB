@@ -191,7 +191,8 @@ export enum BitField {
 	DisableRiteOfVileTransference = 60,
 	DisableDodgyNecklace = 61,
 
-	OriginalSupporter = 199
+	OriginalSupporter = 199,
+	DisableQueueRepeatButton = 239
 }
 
 export interface IBitFieldData {
@@ -359,7 +360,12 @@ export const BitFieldData: Record<BitField, IBitFieldData> = {
 	[BitField.WikiContributor]: { name: 'Wiki Contributor', protected: true, userConfigurable: false },
 	[BitField.UnlimitedGiveaways]: { name: 'Unlimited Giveaways', protected: false, userConfigurable: false },
 	[BitField.ServerSupport]: { name: 'Server Support', protected: true, userConfigurable: false },
-	[BitField.Boring]: { name: 'Boring', protected: true, userConfigurable: false }
+	[BitField.Boring]: { name: 'Boring', protected: true, userConfigurable: false },
+	[BitField.DisableQueueRepeatButton]: {
+		name: 'Disable Queue Repeat Button',
+		protected: false,
+		userConfigurable: true
+	}
 } as const;
 
 export const BadgesEnum = {

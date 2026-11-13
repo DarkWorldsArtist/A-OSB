@@ -7,7 +7,7 @@ import { MAX_QP } from '@/lib/minions/data/quests.js';
 import { resolveAttackStyles } from '@/lib/minions/functions/index.js';
 import type { Skills } from '@/lib/types/index.js';
 import type { NightmareZoneActivityTaskOptions } from '@/lib/types/minions.js';
-import { formatTripDuration } from '@/lib/util/minionUtils.js';
+import { calcDurationAndQuantity, formatTripDuration } from '@/lib/util/minionUtils.js';
 import { hasSkillReqs } from '@/lib/util/smallUtils.js';
 
 const itemBoosts = [
@@ -307,7 +307,12 @@ export async function nightmareZoneStatsCommand(user: MUser) {
 **Nightmare Zone points:** ${user.user.nmz_points} Points.`;
 }
 
-export async function nightmareZoneStartCommand(user: MUser, strategy: NMZStrategy, channelId: string) {
+export async function nightmareZoneStartCommand(
+	user: MUser,
+	strategy: NMZStrategy,
+	channelId: string,
+	durationInput?: string
+) {
 	const skillReqs: Skills = {
 		defence: 70,
 		strength: 70,
@@ -368,8 +373,9 @@ export async function nightmareZoneStartCommand(user: MUser, strategy: NMZStrate
 	}
 
 	const maxTripLength = await user.calcMaxTripLength('NightmareZone');
-	const quantity = Math.floor(maxTripLength / timePerMonster);
-	const duration = quantity * timePerMonster;
+	const trip = calcDurationAndQuantity({ durationInput, singleTime: timePerMonster, maxTripLength });
+	if (typeof trip === 'string') return trip;
+	const { quantity, duration } = trip;
 	// Consume GP (and prayer potion if experience setup)
 	// Dream GP cost
 	const dreamGP = QP >= MAX_QP ? 16_000 : 26_000;

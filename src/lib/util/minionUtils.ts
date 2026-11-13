@@ -1,4 +1,4 @@
-import { formatDurationWithTimestamp, Time } from '@oldschoolgg/toolkit';
+import { formatDurationWithTimestamp, parseDuration, Time } from '@oldschoolgg/toolkit';
 import type { Bank } from 'oldschooljs';
 
 import { BitField } from '@/lib/constants.js';
@@ -9,6 +9,41 @@ export function formatTripDuration(user: MUser, durationMs: number): string {
 	const showTimestamp = user.bitfield.includes(BitField.DisableDynamicTimestamp);
 
 	return formatDurationWithTimestamp(durationMs, user.perkTier, showTimestamp);
+}
+
+export const tripDurationOption = {
+	type: 'String',
+	name: 'duration',
+	description: 'The duration of the trip (e.g. 30m, 1h), rounded to the nearest completion.',
+	required: false
+} as const;
+
+export function calcDurationAndQuantity({
+	durationInput,
+	singleTime,
+	maxTripLength
+}: {
+	durationInput?: string;
+	singleTime: number;
+	maxTripLength: number;
+}): { quantity: number; duration: number } | string {
+	const maxQuantity = Math.floor(maxTripLength / singleTime);
+	if (!durationInput) {
+		const quantity = Math.max(1, maxQuantity);
+		return { quantity, duration: quantity * singleTime };
+	}
+
+	const parsedDuration = parseDuration(durationInput);
+	if (parsedDuration <= 0 || Number.isNaN(parsedDuration)) {
+		return 'Invalid duration provided. Examples of valid durations: 30m, 1h.';
+	}
+
+	if (parsedDuration > maxTripLength) {
+		return `Your maximum trip length is ${Math.floor(maxTripLength / Time.Minute)} minutes.`;
+	}
+
+	const quantity = Math.max(1, Math.min(maxQuantity, Math.round(parsedDuration / singleTime)));
+	return { quantity, duration: quantity * singleTime };
 }
 
 const MOON_KEY_ONE_IN_PER_MINUTE = 60;

@@ -12,9 +12,9 @@ import TippedBolts from '@/lib/skilling/skills/fletching/fletchables/tippedBolts
 import TippedDragonBolts from '@/lib/skilling/skills/fletching/fletchables/tippedDragonBolts.js';
 import type { Fletchable } from '@/lib/skilling/types.js';
 import type { SepulchreActivityTaskOptions } from '@/lib/types/minions.js';
-import { formatTripDuration } from '@/lib/util/minionUtils.js';
+import { calcDurationAndQuantity, formatTripDuration } from '@/lib/util/minionUtils.js';
 
-export async function sepulchreCommand(user: MUser, channelId: string, fletching?: number) {
+export async function sepulchreCommand(user: MUser, channelId: string, fletching?: number, durationInput?: string) {
 	const skills = user.skillsAsLevels;
 	const agilityLevel = skills.agility;
 	const thievingLevel = skills.thieving;
@@ -48,8 +48,11 @@ export async function sepulchreCommand(user: MUser, channelId: string, fletching
 		}
 	}
 
-	const maxLaps = Math.floor((await user.calcMaxTripLength('Sepulchre')) / lapLength);
-	const tripLength = maxLaps * lapLength;
+	const maxTripLength = await user.calcMaxTripLength('Sepulchre');
+	const trip = calcDurationAndQuantity({ durationInput, singleTime: lapLength, maxTripLength });
+	if (typeof trip === 'string') return trip;
+	const maxLaps = trip.quantity;
+	const tripLength = trip.duration;
 
 	let fletchable: Fletchable | undefined;
 

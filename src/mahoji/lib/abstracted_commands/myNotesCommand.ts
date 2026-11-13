@@ -2,16 +2,17 @@ import { Time } from '@oldschoolgg/toolkit';
 
 import removeFoodFromUser from '@/lib/minions/functions/removeFoodFromUser.js';
 import type { ActivityTaskOptionsWithQuantity } from '@/lib/types/minions.js';
-import { formatTripDuration } from '@/lib/util/minionUtils.js';
+import { calcDurationAndQuantity, formatTripDuration } from '@/lib/util/minionUtils.js';
 
-export async function myNotesCommand(user: MUser, channelId: string) {
+export async function myNotesCommand(user: MUser, channelId: string, durationInput?: string) {
 	if (await user.minionIsBusy()) {
 		return 'Your minion is busy.';
 	}
 	const oneSkeleton = 5 * Time.Second;
 	const maxTripLength = await user.calcMaxTripLength('MyNotes');
-	const quantity = Math.floor(maxTripLength / oneSkeleton);
-	const duration = quantity * oneSkeleton;
+	const trip = calcDurationAndQuantity({ durationInput, singleTime: oneSkeleton, maxTripLength });
+	if (typeof trip === 'string') return trip;
+	const { quantity, duration } = trip;
 
 	const { foodRemoved } = await removeFoodFromUser({
 		user,

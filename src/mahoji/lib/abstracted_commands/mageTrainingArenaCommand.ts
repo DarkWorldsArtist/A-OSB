@@ -4,7 +4,7 @@ import { Bank, Items, LootTable } from 'oldschooljs';
 import { getMinigame } from '@/lib/settings/settings.js';
 import type { MinigameActivityTaskOptionsWithNoChanges } from '@/lib/types/minions.js';
 import { determineRunes } from '@/lib/util/determineRunes.js';
-import { formatTripDuration } from '@/lib/util/minionUtils.js';
+import { calcDurationAndQuantity, formatTripDuration } from '@/lib/util/minionUtils.js';
 import { pizazzPointsPerHour } from '@/tasks/minions/minigames/mageTrainingArenaActivity.js';
 
 const RuneTable = new LootTable()
@@ -111,12 +111,18 @@ ${mageTrainingArenaBuyables
 Hint: Magic Training Arena is combined into 1 room, and 1 set of points - rewards take approximately the same amount of time to get. To get started use **/minigames mage_training_arena start**. You can buy rewards using **/minigames mage_training_arena buy**.`;
 }
 
-export async function mageTrainingArenaStartCommand(user: MUser, channelId: string): CommandResponse {
+export async function mageTrainingArenaStartCommand(
+	user: MUser,
+	channelId: string,
+	durationInput?: string
+): CommandResponse {
 	if (await user.minionIsBusy()) return `${user.minionName} is currently busy.`;
 
 	const roomDuration = Time.Minute * 14;
-	const quantity = Math.floor((await user.calcMaxTripLength('MageTrainingArena')) / roomDuration);
-	const duration = quantity * roomDuration;
+	const maxTripLength = await user.calcMaxTripLength('MageTrainingArena');
+	const trip = calcDurationAndQuantity({ durationInput, singleTime: roomDuration, maxTripLength });
+	if (typeof trip === 'string') return trip;
+	const { quantity, duration } = trip;
 
 	const cost = determineRunes(user, new Bank().add(RuneTable.roll())).multiply(quantity);
 

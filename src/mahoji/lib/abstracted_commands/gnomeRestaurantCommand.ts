@@ -3,9 +3,10 @@ import { Bank } from 'oldschooljs';
 
 import { getPOHObject } from '@/lib/poh/index.js';
 import type { GnomeRestaurantActivityTaskOptions } from '@/lib/types/minions.js';
+import { calcDurationAndQuantity } from '@/lib/util/minionUtils.js';
 import { getPOH } from '@/mahoji/lib/abstracted_commands/pohCommand.js';
 
-export async function gnomeRestaurantCommand(rng: RNGProvider, user: MUser, channelId: string) {
+export async function gnomeRestaurantCommand(rng: RNGProvider, user: MUser, channelId: string, durationInput?: string) {
 	let deliveryLength = Time.Minute * 7;
 
 	const itemsToRemove = new Bank();
@@ -77,8 +78,11 @@ export async function gnomeRestaurantCommand(rng: RNGProvider, user: MUser, chan
 		}
 	}
 
-	const quantity = Math.floor((await user.calcMaxTripLength('GnomeRestaurant')) / deliveryLength);
-	const duration = rng.randomVariation(deliveryLength * quantity, 5);
+	const maxTripLength = await user.calcMaxTripLength('GnomeRestaurant');
+	const trip = calcDurationAndQuantity({ durationInput, singleTime: deliveryLength, maxTripLength });
+	if (typeof trip === 'string') return trip;
+	const { quantity } = trip;
+	const duration = rng.randomVariation(trip.duration, 5);
 
 	if (user.skillsAsLevels.magic >= 66) {
 		const maxLawRunes = Math.max(1, Math.floor(quantity * 1.5));
