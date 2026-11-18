@@ -902,13 +902,19 @@ GROUP BY "bankBackground";`);
 	},
 	{
 		name: 'Gambling PNL',
-		run: async (_, stats) => {
-			const gpDice = toKMB(Number(stats.gp_dice) || 0);
-			const gpLuckyPick = toKMB(Number(stats.gp_luckypick) || 0);
-			const gpSlots = toKMB(Number(stats.gp_slots) || 0);
+		run: async (user, stats) => {
+			const highRollerResult = await prisma.gamblingTransaction.aggregate({
+				where: { user_id: BigInt(user.id), type: 'high_roller' },
+				_sum: { pnl: true }
+			});
+			const gpDice = Number(stats.gp_dice) || 0;
+			const gpLuckyPick = Number(stats.gp_luckypick) || 0;
+			const gpSlots = Number(stats.gp_slots) || 0;
+			const gpHighRoller = Number(highRollerResult._sum.pnl ?? 0);
+			const total = gpDice + gpLuckyPick + gpSlots + gpHighRoller;
 
 			return {
-				content: `**Dicing:** ${gpDice}\n**Lucky Pick:** ${gpLuckyPick}\n**Slots:** ${gpSlots}`
+				content: `**Dicing:** ${toKMB(gpDice)}\n**Lucky Pick:** ${toKMB(gpLuckyPick)}\n**Slots:** ${toKMB(gpSlots)}\n**High Roller Pot:** ${toKMB(gpHighRoller)}\n\n**Total:** ${toKMB(total)}`
 			};
 		},
 		perkTierNeeded: PerkTier.Four
