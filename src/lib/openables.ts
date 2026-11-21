@@ -27,6 +27,7 @@ import {
 	itemID,
 	LarransChest,
 	LootTable,
+	MaggotEggs,
 	MasterMimicTable,
 	Monsters,
 	MoonKeyChest,
@@ -245,6 +246,14 @@ for (const clueTier of ClueTiers) {
 }
 
 const osjsOpenables: UnifiedOpenable[] = [
+	...MaggotEggs.map(egg => ({
+		name: egg.name,
+		id: egg.id,
+		openedItem: Items.getOrThrow(egg.id),
+		aliases: egg.aliases,
+		output: egg.table,
+		allItems: egg.allItems
+	})),
 	{
 		name: 'Brimstone chest',
 		id: 23_083,

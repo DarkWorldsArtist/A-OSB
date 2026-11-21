@@ -112,6 +112,7 @@ function getSlayerContext({
 
 interface newOptions {
 	type: 'MonsterKilling';
+	takeEggs?: boolean;
 	monster: KillableMonster;
 	q: number;
 	iQty?: number;
@@ -293,6 +294,7 @@ export function doMonsterTrip(data: newOptions) {
 	}
 
 	const killOptions: MonsterKillOptions = {
+		takeEggs: monster.id === EMonster.MAGGOT_KING && data.takeEggs === true,
 		onSlayerTask: slayerContext.isOnTask,
 		slayerMaster: slayerContext.isOnTask ? slayerContext.slayerMaster.osjsEnum : undefined,
 		hasSuperiors: superiorTable,
