@@ -28,6 +28,7 @@ import {
 } from './Implings.js';
 import { IntricatePouch } from './IntricatePouch.js';
 import { LarransChest } from './LarransChest.js';
+import { MaggotEggs } from './MaggotEgg.js';
 import { MoonKeyChest } from './MoonKeyChest.js';
 import { MuddyChest } from './MuddyChest.js';
 import { MysteryBox } from './MysteryBox.js';
@@ -36,6 +37,7 @@ import { NestBoxRing } from './NestBoxRing.js';
 import { NestBoxSeeds } from './NestBoxSeeds.js';
 import { OgreCoffin } from './OgreCoffin.js';
 import { GiantsFoundryOrePack, VolcanicMineOrePack } from './OrePack.js';
+import { AdeptPotionPack, ApprenticePotionPack, ExpertPotionPack } from './PotionPacks.js';
 import { SeedPackOpenable as SeedPack } from './SeedPack.js';
 import { SinisterChest } from './SinisterChest.js';
 import { ZombiePiratesLocker } from './ZombiePiratesLocker.js';
@@ -77,6 +79,9 @@ export {
 	LuckyImpling,
 	VolcanicMineOrePack,
 	GiantsFoundryOrePack,
+	ApprenticePotionPack,
+	AdeptPotionPack,
+	ExpertPotionPack,
 	IntricatePouch,
 	BasicSack,
 	AdeptSack,
@@ -87,6 +92,7 @@ export {
 };
 
 const openablesObject: Record<string, SimpleOpenable> = {
+	...Object.fromEntries(MaggotEggs.map(egg => [egg.name, egg])),
 	MysteryBox,
 	NestBoxEmpty,
 	NestBoxRing,
@@ -123,6 +129,9 @@ const openablesObject: Record<string, SimpleOpenable> = {
 	LuckyImpling,
 	VolcanicMineOrePack,
 	GiantsFoundryOrePack,
+	ApprenticePotionPack,
+	AdeptPotionPack,
+	ExpertPotionPack,
 	IntricatePouch,
 	BasicSack,
 	AdeptSack,
@@ -138,3 +147,4 @@ const Openables: Collection<number, Openable> = Object.assign(new Collection(all
 export default Openables;
 
 export * from './HallowedSack.js';
+export * from './MaggotEgg.js';

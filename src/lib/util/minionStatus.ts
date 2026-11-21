@@ -79,6 +79,7 @@ import type {
 	SmeltingActivityTaskOptions,
 	SmithingActivityTaskOptions,
 	SpecificQuestOptions,
+	StealingArtefactsActivityTaskOptions,
 	TheatreOfBloodTaskOptions,
 	TiaraRunecraftActivityTaskOptions,
 	TOAOptions,
@@ -561,6 +562,11 @@ export function minionStatus(user: MUser, currentTask: ActivityTaskData | null, 
 
 		case 'RoguesDenMaze': {
 			return `${name} is currently attempting the Rogues' Den maze. ${formattedDuration}`;
+		}
+
+		case 'StealingArtefacts': {
+			const data = currentTask as StealingArtefactsActivityTaskOptions;
+			return `${name} is currently stealing artefacts (${data.quantity} deliveries). ${formattedDuration}`;
 		}
 
 		case 'Gauntlet': {

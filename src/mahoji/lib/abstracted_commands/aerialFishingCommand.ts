@@ -1,24 +1,28 @@
 import { Time } from '@oldschoolgg/toolkit';
 
 import type { ActivityTaskOptionsWithQuantity } from '@/lib/types/minions.js';
-import { formatTripDuration } from '@/lib/util/minionUtils.js';
+import { calcDurationAndQuantity, formatTripDuration } from '@/lib/util/minionUtils.js';
 
 export async function aerialFishingCommand({
 	user,
 	channelId,
-	rng
+	rng,
+	durationInput
 }: {
 	user: MUser;
 	channelId: string;
 	rng: RNGProvider;
+	durationInput?: string;
 }) {
 	if (user.skillsAsLevels.fishing < 43 || user.skillsAsLevels.hunter < 35) {
 		return 'You need at least level 35 Hunter and 43 Fishing to do Aerial fishing.';
 	}
 
 	const timePerFish = rng.randomVariation(2, 7.5) * Time.Second;
-	const quantity = Math.floor((await user.calcMaxTripLength('AerialFishing')) / timePerFish);
-	const duration = timePerFish * quantity;
+	const maxTripLength = await user.calcMaxTripLength('AerialFishing');
+	const trip = calcDurationAndQuantity({ durationInput, singleTime: timePerFish, maxTripLength });
+	if (typeof trip === 'string') return trip;
+	const { quantity, duration } = trip;
 
 	await ActivityManager.startTrip<ActivityTaskOptionsWithQuantity>({
 		userID: user.id,

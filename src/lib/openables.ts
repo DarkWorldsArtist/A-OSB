@@ -1,6 +1,8 @@
 import type { IFarmingContract } from '@oldschoolgg/schemas';
 import { Emoji, Events, formatOrdinal } from '@oldschoolgg/toolkit';
 import {
+	AdeptPotionPack,
+	ApprenticePotionPack,
 	Bank,
 	BrimstoneChest,
 	BronzeHAMChest,
@@ -10,6 +12,7 @@ import {
 	EliteMimicTable,
 	ElvenCrystalChest,
 	EMonster,
+	ExpertPotionPack,
 	ForgottenLockbox,
 	GiantEggSacFull,
 	GiantsFoundryOrePack,
@@ -24,6 +27,7 @@ import {
 	itemID,
 	LarransChest,
 	LootTable,
+	MaggotEggs,
 	MasterMimicTable,
 	Monsters,
 	MoonKeyChest,
@@ -243,6 +247,14 @@ for (const clueTier of ClueTiers) {
 }
 
 const osjsOpenables: UnifiedOpenable[] = [
+	...MaggotEggs.map(egg => ({
+		name: egg.name,
+		id: egg.id,
+		openedItem: Items.getOrThrow(egg.id),
+		aliases: egg.aliases,
+		output: egg.table,
+		allItems: egg.allItems
+	})),
 	{
 		name: 'Brimstone chest',
 		id: 23_083,
@@ -456,6 +468,30 @@ const osjsOpenables: UnifiedOpenable[] = [
 		aliases: ['ore pack (volcanic mine)', 'volcanic', 'volcanic mine'],
 		output: VolcanicMineOrePack.table,
 		allItems: VolcanicMineOrePack.table.allItems
+	},
+	{
+		name: 'Apprentice potion pack',
+		id: 29_971,
+		openedItem: Items.getOrThrow(29_971),
+		aliases: ['apprentice potion pack'],
+		output: ApprenticePotionPack.table,
+		allItems: ApprenticePotionPack.table.allItems
+	},
+	{
+		name: 'Adept potion pack',
+		id: 29_972,
+		openedItem: Items.getOrThrow(29_972),
+		aliases: ['adept potion pack'],
+		output: AdeptPotionPack.table,
+		allItems: AdeptPotionPack.table.allItems
+	},
+	{
+		name: 'Expert potion pack',
+		id: 29_973,
+		openedItem: Items.getOrThrow(29_973),
+		aliases: ['expert potion pack'],
+		output: ExpertPotionPack.table,
+		allItems: ExpertPotionPack.table.allItems
 	},
 	{
 		name: 'Intricate pouch',

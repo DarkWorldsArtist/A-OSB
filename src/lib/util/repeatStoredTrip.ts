@@ -56,6 +56,8 @@ import type {
 	HerbloreActivityTaskOptions,
 	HunterActivityTaskOptions,
 	MahoganyHomesActivityTaskOptions,
+	MasteringMixologyContractActivityTaskOptions,
+	MasteringMixologyContractCreatingTaskOptions,
 	MinigameActivityTaskOptionsWithNoChanges,
 	MiningActivityTaskOptions,
 	MonsterActivityTaskOptions,
@@ -77,6 +79,7 @@ import type {
 	ShadesOfMortonPyreLogsOptions,
 	SmeltingActivityTaskOptions,
 	SmithingActivityTaskOptions,
+	StealingArtefactsActivityTaskOptions,
 	TempleTrekkingActivityTaskOptions,
 	TheatreOfBloodTaskOptions,
 	TiaraRunecraftActivityTaskOptions,
@@ -514,6 +517,27 @@ const tripHandlers: {
 		commandName: 'minigames',
 		args: (data: MahoganyHomesActivityTaskOptions) => ({ mahogany_homes: { start: { tier: data.tier } } })
 	},
+	[activity_type_enum.MixologyPasteCreation]: {
+		commandName: 'minigames',
+		args: (data: MasteringMixologyContractCreatingTaskOptions) => ({
+			mastering_mixology: {
+				create: {
+					herb: data.herbName,
+					quantity: data.quantity
+				}
+			}
+		})
+	},
+	[activity_type_enum.MasteringMixologyContract]: {
+		commandName: 'minigames',
+		args: (data: MasteringMixologyContractActivityTaskOptions) => ({
+			mastering_mixology: {
+				start: {
+					contracts: data.quantity
+				}
+			}
+		})
+	},
 	[activity_type_enum.Mining]: {
 		commandName: 'mine',
 		args: (data: MiningActivityTaskOptions) => ({
@@ -538,7 +562,9 @@ const tripHandlers: {
 			else if (data.bob === SlayerActivityConstants.IceBarrage) method = 'barrage';
 			else if (data.bob === SlayerActivityConstants.IceBurst) method = 'burst';
 			return {
-				name: autocompleteMonsters.find(i => i.id === data.mi)?.name ?? data.mi.toString(),
+				name: data.takeEggs
+					? 'Maggot King (Take-eggs)'
+					: (autocompleteMonsters.find(i => i.id === data.mi)?.name ?? data.mi.toString()),
 				quantity: data.iQty,
 				method,
 				wilderness: data.isInWilderness
@@ -643,6 +669,19 @@ const tripHandlers: {
 		commandName: 'minigames',
 		args: () => ({
 			rogues_den: {}
+		})
+	},
+	[activity_type_enum.StealingArtefacts]: {
+		commandName: 'minigames',
+		args: (data: StealingArtefactsActivityTaskOptions) => ({
+			stealing_artefacts: {
+				start: {
+					quantity: data.quantity,
+					stamina: data.stamina,
+					teleport: data.teleportOptionEnabled,
+					glassblow_product: data.glassblow?.product ?? 'none'
+				}
+			}
 		})
 	},
 	[activity_type_enum.Sawmill]: {

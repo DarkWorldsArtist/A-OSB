@@ -85,8 +85,10 @@ import {
 	kreeArraCL,
 	krilTsutsarothCL,
 	lastManStandingCL,
+	maggotKingCL,
 	magicTrainingArenaCL,
 	mahoganyHomesCL,
+	masteringMixologyCL,
 	miscellaneousCL,
 	monkeyBackpacksCL,
 	motherlodeMineCL,
@@ -325,6 +327,12 @@ export const allCollectionLogs: ICollection = {
 					`${stats.kcBank[Monsters.TheLeviathan.id] ?? 0} KC`,
 					`${stats.kcBank[Monsters.AwakenedTheLeviathan.id] ?? 0} Awakened KC`
 				]
+			},
+			'Maggot King': {
+				alias: ['maggot king', 'maggotking'],
+				kcActivity: Monsters.MaggotKing.name,
+				allItems: Monsters.MaggotKing.allItems,
+				items: maggotKingCL
 			},
 			Vardorvis: {
 				alias: ['vardorvis'],
@@ -958,9 +966,11 @@ export const allCollectionLogs: ICollection = {
 				isActivity: true,
 				fmtProg: mgProg('mahogany_homes')
 			},
-			///	'Mastering Mixology': {
-			///		items: CollectionLog.MasteringMixology.items
-			///	},
+			'Mastering Mixology': {
+				items: masteringMixologyCL,
+				isActivity: true,
+				fmtProg: mgProg('mastering_mixology')
+			},
 			'Pest Control': {
 				items: pestControlCL,
 				isActivity: true,

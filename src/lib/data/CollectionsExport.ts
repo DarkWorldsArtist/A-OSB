@@ -37,9 +37,9 @@ export interface ILeftListStatus {
 
 export interface IKCActivity {
 	[key: string]:
-		| string
-		| string[]
-		| ((user: MUser, minigameScores: MinigameScore[], stats: MUserStats) => Promise<number>);
+	| string
+	| string[]
+	| ((user: MUser, minigameScores: MinigameScore[], stats: MUserStats) => Promise<number>);
 }
 
 export type FormatProgressFunction = ({
@@ -625,11 +625,11 @@ export const cluesMediumCL = resolveItems([
 	"Green d'hide chaps (g)",
 	"Green d'hide chaps (t)",
 	'Saradomin mitre',
-	'Saradomin cloak',
+	10446,
 	'Guthix mitre',
 	'Guthix cloak',
 	'Zamorak mitre',
-	'Zamorak cloak',
+	10450,
 	'Ancient mitre',
 	'Ancient cloak',
 	'Ancient stole',
@@ -1280,6 +1280,15 @@ export const mahoganyHomesCL = resolveItems([
 	'Plank sack',
 	'Hosidius blueprints'
 ]);
+export const masteringMixologyCL = resolveItems([
+	'Prescription goggles',
+	'Alchemist labcoat',
+	'Alchemist pants',
+	'Alchemist gloves',
+	"Alchemist's amulet",
+	'Reagent pouch',
+	'Chugging barrel (disassembled)'
+]);
 export const pestControlCL = resolveItems([
 	'Void knight mace',
 	'Void knight top',
@@ -1379,6 +1388,7 @@ export const aerialFishingCL = resolveItems([
 ]);
 export const allPetsCL = resolveItems([
 	'Beef',
+	'Maggot marquess',
 	'Abyssal orphan',
 	'Ikkle hydra',
 	'Callisto cub',
@@ -2293,3 +2303,5 @@ export const avasDevices: { item: Item; reduction: number }[] = [
 	{ item: Items.getOrThrow("Ava's accumulator"), reduction: 72 },
 	{ item: Items.getOrThrow("Ava's assembler"), reduction: 80 }
 ];
+
+export const maggotKingCL = resolveItems(['Maggot marquess', 'Crimson kisten', 'Elder venator fang']);

@@ -3,7 +3,9 @@ import { NMZ_STRATEGY } from '@/lib/constants.js';
 import TrekShopItems from '@/lib/data/buyables/trekBuyables.js';
 import { ValeTotemsBuyables, ValeTotemsSellables } from '@/lib/data/buyables/valeTotemsBuyables.js';
 import { LMSBuyables } from '@/lib/data/CollectionsExport.js';
+import { masteringMixologyBuyables, mixologyHerbs } from '@/lib/minions/data/masteringMixology.js';
 import { zeroTimeFletchables } from '@/lib/skilling/skills/fletching/fletchables/index.js';
+import { tripDurationOption } from '@/lib/util/minionUtils.js';
 import {
 	agilityArenaBuyables,
 	agilityArenaBuyCommand,
@@ -46,6 +48,12 @@ import {
 	mahoganyHomesPointsCommand
 } from '@/mahoji/lib/abstracted_commands/mahoganyHomesCommand.js';
 import {
+	MasteringMixologyBuyCommand,
+	MasteringMixologyContractStartCommand,
+	MasteringMixologyStatusCommand,
+	MixologyPasteCreationCommand
+} from '@/mahoji/lib/abstracted_commands/masteringMixologyCommand.js';
+import {
 	nightmareZoneBuyables,
 	nightmareZoneImbueables,
 	nightmareZoneImbueCommand,
@@ -78,6 +86,7 @@ import {
 	soulWarsImbueCommand,
 	soulWarsStartCommand
 } from '@/mahoji/lib/abstracted_commands/soulWarsCommand.js';
+import { stealingArtefactsCommand } from '@/mahoji/lib/abstracted_commands/stealingArtefactsCommand.js';
 import { tearsOfGuthixCommand } from '@/mahoji/lib/abstracted_commands/tearsOfGuthixCommand.js';
 import { trekCommand, trekShop } from '@/mahoji/lib/abstracted_commands/trekCommand.js';
 import { troubleBrewingStartCommand } from '@/mahoji/lib/abstracted_commands/troubleBrewingCommand.js';
@@ -112,7 +121,8 @@ export const minigamesCommand = defineCommand({
 				{
 					type: 'Subcommand',
 					name: 'start',
-					description: 'Start a trip.'
+					description: 'Start a trip.',
+					options: [tripDurationOption]
 				},
 				{
 					type: 'Subcommand',
@@ -282,7 +292,8 @@ export const minigamesCommand = defineCommand({
 				{
 					type: 'Subcommand',
 					name: 'start',
-					description: 'Start a trip.'
+					description: 'Start a trip.',
+					options: [tripDurationOption]
 				},
 				{
 					type: 'Subcommand',
@@ -348,7 +359,8 @@ export const minigamesCommand = defineCommand({
 				{
 					type: 'Subcommand',
 					name: 'start',
-					description: 'Start a trip.'
+					description: 'Start a trip.',
+					options: [tripDurationOption]
 				}
 			]
 		},
@@ -365,7 +377,8 @@ export const minigamesCommand = defineCommand({
 				{
 					type: 'Subcommand',
 					name: 'start',
-					description: 'Start a trip.'
+					description: 'Start a trip.',
+					options: [tripDurationOption]
 				}
 			]
 		},
@@ -492,7 +505,8 @@ export const minigamesCommand = defineCommand({
 										value: i.id
 									}));
 							}
-						}
+						},
+						tripDurationOption
 					]
 				}
 			]
@@ -517,7 +531,8 @@ export const minigamesCommand = defineCommand({
 							name: 'corrupted',
 							description: 'Corrupted Gauntlet.',
 							required: false
-						}
+						},
+						tripDurationOption
 					]
 				}
 			]
@@ -535,7 +550,8 @@ export const minigamesCommand = defineCommand({
 				{
 					type: 'Subcommand',
 					name: 'start',
-					description: 'Start a trip.'
+					description: 'Start a trip.',
+					options: [tripDurationOption]
 				},
 				{
 					type: 'Subcommand',
@@ -589,7 +605,8 @@ export const minigamesCommand = defineCommand({
 									.filter(i => (!value ? true : i.name.toLowerCase().includes(value.toLowerCase())))
 									.map(i => ({ name: i.name, value: i.tier.toString() }));
 							}
-						}
+						},
+						tripDurationOption
 					]
 				},
 				{
@@ -629,6 +646,98 @@ export const minigamesCommand = defineCommand({
 		},
 		/**
 		 *
+		 * Mastering Mixology
+		 *
+		 */
+		{
+			name: 'mastering_mixology',
+			description: 'The Mastering Mixology minigame.',
+			type: 'SubcommandGroup',
+			options: [
+				{
+					type: 'Subcommand',
+					name: 'create',
+					description: 'Choose a herb to use for creating mixology paste.',
+					options: [
+						{
+							type: 'String',
+							name: 'herb',
+							description: 'The herb you want to use for paste.',
+							required: true,
+							autocomplete: async ({ value, user }: StringAutoComplete) => {
+								return mixologyHerbs
+									.filter(h => (!value ? true : h.name.toLowerCase().includes(value.toLowerCase())))
+									.map(h => {
+										const qty = user.bank.amount(h.name);
+										return {
+											name: `${h.name}${qty > 0 ? ` (${qty}x Owned)` : ''}`,
+											value: h.name
+										};
+									})
+									.slice(0, 25);
+							}
+						},
+						{
+							type: 'Integer',
+							name: 'quantity',
+							description: 'How many herbs to use.',
+							required: false,
+							min_value: 1
+						}
+					]
+				},
+				{
+					type: 'Subcommand',
+					name: 'start',
+					description: 'Start a mixology trip.',
+					options: [
+						{
+							type: 'Integer',
+							name: 'contracts',
+							description: 'How many contracts to do.',
+							required: false,
+							min_value: 1
+						}
+					]
+				},
+				{
+					type: 'Subcommand',
+					name: 'buy',
+					description: 'Buy items with mixology points.',
+					options: [
+						{
+							type: 'String',
+							name: 'name',
+							required: true,
+							description: 'The item to buy.',
+							autocomplete: async ({ value }: StringAutoComplete) => {
+								return masteringMixologyBuyables
+									.filter(i =>
+										!value ? true : i.item.name.toLowerCase().includes(value.toLowerCase())
+									)
+									.map(i => ({ name: i.item.name, value: i.item.name }));
+							}
+						},
+						{
+							type: 'Integer',
+							name: 'quantity',
+							description: 'Quantity.',
+							required: false,
+							min_value: 1,
+							max_value: 1000
+						}
+					]
+				},
+				{
+					type: 'Subcommand',
+					name: 'status',
+					description: 'Show your mixology status.'
+				}
+			]
+		},
+
+		/**
+		 *
 		 * Tears of Guthix
 		 *
 		 */
@@ -657,7 +766,8 @@ export const minigamesCommand = defineCommand({
 				{
 					type: 'Subcommand',
 					name: 'start',
-					description: 'Start a trip.'
+					description: 'Start a trip.',
+					options: [tripDurationOption]
 				}
 			]
 		},
@@ -674,7 +784,63 @@ export const minigamesCommand = defineCommand({
 				{
 					type: 'Subcommand',
 					name: 'start',
-					description: 'Start a trip.'
+					description: 'Start a trip.',
+					options: [tripDurationOption]
+				}
+			]
+		},
+		/**
+		 *
+		 * Stealing artefacts
+		 *
+		 */
+		{
+			name: 'stealing_artefacts',
+			description: 'The Stealing artefacts minigame.',
+			type: 'SubcommandGroup',
+			options: [
+				{
+					type: 'Subcommand',
+					name: 'start',
+					description: 'Start a trip.',
+					options: [
+						{
+							type: 'Integer',
+							name: 'quantity',
+							description: 'Deliveries to complete.',
+							required: false,
+							min_value: 1
+						},
+						{
+							type: 'Boolean',
+							name: 'stamina',
+							description: 'Use stamina for a 30% boost.',
+							required: false
+						},
+						{
+							type: 'Boolean',
+							name: 'teleport',
+							description: 'Enable teleport efficiency checks.',
+							required: false
+						},
+						{
+							type: 'String',
+							name: 'glassblow_product',
+							description: 'Glassblow while stealing artefacts.',
+							required: false,
+							choices: choicesOf([
+								'none',
+								'beer_glass',
+								'empty_candle_lantern',
+								'empty_oil_lamp',
+								'vial',
+								'empty_fishbowl',
+								'unpowered_orb',
+								'lantern_lens',
+								'empty_light_orb'
+							])
+						}
+					]
 				}
 			]
 		},
@@ -691,7 +857,8 @@ export const minigamesCommand = defineCommand({
 				{
 					type: 'Subcommand',
 					name: 'start',
-					description: 'Start a trip.'
+					description: 'Start a trip.',
+					options: [tripDurationOption]
 				},
 				{
 					type: 'Subcommand',
@@ -862,7 +1029,8 @@ export const minigamesCommand = defineCommand({
 				{
 					type: 'Subcommand',
 					name: 'start',
-					description: 'Start a trip.'
+					description: 'Start a trip.',
+					options: [tripDurationOption]
 				}
 			]
 		},
@@ -943,7 +1111,8 @@ export const minigamesCommand = defineCommand({
 							description: 'Craft combination runes for extra points.',
 							type: 'Boolean',
 							required: false
-						}
+						},
+						tripDurationOption
 					]
 				}
 			]
@@ -964,7 +1133,8 @@ export const minigamesCommand = defineCommand({
 							description: 'The strategy to use.',
 							required: true,
 							choices: choicesOf(NMZ_STRATEGY)
-						}
+						},
+						tripDurationOption
 					]
 				},
 				{
@@ -1042,13 +1212,15 @@ export const minigamesCommand = defineCommand({
 							type: 'String',
 							required: true,
 							choices: shadesLogs.map(i => ({ name: i.oiledLog.name, value: i.oiledLog.name }))
-						}
+						},
+						tripDurationOption
 					]
 				},
 				{
 					type: 'Subcommand',
 					name: 'sacred_oil',
-					description: "Sanctify Olive oil(4) into Sacred oil(4) at the Mort'ton temple (400/hr)."
+					description: "Sanctify Olive oil(4) into Sacred oil(4) at the Mort'ton temple (400/hr).",
+					options: [tripDurationOption]
 				},
 				{
 					type: 'Subcommand',
@@ -1104,7 +1276,8 @@ export const minigamesCommand = defineCommand({
 							name: 'stamina_pot',
 							description: 'Whether to use Stamina Potion for trip.',
 							required: false
-						}
+						},
+						tripDurationOption
 					]
 				},
 				{
@@ -1179,7 +1352,7 @@ export const minigamesCommand = defineCommand({
 		 *
 		 */
 		if (options.barb_assault?.start) {
-			return barbAssaultStartCommand(interaction);
+			return barbAssaultStartCommand(interaction, options.barb_assault.start.duration);
 		}
 		if (options.barb_assault?.buy) {
 			return barbAssaultBuyCommand(
@@ -1238,7 +1411,7 @@ export const minigamesCommand = defineCommand({
 			);
 		}
 		if (options.pest_control?.start) {
-			return pestControlStartCommand(user, channelId);
+			return pestControlStartCommand(user, channelId, options.pest_control.start.duration);
 		}
 		if (options.pest_control?.buy) {
 			return pestControlBuyCommand(user, options.pest_control.buy.name);
@@ -1249,14 +1422,18 @@ export const minigamesCommand = defineCommand({
 		 * Fishing Trawler
 		 *
 		 */
-		if (options.fishing_trawler?.start) return fishingTrawlerCommand(user, channelId);
+		if (options.fishing_trawler?.start) {
+			return fishingTrawlerCommand(user, channelId, options.fishing_trawler.start.duration);
+		}
 
 		/**
 		 *
 		 * Gnome Restaurant
 		 *
 		 */
-		if (options.gnome_restaurant?.start) return gnomeRestaurantCommand(rng, user, channelId);
+		if (options.gnome_restaurant?.start) {
+			return gnomeRestaurantCommand(rng, user, channelId, options.gnome_restaurant.start.duration);
+		}
 
 		/**
 		 *
@@ -1281,7 +1458,7 @@ export const minigamesCommand = defineCommand({
 		 */
 		if (options.sepulchre?.start) {
 			const fletchingItem = options.sepulchre.start.fletching;
-			return sepulchreCommand(user, channelId, fletchingItem);
+			return sepulchreCommand(user, channelId, fletchingItem, options.sepulchre.start.duration);
 		}
 
 		/**
@@ -1290,7 +1467,13 @@ export const minigamesCommand = defineCommand({
 		 *
 		 */
 		if (options.gauntlet?.start) {
-			return gauntletCommand(rng, user, channelId, options.gauntlet.start.corrupted ? 'corrupted' : 'normal');
+			return gauntletCommand(
+				rng,
+				user,
+				channelId,
+				options.gauntlet.start.corrupted ? 'corrupted' : 'normal',
+				options.gauntlet.start.duration
+			);
 		}
 		/**
 		 *
@@ -1302,7 +1485,7 @@ export const minigamesCommand = defineCommand({
 				return mageTrainingArenaBuyCommand(user, options.mage_training_arena.buy.name);
 			}
 			if (options.mage_training_arena.start) {
-				return mageTrainingArenaStartCommand(user, channelId);
+				return mageTrainingArenaStartCommand(user, channelId, options.mage_training_arena.start.duration);
 			}
 			if (options.mage_training_arena.points) {
 				return mageTrainingArenaPointsCommand(user);
@@ -1323,11 +1506,46 @@ export const minigamesCommand = defineCommand({
 				);
 			}
 			if (options.mahogany_homes.start) {
-				return mahoganyHomesBuildCommand(rng, user, channelId, options.mahogany_homes.start.tier);
+				return mahoganyHomesBuildCommand(
+					rng,
+					user,
+					channelId,
+					options.mahogany_homes.start.tier,
+					options.mahogany_homes.start.duration
+				);
 			}
 			if (options.mahogany_homes.points) {
 				return mahoganyHomesPointsCommand(user);
 			}
+		}
+		/**
+		 *
+		 * Mastering Mixology
+		 *
+		 */
+		if (options.mastering_mixology?.create) {
+			return MixologyPasteCreationCommand(
+				user,
+				channelId,
+				options.mastering_mixology.create.herb,
+				options.mastering_mixology.create.quantity
+			);
+		}
+
+		if (options.mastering_mixology?.buy) {
+			return MasteringMixologyBuyCommand(
+				user,
+				options.mastering_mixology.buy.name,
+				options.mastering_mixology.buy.quantity
+			);
+		}
+
+		if (options.mastering_mixology?.start) {
+			return MasteringMixologyContractStartCommand(user, channelId, options.mastering_mixology.start.contracts);
+		}
+
+		if (options.mastering_mixology?.status) {
+			return MasteringMixologyStatusCommand(user);
 		}
 
 		/**
@@ -1344,8 +1562,8 @@ export const minigamesCommand = defineCommand({
 		 * Pyramid Plunder
 		 *
 		 */
-		if (options.pyramid_plunder) {
-			return pyramidPlunderCommand(user, channelId);
+		if (options.pyramid_plunder?.start) {
+			return pyramidPlunderCommand(user, channelId, options.pyramid_plunder.start.duration);
 		}
 
 		/**
@@ -1353,8 +1571,17 @@ export const minigamesCommand = defineCommand({
 		 * Rogues Den
 		 *
 		 */
-		if (options.rogues_den) {
-			return roguesDenCommand(user, channelId);
+		if (options.rogues_den?.start) {
+			return roguesDenCommand(user, channelId, options.rogues_den.start.duration);
+		}
+
+		/**
+		 *
+		 * Stealing artefacts
+		 *
+		 */
+		if (options.stealing_artefacts?.start) {
+			return stealingArtefactsCommand(user, channelId, options.stealing_artefacts.start);
 		}
 
 		/**
@@ -1364,7 +1591,7 @@ export const minigamesCommand = defineCommand({
 		 */
 		if (options.soul_wars) {
 			if (options.soul_wars.start) {
-				return soulWarsStartCommand(rng, user, channelId);
+				return soulWarsStartCommand(rng, user, channelId, options.soul_wars.start.duration);
 			}
 			if (options.soul_wars.imbue) {
 				return soulWarsImbueCommand(user, options.soul_wars.imbue.name);
@@ -1417,8 +1644,8 @@ export const minigamesCommand = defineCommand({
 		 * Trouble Brewing
 		 *
 		 */
-		if (options.trouble_brewing) {
-			return troubleBrewingStartCommand(user, channelId);
+		if (options.trouble_brewing?.start) {
+			return troubleBrewingStartCommand(user, channelId, options.trouble_brewing.start.duration);
 		}
 
 		/**
@@ -1449,8 +1676,14 @@ export const minigamesCommand = defineCommand({
 		 * Guardians Of The Rift
 		 *
 		 */
-		if (options.gotr) {
-			return guardiansOfTheRiftStartCommand(rng, user, channelId, options.gotr.start?.combination_runes);
+		if (options.gotr?.start) {
+			return guardiansOfTheRiftStartCommand(
+				rng,
+				user,
+				channelId,
+				options.gotr.start?.combination_runes,
+				options.gotr.start?.duration
+			);
 		}
 
 		/**
@@ -1459,7 +1692,7 @@ export const minigamesCommand = defineCommand({
 		 *
 		 */
 		if (options.nmz?.start) {
-			return nightmareZoneStartCommand(user, options.nmz.start.strategy, channelId);
+			return nightmareZoneStartCommand(user, options.nmz.start.strategy, channelId, options.nmz.start.duration);
 		}
 		if (options.nmz?.buy) {
 			return nightmareZoneShopCommand(interaction, user, options.nmz.buy.item, options.nmz.buy.quantity);
@@ -1479,11 +1712,12 @@ export const minigamesCommand = defineCommand({
 				user,
 				channelId,
 				options.shades_of_morton.start.logs,
-				options.shades_of_morton.start.shade
+				options.shades_of_morton.start.shade,
+				options.shades_of_morton.start.duration
 			);
 		}
-		if (options.shades_of_morton && 'sacred_oil' in options.shades_of_morton) {
-			return shadesOfMortonSacredOilCommand(user, channelId);
+		if (options.shades_of_morton?.sacred_oil) {
+			return shadesOfMortonSacredOilCommand(user, channelId, options.shades_of_morton.sacred_oil.duration);
 		}
 		if (options.shades_of_morton?.create_pyre_logs) {
 			return shadesOfMortonCreatePyreLogsCommand(
@@ -1504,7 +1738,8 @@ export const minigamesCommand = defineCommand({
 				user,
 				channelId,
 				options.vale_totems?.start.item_to_fletch,
-				options.vale_totems?.start.stamina_pot
+				options.vale_totems?.start.stamina_pot,
+				options.vale_totems?.start.duration
 			);
 		}
 		if (options.vale_totems?.buy) {

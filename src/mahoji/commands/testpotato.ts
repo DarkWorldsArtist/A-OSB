@@ -16,6 +16,7 @@ import { spiritAnglerOutfit } from '@/lib/data/CollectionsExport.js';
 import { COXMaxMageGear, COXMaxMeleeGear, COXMaxRangeGear } from '@/lib/data/cox.js';
 import { leaguesCreatables } from '@/lib/data/creatables/leagueCreatables.js';
 import { Eatables } from '@/lib/data/eatables.js';
+import { herbloreItems } from '@/lib/data/filterables.js';
 import { TOBMaxMageGear, TOBMaxMeleeGear, TOBMaxRangeGear } from '@/lib/data/tob.js';
 import { effectiveMonsters } from '@/lib/minions/data/killableMonsters/index.js';
 import potions from '@/lib/minions/data/potions.js';
@@ -173,7 +174,86 @@ for (const gear of Items.resolveItems([
 	doomMage.equip(Items.getOrThrow(gear));
 }
 
+const maggotKingMelee = new Gear();
+for (const gear of Items.resolveItems([
+	"Inquisitor's great helm",
+	'Infernal cape',
+	'Amulet of rancour',
+	"Inquisitor's hauberk",
+	"Inquisitor's plateskirt",
+	'Ferocious gloves',
+	'Avernic defender',
+	'Primordial boots',
+	'Ultor ring',
+	"Inquisitor's mace"
+])) {
+	maggotKingMelee.equip(Items.getOrThrow(gear));
+}
+const maggotKingRange = new Gear();
+for (const gear of Items.resolveItems([
+	'Masori mask (f)',
+	"Ava's assembler",
+	'Necklace of anguish',
+	'Masori body (f)',
+	'Masori chaps (f)',
+	'Zaryte vambraces',
+	'Pegasian boots',
+	'Venator ring',
+	'Zaryte crossbow',
+	'Twisted buckler',
+	'Ruby dragon bolts (e)'
+])) {
+	maggotKingRange.equip(Items.getOrThrow(gear));
+}
+const maggotKingMage = new Gear();
+for (const gear of Items.resolveItems([
+	'Ancestral hat',
+	'Imbued zamorak cape',
+	'Occult necklace',
+	'Ancestral robe top',
+	'Ancestral robe bottom',
+	'Confliction gauntlets',
+	'Eternal boots',
+	'Magus ring',
+	'Twinflame staff',
+	'Tome of fire'
+])) {
+	maggotKingMage.equip(Items.getOrThrow(gear));
+}
+const maggotKingPreset = new Bank()
+	.add('Shark', 10_000)
+	.add('Prayer potion(4)', 1_000)
+	.add('Super combat potion(4)', 1_000)
+	.add('Ranging potion(4)', 1_000)
+	.add('Antidote++(4)', 1_000)
+	.add('Ruby dragon bolts (e)', 100_000)
+	.add('Blood rune', 100_000)
+	.add('Fire rune', 1_000_000)
+	.add('Burnt page', 10_000)
+	.add('Crimson kisten')
+	.add('Voidwaker')
+	.add('Dragon claws')
+	.add('Burning claws')
+	.add('Webweaver bow')
+	.add("Craw's bow")
+	.add('Venator bow')
+	.add('Eye of ayak')
+	.add('Chisel')
+	.add('Elder venator fang', 10)
+	.add('Necklace of anguish', 10);
 const gearPresets = [
+	{
+		name: 'Maggot King - Ranged',
+		melee: maggotKingMelee,
+		range: maggotKingRange,
+		mage: new Gear()
+	},
+	{
+		name: 'Maggot King - Magic',
+		melee: maggotKingMelee,
+		range: new Gear(),
+		mage: maggotKingMage
+	},
 	{
 		name: 'Cox',
 		melee: COXMaxMeleeGear,
@@ -330,6 +410,10 @@ for (const food of Eatables.map(food => food.id)) {
 	foodPreset.addItem(food, 100_000);
 }
 
+const herblorePreset = new Bank();
+for (const item of herbloreItems) {
+	herblorePreset.add(item, 100_000);
+}
 const anglerOutfit = resolveItems(['Angler hat', 'Angler top', 'Angler waders', 'Angler boots']);
 const fishingPreset = new Bank()
 	.add('Fish sack barrel')
@@ -465,6 +549,7 @@ for (const coffin of ['Bronze coffin', 'Steel coffin', 'Black coffin', 'Silver c
 }
 
 const spawnPresets = [
+	['maggot-king', maggotKingPreset],
 	['fishing', fishingPreset],
 	['openables', openablesBank],
 	['random', new Bank()],
@@ -476,6 +561,7 @@ const spawnPresets = [
 	['potions', potionsPreset],
 	['food', foodPreset],
 	['runes', runePreset],
+	['herblore', herblorePreset],
 	['bossing', bossingPreset],
 	['doom', doomPreset],
 	['yama', yamaPreset],

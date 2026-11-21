@@ -49,6 +49,10 @@ import { infernoTask } from '@/tasks/minions/minigames/infernoActivity.js';
 import { lmsTask } from '@/tasks/minions/minigames/lmsActivity.js';
 import { mageTrainingTask } from '@/tasks/minions/minigames/mageTrainingArenaActivity.js';
 import { mahoganyHomesTask } from '@/tasks/minions/minigames/mahoganyHomesActivity.js';
+import {
+	MasteringMixologyContractTask,
+	MixologyPasteCreationTask
+} from '@/tasks/minions/minigames/masteringMixologyActivity.js';
 import { nightmareTask } from '@/tasks/minions/minigames/nightmareActivity.js';
 import { nightmareZoneTask } from '@/tasks/minions/minigames/nightmareZoneActivity.js';
 import { pestControlTask } from '@/tasks/minions/minigames/pestControlActivity.js';
@@ -59,6 +63,7 @@ import { roguesDenTask } from '@/tasks/minions/minigames/roguesDenMazeActivity.j
 import { sepulchreTask } from '@/tasks/minions/minigames/sepulchreActivity.js';
 import { shadesOfMortonTask } from '@/tasks/minions/minigames/shadesOfMortonActivity.js';
 import { soulWarsTask } from '@/tasks/minions/minigames/soulWarsActivity.js';
+import { stealingArtefactsTask } from '@/tasks/minions/minigames/stealingArtefactsActivity.js';
 import { togTask } from '@/tasks/minions/minigames/tearsOfGuthixActivity.js';
 import { templeTrekkingTask } from '@/tasks/minions/minigames/templeTrekkingActivity.js';
 import { temporossTask } from '@/tasks/minions/minigames/temporossActivity.js';
@@ -154,6 +159,7 @@ export const allTasks: MinionTask[] = [
 	trawlerTask,
 	brewingTask,
 	roguesDenTask,
+	stealingArtefactsTask,
 	soulWarsTask,
 	wintertodtTask,
 	zalcanoTask,
@@ -222,7 +228,9 @@ export const allTasks: MinionTask[] = [
 	colosseumTask,
 	doomOfMokhaiotlTask,
 	CreateForestersRationsTask,
-	buyTask
+	buyTask,
+	MasteringMixologyContractTask,
+	MixologyPasteCreationTask
 ];
 
 for (const a of Object.values(activity_type_enum)) {

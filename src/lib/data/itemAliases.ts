@@ -106,6 +106,13 @@ setItemAlias(30_060, 'Varlamore graceful boots');
 // Supply crate (Mahogany Homes)
 setItemAlias(24_884, 'Builders supply crate');
 
+// DT2 ring/axe canonical IDs: force name lookups to resolve to live tradeable IDs.
+setItemAlias(28_316, 'Bellator ring');
+setItemAlias(28_307, 'Ultor ring');
+setItemAlias(28_313, 'Magus ring');
+setItemAlias(28_310, 'Venator ring');
+setItemAlias(28_338, 'Soulreaper axe');
+
 setItemAlias(25_344, 'Red soul cape');
 setItemAlias(25_346, 'Blue soul cape');
 
@@ -174,6 +181,7 @@ setItemAlias(11_185, 'Antique lamp 4');
 
 // Defender of varrock quest lamp
 setItemAlias(28_820, 'Antique lamp (defender of varrock)');
+setItemAlias(33_715, 'Tome of experience (The Blood Moon Rises)');
 setItemAlias(28_800, 'Antique lamp (Historian Aldo)');
 
 // Dragonfire shields

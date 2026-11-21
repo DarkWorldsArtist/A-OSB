@@ -2,9 +2,9 @@ import { formatDuration, reduceNumByPercent, Time } from '@oldschoolgg/toolkit';
 import { Bank } from 'oldschooljs';
 
 import type { MinigameActivityTaskOptionsWithNoChanges } from '@/lib/types/minions.js';
-import { formatTripDuration } from '@/lib/util/minionUtils.js';
+import { calcDurationAndQuantity, formatTripDuration } from '@/lib/util/minionUtils.js';
 
-export async function roguesDenCommand(user: MUser, channelId: string) {
+export async function roguesDenCommand(user: MUser, channelId: string, durationInput?: string) {
 	if (await user.minionIsBusy()) return `${user.minionName} is busy.`;
 	if (user.skillsAsLevels.agility < 50 || user.skillsAsLevels.thieving < 50) {
 		return "To attempt the Rogues' Den maze you need 50 Agility and 50 Thieving.";
@@ -24,13 +24,18 @@ export async function roguesDenCommand(user: MUser, channelId: string) {
 
 	baseTime = reduceNumByPercent(baseTime, skillPercentage);
 
-	let quantity = Math.floor((await user.calcMaxTripLength('RoguesDenMaze')) / baseTime);
+	const maxTripLength = await user.calcMaxTripLength('RoguesDenMaze');
+	const initialTrip = calcDurationAndQuantity({ durationInput, singleTime: baseTime, maxTripLength });
+	if (typeof initialTrip === 'string') return initialTrip;
+	let quantity = initialTrip.quantity;
 
 	if (user.hasEquippedOrInBank('Stamina potion(4)')) {
 		baseTime = reduceNumByPercent(baseTime, 50);
 
 		const potionsInBank = user.bank.amount('Stamina potion(4)');
-		const maxPossibleLaps = Math.floor((await user.calcMaxTripLength('RoguesDenMaze')) / baseTime);
+		const staminaTrip = calcDurationAndQuantity({ durationInput, singleTime: baseTime, maxTripLength });
+		if (typeof staminaTrip === 'string') return staminaTrip;
+		const maxPossibleLaps = staminaTrip.quantity;
 
 		// do as many laps as possible with the current stamina potion supply
 		quantity = Math.min(potionsInBank * 4, maxPossibleLaps);

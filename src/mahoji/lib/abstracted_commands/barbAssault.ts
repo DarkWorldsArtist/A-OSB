@@ -20,7 +20,7 @@ import { HighGambleTable, LowGambleTable, MediumGambleTable } from '@/lib/simula
 import { maxOtherStats } from '@/lib/structures/Gear.js';
 import type { MinigameActivityTaskOptionsWithNoChanges } from '@/lib/types/minions.js';
 import { displayCluesAndPets } from '@/lib/util/displayCluesAndPets.js';
-import { formatTripDuration } from '@/lib/util/minionUtils.js';
+import { calcDurationAndQuantity, formatTripDuration } from '@/lib/util/minionUtils.js';
 
 export const BarbBuyables = [
 	{
@@ -209,7 +209,7 @@ export async function barbAssaultGambleCommand(interaction: MInteraction, user: 
 	return response;
 }
 
-export async function barbAssaultStartCommand({ user, channelId, rng }: OSInteraction) {
+export async function barbAssaultStartCommand({ user, channelId, rng }: OSInteraction, durationInput?: string) {
 	const boosts = [];
 
 	let waveTime = rng.randomVariation(Time.Minute * 4, 10);
@@ -234,7 +234,10 @@ export async function barbAssaultStartCommand({ user, channelId, rng }: OSIntera
 	boosts.push(`${kcPercentBoost.toFixed(2)}% for average KC`);
 	waveTime = reduceNumByPercent(waveTime, kcPercentBoost);
 
-	let quantity = Math.floor((await user.calcMaxTripLength('BarbarianAssault')) / waveTime);
+	const maxTripLength = await user.calcMaxTripLength('BarbarianAssault');
+	const initialTrip = calcDurationAndQuantity({ durationInput, singleTime: waveTime, maxTripLength });
+	if (typeof initialTrip === 'string') return initialTrip;
+	let quantity = initialTrip.quantity;
 
 	// 10% speed boost for Venator bow
 	const venatorBowChargesPerWave = 50;
@@ -251,9 +254,10 @@ export async function barbAssaultStartCommand({ user, channelId, rng }: OSIntera
 		waveTime = reduceNumByPercent(waveTime, 10);
 	}
 
-	quantity = Math.floor((await user.calcMaxTripLength('BarbarianAssault')) / waveTime);
-
-	const duration = quantity * waveTime;
+	const finalTrip = calcDurationAndQuantity({ durationInput, singleTime: waveTime, maxTripLength });
+	if (typeof finalTrip === 'string') return finalTrip;
+	quantity = finalTrip.quantity;
+	const duration = finalTrip.duration;
 
 	boosts.push(`Each wave takes ${formatDuration(waveTime)}`);
 

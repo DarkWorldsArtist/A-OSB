@@ -3,6 +3,7 @@ import type { ItemBank } from 'oldschooljs';
 import type { CropUpgradeType } from '@/prisma/main/enums.js';
 import type { NMZStrategy } from '@/lib/constants.js';
 import type { SlayerActivityConstants } from '@/lib/minions/data/combatConstants.js';
+import type { StealingArtefactsGlassblowData } from '@/lib/minions/data/stealingArtefacts.js';
 import type { AttackStyles } from '@/lib/minions/functions/index.js';
 import type { MinigameName } from '@/lib/settings/minigames.js';
 import type { UnderwaterAgilityThievingTrainingSkill } from '@/lib/skilling/skills/agility.js';
@@ -137,6 +138,7 @@ export interface ConstructionActivityTaskOptions extends ActivityTaskOptions {
 
 export interface MonsterActivityTaskOptions extends ActivityTaskOptions {
 	type: 'MonsterKilling';
+	takeEggs?: boolean;
 	mi: number;
 	q: number;
 	iQty?: number;
@@ -444,6 +446,18 @@ export interface MahoganyHomesActivityTaskOptions extends MinigameActivityTaskOp
 	tier: number;
 }
 
+export interface MasteringMixologyContractActivityTaskOptions extends MinigameActivityTaskOptions {
+	type: 'MasteringMixologyContract';
+	quantity: number;
+	contractIDs?: number[];
+}
+
+export interface MasteringMixologyContractCreatingTaskOptions extends MinigameActivityTaskOptions {
+	type: 'MixologyPasteCreation';
+	herbName: string;
+	quantity: number;
+}
+
 export interface NightmareActivityTaskOptions extends ActivityTaskOptions {
 	type: 'Nightmare';
 	method: 'solo' | 'mass';
@@ -473,6 +487,14 @@ export interface SepulchreActivityTaskOptions extends MinigameActivityTaskOption
 export interface PlunderActivityTaskOptions extends MinigameActivityTaskOptions {
 	type: 'Plunder';
 	rooms: number[];
+}
+
+export interface StealingArtefactsActivityTaskOptions extends MinigameActivityTaskOptions {
+	type: 'StealingArtefacts';
+	stamina: boolean;
+	teleportOptionEnabled: boolean;
+	teleportEligible: boolean;
+	glassblow?: StealingArtefactsGlassblowData;
 }
 
 export interface ValeTotemsActivityTaskOptions extends MinigameActivityTaskOptions {
@@ -718,6 +740,8 @@ export type ActivityTaskData =
 	| HunterActivityTaskOptions
 	| RumourActivityTaskOptions
 	| ZalcanoActivityTaskOptions
+	| MasteringMixologyContractActivityTaskOptions
+	| MasteringMixologyContractCreatingTaskOptions
 	| SawmillActivityTaskOptions
 	| ButlerActivityTaskOptions
 	| FarmingActivityTaskOptions
@@ -753,6 +777,7 @@ export type ActivityTaskData =
 	| MiningActivityTaskOptions
 	| MotherlodeMiningActivityTaskOptions
 	| PlunderActivityTaskOptions
+	| StealingArtefactsActivityTaskOptions
 	| SmithingActivityTaskOptions
 	| SmeltingActivityTaskOptions
 	| TiaraRunecraftActivityTaskOptions
