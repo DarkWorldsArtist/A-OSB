@@ -775,7 +775,7 @@ const Buyables: Buyable[] = [
 	{
 		name: 'Chisel',
 		aliases: ['chisel', 'chisle', 'Chisle'],
-		gpCost: 100
+		gpCost: 150
 	},
 	{
 		name: 'Pestle and mortar',

@@ -287,7 +287,7 @@ function calculateDeathChance(waveKC: number, hasBF: boolean, hasSGS: boolean): 
 	const baseChance = 80;
 	const kcReduction = 80 * (1 - Math.exp(-1.5 * cappedKc));
 
-	let newChance = baseChance - kcReduction;
+	let newChance = clamp(baseChance - kcReduction, { min: 1, max: 80 });
 
 	if (hasSGS) {
 		newChance = reduceNumByPercent(newChance, 5);

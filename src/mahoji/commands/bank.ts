@@ -105,6 +105,13 @@ export const bankCommand = defineCommand({
 
 		if (options.flag) mahojiFlags.push(options.flag);
 		if (options.flag_extra) mahojiFlags.push(options.flag_extra);
+		if (
+			mahojiFlags.length === 0 &&
+			user.user.default_bank_flag &&
+			bankFlags.includes(user.user.default_bank_flag as BankFlag)
+		) {
+			mahojiFlags.push(user.user.default_bank_flag as BankFlag);
+		}
 		if (options.page && options.item) {
 			options.item = `${options.page} ${options.item}`.trim();
 			options.page = undefined;

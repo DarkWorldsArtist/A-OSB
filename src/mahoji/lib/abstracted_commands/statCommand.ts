@@ -1,4 +1,4 @@
-import { Emoji, formatDuration, PerkTier, stringMatches, sumArr, Time } from '@oldschoolgg/toolkit';
+﻿import { Emoji, formatDuration, PerkTier, stringMatches, sumArr, Time } from '@oldschoolgg/toolkit';
 import { Bank, type ItemBank, Items, Monsters, toKMB } from 'oldschooljs';
 
 import type { activity_type_enum, UserStats, xp_gains_skill_enum } from '@/prisma/main.js';
@@ -315,7 +315,7 @@ function makeResponseForBuffer(buffer: Buffer): SendableMessage {
 export const dataPoints: readonly DataPiece[] = [
 	{
 		name: 'Personal Activity Types',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result: { type: activity_type_enum; qty: number }[] =
 				await prisma.$queryRawUnsafe(`SELECT type, count(type)::int AS qty
@@ -337,7 +337,7 @@ GROUP BY type;`);
 	},
 	{
 		name: 'Personal Activity Durations (Hours)',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result: { type: activity_type_enum; hours: number }[] =
 				await prisma.$queryRawUnsafe(`SELECT type, sum(duration::bigint)::bigint / ${Time.Hour} AS hours
@@ -362,7 +362,7 @@ GROUP BY type;`);
 	},
 	{
 		name: 'Personal Monster KC',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const monsterScores = (await user.fetchMStats()).monsterScores;
 			const dataPoints: [string, number][] = Object.entries(monsterScores)
@@ -381,7 +381,7 @@ GROUP BY type;`);
 	},
 	{
 		name: 'Personal Top Bank Value Items',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const items = user.bank.items().sort(sorts.value);
 			const dataPoints: [string, number][] = items
@@ -404,7 +404,7 @@ GROUP BY type;`);
 	},
 	{
 		name: 'Personal Collection Log Progress',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const { percent } = calcCLDetails(user);
 			return makeResponseForBuffer(
@@ -445,7 +445,7 @@ GROUP BY mins;`;
 	},
 	{
 		name: 'Personal Inferno Death Times',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result: { mins: number; count: number }[] =
 				await prisma.$queryRawUnsafe(`SELECT mins, COUNT(mins)::int FROM (SELECT ((data->>'deathTime')::int / 1000 / 60) as mins
@@ -469,7 +469,7 @@ GROUP BY mins;`);
 	},
 	{
 		name: 'Personal Inferno',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const activities = await prisma.activity.findMany({
 				where: {
@@ -531,7 +531,7 @@ WHERE "skills.${skillName}" = 200000000::int;`) as Promise<{ qty: number; skill_
 	},
 	{
 		name: 'Personal Farmed Crops',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result: { plant: string; qty: number }[] =
 				await prisma.$queryRawUnsafe(`SELECT data->>'plantsName' as plant, COUNT(data->>'plantsName')::int AS qty
@@ -576,21 +576,21 @@ GROUP BY data->>'plantsName'`;
 	},
 	{
 		name: 'Personal TOB Cost',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (_, stats) => {
 			return makeResponseForBank(new Bank(stats.tob_cost as ItemBank), 'Your TOB Cost');
 		}
 	},
 	{
 		name: 'Personal TOB Loot',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (_, stats) => {
 			return makeResponseForBank(new Bank(stats.tob_loot as ItemBank), 'Your TOB Loot');
 		}
 	},
 	{
 		name: 'Personal Slayer Tasks',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const res = await getSlayerTaskStats(user.id);
 			return `**Your Top Slayer Tasks**
@@ -603,7 +603,7 @@ ${res
 	},
 	{
 		name: 'Personal Construction Stats',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await personalConstructionStats(user);
 			if (result.length === 0) return "You haven't built anything yet.";
@@ -618,7 +618,7 @@ ${result
 	},
 	{
 		name: 'Personal Alching Stats',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await personalAlchingStats(user);
 			if (result.length === 0) return "You haven't alched anything yet.";
@@ -633,7 +633,7 @@ ${result
 	},
 	{
 		name: 'Personal Herblore Stats',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser, stats) => {
 			const result = await personalHerbloreStats(user, stats);
 			if (result.length === 0) return "You haven't made anything yet.";
@@ -648,7 +648,7 @@ ${result
 	},
 	{
 		name: 'Personal Mining Stats',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await personalMiningStats(user);
 			if (result.length === 0) return "You haven't mined anything yet.";
@@ -663,7 +663,7 @@ ${result
 	},
 	{
 		name: 'Personal Firemaking Stats',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await personalFiremakingStats(user);
 			if (result.length === 0) return "You haven't burnt anything yet.";
@@ -678,7 +678,7 @@ ${result
 	},
 	{
 		name: 'Personal Smithing Stats',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await personalSmithingStats(user);
 			if (result.length === 0) return "You haven't smithed anything yet.";
@@ -693,7 +693,7 @@ ${result
 	},
 	{
 		name: 'Personal Spell Casting Stats',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await personalSpellCastStats(user);
 			if (result.length === 0) return "You haven't cast anything yet.";
@@ -707,7 +707,7 @@ ${result
 	},
 	{
 		name: 'Personal Collecting Stats',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await personalCollectingStats(user);
 			if (result.length === 0) return "You haven't collected anything yet.";
@@ -722,7 +722,7 @@ ${result
 	},
 	{
 		name: 'Personal Woodcutting Stats',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await personalWoodcuttingStats(user);
 			if (result.length === 0) return "You haven't chopped anything yet.";
@@ -737,7 +737,7 @@ ${result
 	},
 	{
 		name: 'Personal Smelting Stats',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await personalSmeltingStats(user);
 			if (result.length === 0) return "You haven't smelted anything yet.";
@@ -888,14 +888,14 @@ GROUP BY "bankBackground";`);
 	},
 	{
 		name: 'Total Items Sold',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (_, stats) => {
 			return makeResponseForBank(new Bank(stats.items_sold_bank as ItemBank), "You've sold...");
 		}
 	},
 	{
 		name: 'Total GP From Selling',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (_, stats) => {
 			return `You've received **${Number(stats.sell_gp).toLocaleString()}** GP from selling items.`;
 		}
@@ -917,11 +917,11 @@ GROUP BY "bankBackground";`);
 				content: `**Dicing:** ${toKMB(gpDice)}\n**Lucky Pick:** ${toKMB(gpLuckyPick)}\n**Slots:** ${toKMB(gpSlots)}\n**High Roller Pot:** ${toKMB(gpHighRoller)}\n\n**Total:** ${toKMB(total)}`
 			};
 		},
-		perkTierNeeded: PerkTier.Four
+		perkTierNeeded: null
 	},
 	{
 		name: 'Prayer XP from Ash Sanctifier',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (_, stats) => {
 			return `You've received **${Number(
 				stats.ash_sanctifier_prayer_xp
@@ -930,7 +930,7 @@ GROUP BY "bankBackground";`);
 	},
 	{
 		name: 'Personal XP gained from Tears of Guthix',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await prisma.$queryRawUnsafe<{ skill: xp_gains_skill_enum; total_xp: bigint }[]>(
 				`SELECT skill,
@@ -948,7 +948,7 @@ GROUP BY "bankBackground";`);
 	},
 	{
 		name: 'Personal XP gained from Forestry events',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (user: MUser) => {
 			const result = await prisma.$queryRawUnsafe<{ skill: xp_gains_skill_enum; total_xp: bigint }[]>(
 				`SELECT skill,
@@ -970,7 +970,7 @@ GROUP BY "bankBackground";`);
 	},
 	{
 		name: 'Forestry events completed',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (_, userStats) => {
 			let str = 'You have completed...\n\n';
 			for (const event of ForestryEvents) {
@@ -996,7 +996,7 @@ GROUP BY "bankBackground";`);
 	},
 	{
 		name: 'Total Giveaway Cost',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async u => {
 			const giveaways = await prisma.economyTransaction.findMany({
 				where: {
@@ -1017,7 +1017,7 @@ GROUP BY "bankBackground";`);
 	},
 	{
 		name: 'Total Giveaway Winnings/Loot',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async u => {
 			const giveaways = await prisma.economyTransaction.findMany({
 				where: {
@@ -1089,7 +1089,7 @@ ${bank
 	},
 	{
 		name: 'Random Events',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: async (_, userStats) => {
 			let str = 'You have completed...\n\n';
 			for (const event of RandomEvents) {
@@ -1101,14 +1101,14 @@ ${bank
 	},
 	{
 		name: 'Tombs of Amascut (TOA) cost',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: (_, userStats) => {
 			return makeResponseForBank(new Bank(userStats.toa_cost as ItemBank), 'Your TOA Cost');
 		}
 	},
 	{
 		name: 'Tombs of Amascut (TOA) loot',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: (_, userStats) => {
 			return makeResponseForBank(new Bank(userStats.toa_loot as ItemBank), 'Your TOA Loot');
 		}
@@ -1191,7 +1191,7 @@ ${(
 	},
 	{
 		name: 'Herbs cleaned while farming',
-		perkTierNeeded: PerkTier.Four,
+		perkTierNeeded: null,
 		run: (_, userStats) => {
 			return makeResponseForBank(
 				new Bank().add(userStats.herbs_cleaned_while_farming_bank as ItemBank),

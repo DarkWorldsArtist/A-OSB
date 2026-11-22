@@ -11,6 +11,7 @@ import { highRollerCommand } from '@/mahoji/lib/abstracted_commands/highRollerCo
 import { hotColdCommand } from '@/mahoji/lib/abstracted_commands/hotColdCommand.js';
 import { luckyPickCommand } from '@/mahoji/lib/abstracted_commands/luckyPickCommand.js';
 import { slotsCommand } from '@/mahoji/lib/abstracted_commands/slotsCommand.js';
+import { statsCommand } from '@/mahoji/lib/abstracted_commands/statCommand.js';
 
 export const gambleCommand = defineCommand({
 	name: 'gamble',
@@ -196,9 +197,17 @@ export const gambleCommand = defineCommand({
 					required: true
 				}
 			]
+		},
+		{
+			type: 'Subcommand',
+			name: 'pnl',
+			description: 'View your personal gambling profit and loss.'
 		}
 	],
 	run: async ({ options, interaction, guildId, user, rng }) => {
+		if (options.pnl) {
+			return statsCommand(user, 'Gambling');
+		}
 		if (options.item) {
 			if (options.item.item) {
 				return capeGambleCommand(user, options.item.item, interaction, rng, options.item.autoconfirm);

@@ -87,8 +87,8 @@ describe('Trip Queueing System', () => {
 		test('scales trip bonus according to requested tiers', () => {
 			expect(patronMaxTripBonus(PerkTier.Zero)).toBe(0);
 			expect(patronMaxTripBonus(PerkTier.One)).toBe(0);
-			expect(patronMaxTripBonus(PerkTier.Two)).toBe(Time.Minute * 3); // Tier 1 Patron
-			expect(patronMaxTripBonus(PerkTier.Three)).toBe(Time.Minute * 6); // Tier 2 Patron
+			expect(patronMaxTripBonus(PerkTier.Two)).toBe(Time.Minute * 5);
+			expect(patronMaxTripBonus(PerkTier.Three)).toBe(Time.Minute * 10);
 			expect(patronMaxTripBonus(PerkTier.Four)).toBe(Time.Minute * 15); // Tier 3 Patron
 			expect(patronMaxTripBonus(PerkTier.Five)).toBe(Time.Minute * 20); // Tier 4 Patron
 			expect(patronMaxTripBonus(PerkTier.Six)).toBe(Time.Minute * 25); // Tier 5 Patron

@@ -766,8 +766,13 @@ export async function getOpenableLoot({
 	if (openable.output instanceof LootTable) {
 		const batchSize = 100;
 		let qtyRemaining = quantity;
+		const tertiaryItemPercentageChanges = user.buildTertiaryItemChanges(false, false, false);
 		while (qtyRemaining > 0) {
-			loot.add(openable.output.roll(Math.min(batchSize, qtyRemaining)));
+			loot.add(
+				openable.output.roll(Math.min(batchSize, qtyRemaining), {
+					tertiaryItemPercentageChanges
+				})
+			);
 			qtyRemaining -= batchSize;
 			if (qtyRemaining) await yielder.checkpoint();
 		}

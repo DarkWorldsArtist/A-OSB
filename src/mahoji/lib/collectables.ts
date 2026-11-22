@@ -141,5 +141,10 @@ export const collectables: Collectable[] = [
 		},
 		duration: 10 * Time.Minute,
 		qpRequired: 100
+	},
+	{
+		item: Items.getOrThrow('Swamp tar'),
+		quantity: 15,
+		duration: Time.Minute
 	}
 ];

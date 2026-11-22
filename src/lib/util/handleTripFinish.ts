@@ -1,7 +1,6 @@
 import type { ButtonBuilder } from '@oldschoolgg/discord';
-import { getNextUTCReset } from '@oldschoolgg/toolkit';
 import { cryptoRng } from 'node-rng/crypto';
-import { Bank, EItem } from 'oldschooljs';
+import { Bank, EItem, toKMB } from 'oldschooljs';
 
 import type { activity_type_enum } from '@/prisma/main/enums.js';
 import { MessageBuilder } from '@/discord/MessageBuilder.js';
@@ -9,14 +8,16 @@ import { resolveSendable } from '@/discord/utils.js';
 import { ClueTiers } from '@/lib/clues/clueTiers.js';
 import { buildClueButtons } from '@/lib/clues/clueUtils.js';
 import { combatAchievementTripEffect } from '@/lib/combat_achievements/combatAchievements.js';
-import { BitField, CONSTANTS, PerkTier } from '@/lib/constants.js';
+import { BitField, PerkTier } from '@/lib/constants.js';
 import { handleGrowablePetGrowth } from '@/lib/growablePets.js';
 import { handlePassiveImplings } from '@/lib/implings.js';
+import { marketPriceOfBank } from '@/lib/marketPrices.js';
 import { triggerRandomEvent } from '@/lib/randomEvents.js';
 import { canShowAutoFarmButton } from '@/lib/skilling/skills/farming/utils/farmingHelpers.js';
 import type { ActivityTaskData } from '@/lib/types/minions.js';
 import { MUserClass } from '@/lib/user/MUser.js';
 import { displayCluesAndPets } from '@/lib/util/displayCluesAndPets.js';
+import { getNextESTWeekReset } from '@/lib/util/estTime.js';
 import {
 	makeAutoContractButton,
 	makeAutoFarmButton,
@@ -174,7 +175,7 @@ const tripFinishEffects: TripFinishEffect[] = [
 		fn: async ({ user, components, lastTearsOfGuthixTimestamp }) => {
 			if (user.bitfield.includes(BitField.DisableTearsOfGuthixButton)) return;
 			const lastPlayedDate = Number(lastTearsOfGuthixTimestamp);
-			const nextReset = getNextUTCReset(lastPlayedDate, CONSTANTS.TEARS_OF_GUTHIX_CD);
+			const nextReset = lastPlayedDate > 0 ? getNextESTWeekReset(new Date(lastPlayedDate)).getTime() : 0;
 			const ready = nextReset < Date.now();
 			const meetsSkillReqs = hasSkillReqs(user, tearsOfGuthixSkillReqs)[0];
 			const meetsIronmanReqs = user.user.minion_ironman ? hasSkillReqs(user, tearsOfGuthixIronmanReqs)[0] : true;
@@ -218,6 +219,18 @@ const tripFinishEffects: TripFinishEffect[] = [
 			if (data.type === 'ValeTotems') {
 				components.push(makeAutoRummageToggleButton());
 			}
+		}
+	},
+	{
+		name: 'Trip Loot Value Summary',
+		requiredPerkTier: PerkTier.Two,
+		fn: async ({ user, loot, messages }) => {
+			if (!user.bitfield.includes(BitField.ShowTripLootValue)) return;
+			if (!loot || loot.length === 0) return;
+			const val = loot.value();
+			const mv = marketPriceOfBank(loot);
+			if (val === 0 && mv === 0) return;
+			messages.push(`Loot Value: ${toKMB(val)} (MV: ${toKMB(mv)})`);
 		}
 	}
 ];

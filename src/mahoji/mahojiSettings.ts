@@ -39,12 +39,9 @@ export function resolveAvailableItemBoosts(gearBank: GearBank, monster: Killable
 				const ownsExactItem = isInWilderness
 					? gearBank.gear.wildy.hasEquipped(parsedId, false, false)
 					: gearBank.bank.has(parsedId) ||
-					Object.values(gearBank.gear).some(gear => gear.hasEquipped(parsedId, false, false));
+						Object.values(gearBank.gear).some(gear => gear.hasEquipped(parsedId, false, false));
 
-				if (
-					boostAmount > highestBoostAmount ||
-					(boostAmount === highestBoostAmount && ownsExactItem)
-				) {
+				if (boostAmount > highestBoostAmount || (boostAmount === highestBoostAmount && ownsExactItem)) {
 					highestBoostAmount = boostAmount;
 					highestBoostItem = parsedId;
 				}

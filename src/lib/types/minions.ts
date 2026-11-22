@@ -522,6 +522,7 @@ export interface SawmillActivityTaskOptions extends ActivityTaskOptions {
 	type: 'Sawmill';
 	plankID: number;
 	plankQuantity: number;
+	plankName?: string;
 }
 
 export interface ButlerActivityTaskOptions extends ActivityTaskOptions {

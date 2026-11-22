@@ -72,10 +72,7 @@ export async function minionKillCommand(
 		);
 		const secondaryStyle = method.defaultAttackStyles?.includes('magic') ? 'magic' : 'ranged';
 
-		attackStyles = [
-			...(meleeStyles.length > 0 ? meleeStyles : ['attack' as const]),
-			secondaryStyle
-		];
+		attackStyles = [...(meleeStyles.length > 0 ? meleeStyles : ['attack' as const]), secondaryStyle];
 	}
 
 	const [hasReqs, reason] = user.hasMonsterRequirements(monster);

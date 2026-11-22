@@ -1,6 +1,6 @@
 import { Time, toTitleCase } from '@oldschoolgg/toolkit';
 import { MathRNG } from 'node-rng';
-import { ECreature } from 'oldschooljs';
+import { Bank, ECreature } from 'oldschooljs';
 
 import { QuestID } from '@/lib/minions/data/quests.js';
 import creatures from '@/lib/skilling/skills/hunter/creatures/index.js';
@@ -37,6 +37,15 @@ const hunterTechniqueToRates: Partial<Record<HunterTechniqueEnum, RumourDropRate
 	[HunterTechniqueEnum.Tracking]: { dropRate: 15, pityThreshold: 30, outfitPityThreshold: 28 }
 };
 
+const hunterTechniqueToRequiredGear: Partial<Record<HunterTechniqueEnum, string[][]>> = {
+	[HunterTechniqueEnum.BirdSnaring]: [['Bird snare']],
+	[HunterTechniqueEnum.BoxTrapping]: [['Box trap']],
+	[HunterTechniqueEnum.ButterflyNetting]: [['Butterfly net', 'Magic butterfly net']],
+	[HunterTechniqueEnum.NetTrapping]: [['Small fishing net'], ['Rope']],
+	[HunterTechniqueEnum.PitfallTrapping]: [['Teasing stick']],
+	[HunterTechniqueEnum.Tracking]: [['Noose wand']]
+};
+
 export async function rumoursCommand(user: MUser, channelId: string, input?: RumourHunterID) {
 	const hunterLevel = user.skillsAsLevels.hunter;
 	if (!user.user.finished_quest_ids.includes(QuestID.ChildrenOfTheSun)) {
@@ -57,6 +66,37 @@ export async function rumoursCommand(user: MUser, channelId: string, input?: Rum
 	const maxTripLength = await user.calcMaxTripLength('Rumour');
 	const rumours = generateRumourTasks(user, hunter.id, maxTripLength);
 	if (rumours.length === 0) return 'No rumours fit into this trip. Try again or unblock some creatures.';
+
+	const missingGear = new Set<string>();
+	const removeBank = new Bank();
+	for (const rumour of rumours) {
+		const creature = creatures.find(c => c.id === rumour.creatureID);
+		if (!creature) continue;
+		const reqGroups = hunterTechniqueToRequiredGear[creature.huntTechnique];
+		if (reqGroups) {
+			for (const alternatives of reqGroups) {
+				if (!alternatives.some(item => user.hasEquippedOrInBank(item))) {
+					missingGear.add(alternatives.join(' or '));
+				}
+			}
+		}
+		if (creature.itemsConsumed) {
+			for (const [item, qty] of creature.itemsConsumed.items()) {
+				removeBank.add(item.id, qty * rumour.quantity);
+			}
+		}
+	}
+	if (missingGear.size > 0) {
+		return `You need the following hunter gear in your bank or equipped to complete these rumours: ${Array.from(missingGear).join(', ')}.`;
+	}
+	if (removeBank.length > 0) {
+		if (!user.bank.has(removeBank)) {
+			return `You need ${removeBank} in your bank to complete these rumours.`;
+		}
+		await ClientSettings.updateBankSetting('hunter_cost', removeBank);
+		await user.removeItemsFromBank(removeBank);
+	}
+
 	const duration = rumours.reduce((total, rumour) => total + rumour.duration, 0);
 	await ActivityManager.startTrip<RumourActivityTaskOptions>({
 		userID: user.id,

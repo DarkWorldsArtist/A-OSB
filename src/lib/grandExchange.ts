@@ -1,5 +1,5 @@
-import { ButtonBuilder, ButtonStyle, bold, dateFm, userMention } from '@oldschoolgg/discord';
-import { calcPercentOfNum, getInterval, miniID, noOp, sumArr, Time, uniqueArr } from '@oldschoolgg/toolkit';
+import { ButtonBuilder, ButtonStyle, bold, dateFm, time, userMention } from '@oldschoolgg/discord';
+import { calcPercentOfNum, miniID, noOp, sumArr, Time, uniqueArr } from '@oldschoolgg/toolkit';
 import { Bank, type Item, type ItemBank, Items, toKMB } from 'oldschooljs';
 import PQueue from 'p-queue';
 import { clamp } from 'remeda';
@@ -9,6 +9,7 @@ import { GE_SLOTS_CACHE, marketPricemap } from '@/lib/cache.js';
 import { BitField, globalConfig, PerkTier } from '@/lib/constants.js';
 import type { RobochimpUser } from '@/lib/roboChimp.js';
 import { fetchTableBank, makeTransactFromTableBankQueries } from '@/lib/table-banks/tableBank.js';
+import { getEST4HourBucket } from '@/lib/util/estTime.js';
 import itemIsTradeable from '@/lib/util/itemIsTradeable.js';
 import { assert } from '@/lib/util/logError.js';
 
@@ -198,7 +199,9 @@ class GrandExchangeSingleton {
 	}
 
 	getInterval() {
-		return getInterval(4);
+		const start = getEST4HourBucket();
+		const end = new Date(start.getTime() + Time.Hour * 4);
+		return { start, end, nextResetStr: `${time(end, 'R')}` };
 	}
 
 	async fetchOwnedBank() {

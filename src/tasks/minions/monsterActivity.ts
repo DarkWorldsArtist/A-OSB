@@ -332,12 +332,21 @@ export function doMonsterTrip(data: newOptions) {
 
 	const guaranteesVorkathHead =
 		!wiped && monster.id === Monsters.Vorkath.id && currentKC < 50 && currentKC + quantity >= 50;
+	const guaranteesKQHead =
+		!wiped && monster.id === Monsters.KalphiteQueen.id && currentKC < 256 && currentKC + quantity >= 256;
+	const milestoneKillReduction = (guaranteesVorkathHead ? 1 : 0) + (guaranteesKQHead ? 1 : 0);
 
-	const loot = wiped ? new Bank() : monster.table.kill(finalQuantity - (guaranteesVorkathHead ? 1 : 0), killOptions);
+	const loot = wiped ? new Bank() : monster.table.kill(finalQuantity - milestoneKillReduction, killOptions);
 
 	if (guaranteesVorkathHead) {
 		const milestoneLoot = monster.table.kill(1, killOptions);
 		milestoneLoot.set("Vorkath's head", 1);
+		loot.add(milestoneLoot);
+	}
+
+	if (guaranteesKQHead) {
+		const milestoneLoot = monster.table.kill(1, killOptions);
+		milestoneLoot.set('Kq head (tattered)', 1);
 		loot.add(milestoneLoot);
 	}
 	if (!wiped) {

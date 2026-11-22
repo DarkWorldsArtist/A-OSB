@@ -1,14 +1,14 @@
 import { MathRNG, type RNGProvider } from 'node-rng';
 
-import { type MonsterData, MonsterSlayerMaster } from '@/meta/monsterData.js';
+import _monsterData from '../assets/monsters_data.json' with { type: 'json' };
+import { type MonsterData, MonsterSlayerMaster } from '../meta/monsterData.js';
 import {
 	getAncientShardChanceFromHP,
 	getBrimKeyChanceFromCBLevel,
 	getLarranKeyChanceFromCBLevel,
 	getSlayersEnchantmentChanceFromHP,
 	getTotemChanceFromHP
-} from '@/util/util.js';
-import _monsterData from '../assets/monsters_data.json' with { type: 'json' };
+} from '../util/util.js';
 import { Bank } from './Bank.js';
 import type LootTable from './LootTable.js';
 import type { LootTableRollOptions } from './LootTable.js';
@@ -49,6 +49,7 @@ export interface MonsterKillOptions {
 	/** Take eggs instead of normal Maggot King rewards. */
 	takeEggs?: boolean;
 	lootTableOptions?: LootTableRollOptions;
+	tertiaryItemPercentageChanges?: Map<string, number>;
 	rng?: RNGProvider;
 }
 

@@ -14,7 +14,7 @@ import {
 	loadImage
 } from '@/lib/canvas/canvasUtil.js';
 import { OSRSCanvas } from '@/lib/canvas/OSRSCanvas.js';
-import { BitField } from '@/lib/constants.js';
+import { BitField, PerkTier } from '@/lib/constants.js';
 import { allCLItems } from '@/lib/data/Collections.js';
 import { filterableTypes } from '@/lib/data/filterables.js';
 import { marketPriceOfBank, marketPriceOrBotPrice } from '@/lib/marketPrices.js';
@@ -335,10 +335,13 @@ class BankImageTask {
 		mahojiFlags: BankFlag[] | undefined,
 		weightings: Readonly<ItemBank> | undefined,
 		verticalSpacer = 0,
-		_user?: MUser
+		user?: MUser,
+		perkTier = 0
 	) {
 		let xLoc = 0;
 		let yLoc = compact ? 5 : 0;
+		const customOutlineHex =
+			perkTier >= PerkTier.Two && user?.user.unique_outline_hex ? user.user.unique_outline_hex : null;
 		for (let i = 0; i < items.length; i++) {
 			if (i % itemsPerRow === 0) yLoc += floor((itemSize + spacer / 2) * (compact ? 0.9 : 1.08)) + verticalSpacer;
 			// For some reason, it starts drawing at -2 so we compensate that
@@ -351,14 +354,15 @@ class BankImageTask {
 			const isNewCLItem =
 				flags.has('forceAllPurple') ||
 				(flags.has('showNewCL') && currentCL && !currentCL.has(item.id) && allCLItems.has(item.id));
+			const outlineColor = customOutlineHex ?? '#ac7fff';
 
 			await c.drawItemIDSprite({
 				itemID: item.id,
 				x: xLoc,
 				y: yLoc,
-				outline: isNewCLItem ? { outlineColor: '#ac7fff', alpha: 1 } : undefined,
+				outline: isNewCLItem ? { outlineColor, alpha: 1 } : undefined,
 				quantity,
-				textColor: isNewCLItem ? OSRSCanvas.COLORS.PURPLE : undefined
+				textColor: isNewCLItem ? outlineColor : undefined
 			});
 
 			let bottomItemText: string | number | null = null;
@@ -562,16 +566,37 @@ class BankImageTask {
 			);
 		}
 
-		if (showValue) {
-			title += ` (V: ${toKMB(totalValue)} / MV: ${toKMB(marketPriceOfBank(bank))}) `;
-		}
+		const perkTier = user?.fetchPerkTier ? await user.fetchPerkTier().catch(() => 0) : 0;
+		const titleColor =
+			perkTier >= PerkTier.Three && user?.user.bank_title_hex
+				? user.user.bank_title_hex
+				: OSRSCanvas.COLORS.ORANGE;
 
-		canvas.drawTitleText({
-			text: title,
-			x: canvas.width / 2,
-			y: 21,
-			center: true
-		});
+		if (showValue) {
+			const marketValue = marketPriceOfBank(bank);
+			canvas.drawSegmentedText({
+				segments: [
+					{ text: `${title} (V: `, color: titleColor },
+					{ text: toKMB(totalValue), color: generateHexColorForCashStack(totalValue) },
+					{ text: ' / MV: ', color: titleColor },
+					{ text: toKMB(marketValue), color: generateHexColorForCashStack(marketValue) },
+					{ text: ') ', color: titleColor }
+				],
+				x: canvas.width / 2,
+				y: 21,
+				font: 'Bold',
+				center: true
+			});
+		} else {
+			canvas.drawText({
+				text: title,
+				x: canvas.width / 2,
+				y: 21,
+				font: 'Bold',
+				color: titleColor,
+				center: true
+			});
+		}
 
 		// Skips border if noBorder is set
 		if (!isTransparent && noBorder !== 1) {
@@ -590,7 +615,8 @@ class BankImageTask {
 			opts.mahojiFlags,
 			weightings,
 			undefined,
-			user
+			user,
+			perkTier
 		);
 
 		const image = await canvas.toScaledOutput(2);

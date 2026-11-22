@@ -1,5 +1,5 @@
 import { calcPercentOfNum, calcWhatPercent, toTitleCase } from '@oldschoolgg/toolkit';
-import { Items } from 'oldschooljs';
+import { Items, toKMB } from 'oldschooljs';
 
 import type { GEListing, GETransaction } from '@/prisma/main.js';
 import { CanvasModule } from '@/lib/canvas/CanvasModule.js';
@@ -31,6 +31,7 @@ class GeImageGeneratorSingleton {
 	}
 
 	async getSlotImage(
+		user: MUser | null,
 		canvas: OSRSCanvas,
 		slot: number,
 		locked: boolean,
@@ -69,7 +70,8 @@ class GeImageGeneratorSingleton {
 							radius: 10
 						}
 					: undefined,
-			quantity: listing.total_quantity
+			quantity: listing.total_quantity,
+			user: user ?? null
 		});
 
 		// Draw item name
@@ -82,11 +84,12 @@ class GeImageGeneratorSingleton {
 			lineHeight: 10
 		});
 
-		// Draw item value of the transaction
 		ctx.save();
 		ctx.translate(0, 87);
+		const price = Number(listing.asking_price_per_item);
+		const priceText = price >= 10_000_000 ? `${toKMB(price)} coins` : `${price.toLocaleString()} coins`;
 		canvas.drawText({
-			text: `${Number(listing.asking_price_per_item).toLocaleString()} coins`,
+			text: priceText,
 			x: Math.floor(this.geSlotOpen!.width / 2),
 			y: 17,
 			color: '#ff981f',
@@ -107,7 +110,7 @@ class GeImageGeneratorSingleton {
 			listing.total_quantity
 		);
 		const progressWidth = calcPercentOfNum(percentFullfilled, maxWidth);
-		if (percentFullfilled === 100) {
+		if (percentFullfilled === 100 && listing.type !== 'Sell') {
 			ctx.fillStyle = OSRSCanvas.COLORS.DARK_GREEN;
 		} else {
 			ctx.fillStyle = OSRSCanvas.COLORS.ORANGE;
@@ -119,6 +122,7 @@ class GeImageGeneratorSingleton {
 	}
 
 	async createInterface(opts: {
+		user?: MUser;
 		slotsUsed: number;
 		maxSlots: number;
 		page: number;
@@ -136,9 +140,11 @@ class GeImageGeneratorSingleton {
 		canvas.ctx.drawImage(this.geInterface!, 0, 0, canvas.width, canvas.height);
 
 		// Pages
-		const chunkSize = 8;
-		const totalChunks = Math.ceil(maxSlots / chunkSize);
-		if (page > totalChunks) page = totalChunks;
+		const slotsPerRow = 4;
+		const rowsPerPage = 2;
+		const chunkSize = slotsPerRow * rowsPerPage;
+		const totalChunks = Math.max(1, Math.ceil(maxSlots / chunkSize));
+		page = Math.min(Math.max(page, 1), totalChunks);
 		if (page >= 0) {
 			canvas.drawTitleText({
 				text: `Page ${page} of ${totalChunks}`,
@@ -151,22 +157,18 @@ class GeImageGeneratorSingleton {
 		const startX = 9;
 		const startY = 64;
 
-		let y = 0;
-		let x = 0;
-		for (let i = (page - 1) * chunkSize; i < maxSlots; i++) {
+		const pageStart = (page - 1) * chunkSize;
+		const pageEnd = Math.min(pageStart + chunkSize, maxSlots);
+		for (let i = pageStart; i < pageEnd; i++) {
 			const listing: GEListingWithTransactions = activeListings[i];
-			if (i > (page - 1) * chunkSize && i % 4 === 0) {
-				y += this.geSlotOpen!.height + 10;
-				x = 0;
-			}
+			const indexOnPage = i - pageStart;
+			const x = indexOnPage % slotsPerRow;
+			const y = Math.floor(indexOnPage / slotsPerRow) * (this.geSlotOpen!.height + 10);
 
 			canvas.ctx.save();
 			canvas.ctx.translate(startX + x * (this.geSlotOpen!.width + 2), startY + y);
-			await this.getSlotImage(canvas, i + 1, i >= slotsUsed, listing);
+			await this.getSlotImage(opts.user ?? null, canvas, i + 1, i >= slotsUsed, listing);
 			canvas.ctx.restore();
-
-			x++;
-			if (i > (page - 1) * chunkSize + 8) break;
 		}
 
 		return canvas.toScaledOutput(2);

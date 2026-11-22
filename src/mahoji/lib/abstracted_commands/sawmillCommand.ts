@@ -24,7 +24,7 @@ export async function sawmillCommand(
 	}
 
 	const boosts = [];
-	let timePerPlank = (Time.Second * 37) / 27;
+	let timePerPlank = (Time.Second * 25) / 27;
 
 	if (user.hasGracefulEquipped()) {
 		timePerPlank *= 0.9;
@@ -34,6 +34,10 @@ export async function sawmillCommand(
 	if (skills.woodcutting >= 60 && user.QP >= 50) {
 		timePerPlank *= 0.9;
 		boosts.push('10% for Woodcutting Guild unlocked');
+	}
+	if (user.owns('Plank sack') && user.owns('Log basket')) {
+		timePerPlank /= 2;
+		boosts.push('2x speed for Plank sack + Log basket');
 	}
 
 	const maxTripLength = await user.calcMaxTripLength('Sawmill');
@@ -79,6 +83,7 @@ export async function sawmillCommand(
 		duration,
 		plankID: plank?.outputItem,
 		plankQuantity: quantity,
+		plankName: plank.name,
 		userID: user.id,
 		channelId: channelId.toString()
 	});

@@ -61,7 +61,10 @@ export function userhasDiaryTierSync(
 	}
 
 	if (tier.collectionLogReqs) {
-		const unownedItems = tier.collectionLogReqs.filter(i => !cl.has(i));
+		const kqHeadId = Items.getOrThrow('Kq head').id;
+		const unownedItems = tier.collectionLogReqs.filter(i =>
+			i === kqHeadId ? !cl.has('Kq head') && !cl.has('Kq head (tattered)') : !cl.has(i)
+		);
 		if (unownedItems.length > 0) {
 			canDo = false;
 			reasons.push(
@@ -322,7 +325,7 @@ const ArdougneDiary: Diary = {
 	}
 };
 
-const DesertDiary: Diary = {
+export const DesertDiary: Diary = {
 	name: 'Desert',
 	id: DiaryID.Desert,
 	easy: {

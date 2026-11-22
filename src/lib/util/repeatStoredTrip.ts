@@ -687,7 +687,11 @@ const tripHandlers: {
 	[activity_type_enum.Sawmill]: {
 		commandName: 'activities',
 		args: (data: SawmillActivityTaskOptions) => ({
-			plank_make: { action: 'sawmill', quantity: data.plankQuantity, type: Items.itemNameFromId(data.plankID) }
+			plank_make: {
+				action: 'sawmill',
+				quantity: data.plankQuantity,
+				type: data.plankName ?? Items.itemNameFromId(data.plankID)
+			}
 		})
 	},
 	[activity_type_enum.Butler]: {

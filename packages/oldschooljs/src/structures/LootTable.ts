@@ -1,5 +1,5 @@
 import { reduceNumByPercent } from '@oldschoolgg/util';
-import { randArrItem, randFloat, randInt, roll } from 'node-rng';
+import { MathRNG, type RNGProvider } from 'node-rng';
 
 import { Bank } from './Bank.js';
 import { Items } from './Items.js';
@@ -49,6 +49,7 @@ export interface LootTableRollOptions {
 	 */
 	tertiaryItemPercentageChanges?: Map<string, number>;
 	targetBank?: Bank;
+	rng?: RNGProvider;
 }
 
 export default class LootTable {
@@ -219,11 +220,21 @@ export default class LootTable {
 	roll(quantity: number, options: { targetBank: Bank } & LootTableRollOptions): null;
 	public roll(quantity = 1, options: LootTableRollOptions = {}): Bank | null {
 		const loot = options.targetBank ?? new Bank();
+		const rng = options.rng ?? MathRNG;
 		const effectiveTertiaryItems = options.tertiaryItemPercentageChanges
 			? this.tertiaryItems.map(i => {
-					if (typeof i.item !== 'number') return i;
 					if (i.options?.freeze === true) return i;
-					const change = options.tertiaryItemPercentageChanges?.get(Items.get(i.item)!.name);
+					let change: number | undefined;
+					if (typeof i.item === 'number') {
+						change = options.tertiaryItemPercentageChanges?.get(Items.get(i.item)!.name);
+					} else if (i.item instanceof LootTable) {
+						for (const id of i.item.allItems) {
+							const itemName = Items.get(id)?.name;
+							if (!itemName) continue;
+							const c = options.tertiaryItemPercentageChanges?.get(itemName);
+							if (c && (!change || c > change)) change = c;
+						}
+					}
 					if (!change) return i;
 					return {
 						...i,
@@ -251,13 +262,13 @@ export default class LootTable {
 			}
 
 			for (let j = 0; j < effectiveTertiaryItems.length; j++) {
-				if (roll(effectiveTertiaryItems[j].chance)) {
+				if (rng.roll(effectiveTertiaryItems[j].chance)) {
 					this.addResultToLoot(effectiveTertiaryItems[j], loot, options.tertiaryItemPercentageChanges);
 				}
 			}
 
 			for (let j = 0; j < this.oneInItems.length; j++) {
-				if (roll(this.oneInItems[j].chance)) {
+				if (rng.roll(this.oneInItems[j].chance)) {
 					this.addResultToLoot(this.oneInItems[j], loot, options.tertiaryItemPercentageChanges);
 					continue outerLoop;
 				}
@@ -265,12 +276,12 @@ export default class LootTable {
 
 			if (this.cachedOptimizedTable) {
 				this.addResultToLoot(
-					this.table[randArrItem(this.cachedOptimizedTable)!],
+					this.table[rng.pick(this.cachedOptimizedTable)],
 					loot,
 					options.tertiaryItemPercentageChanges
 				);
 			} else {
-				const randomWeight = randFloat(0, limit);
+				const randomWeight = rng.randFloat(0, limit);
 				let weight = 0;
 				for (let i = 0; i < this.table.length; i++) {
 					weight += this.table[i].weight!;
@@ -307,9 +318,9 @@ export default class LootTable {
 		}
 	}
 
-	protected determineQuantity(quantity: number | number[]): number {
+	protected determineQuantity(quantity: number | number[], rng: RNGProvider = MathRNG): number {
 		if (Array.isArray(quantity)) {
-			return randInt(quantity[0], quantity[1]);
+			return rng.randInt(quantity[0], quantity[1]);
 		}
 		return quantity;
 	}

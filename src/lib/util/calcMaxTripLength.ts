@@ -1,13 +1,13 @@
 import { calcWhatPercent, PerkTier, Time } from '@oldschoolgg/toolkit';
 
 import { activity_type_enum } from '@/prisma/main/enums.js';
-import { BitField, SkillsEnum } from '@/lib/constants.js';
+import { BitField } from '@/lib/constants.js';
 import { RobochimpBitfieldEnum } from '@/lib/perkTiers.js';
 import type { RobochimpUser } from '@/lib/roboChimp.js';
 
 export function patronMaxTripBonus(perkTier: PerkTier | 0) {
-	if (perkTier === PerkTier.Two) return Time.Minute * 3;
-	if (perkTier === PerkTier.Three) return Time.Minute * 6;
+	if (perkTier === PerkTier.Two) return Time.Minute * 5;
+	if (perkTier === PerkTier.Three) return Time.Minute * 10;
 	if (perkTier === PerkTier.Four) return Time.Minute * 15;
 	if (perkTier === PerkTier.Five) return Time.Minute * 20;
 	if (perkTier >= PerkTier.Six) return Time.Minute * 25;

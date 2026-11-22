@@ -328,6 +328,9 @@ model User {
   minion_icon                String?            @map("minion.icon")
   minion_name                String?            @map("minion.name") @db.Text()
   bank_bg_hex                String?
+  unique_outline_hex         String?            @db.VarChar(7)
+  bank_title_hex             String?            @db.VarChar(7)
+  default_bank_flag          String?            @db.VarChar(32)
   bankBackground             Int                @default(1)
   attack_style               String[]           @default([])
   combat_options             Int[]              @default([])
@@ -789,8 +792,10 @@ model UserStats {
 
   total_gp_traded BigInt @default(0)
 
-  last_daily_timestamp           BigInt @default(0)
-  last_tears_of_guthix_timestamp BigInt @default(0)
+  last_daily_timestamp           BigInt  @default(0)
+  last_daily_date                String? @db.VarChar(10)
+  daily_streak                   Int     @default(0)
+  last_tears_of_guthix_timestamp BigInt  @default(0)
 
   herbs_cleaned_while_farming_bank Json @default("{}") @db.Json
 

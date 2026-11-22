@@ -115,6 +115,12 @@ export function getMaxQueueDepth(perkTier: PerkTier): number {
 	return 0;
 }
 
+export function getDailyQueueCap(perkTier: PerkTier): number {
+	if (perkTier >= PerkTier.Eight) return 6;
+	if (perkTier === PerkTier.Seven) return 5;
+	return getMaxQueueDepth(perkTier);
+}
+
 export function getESTDateKey(date: Date = new Date()): string {
 	return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/New_York' }).format(date);
 }
@@ -127,8 +133,9 @@ export function getDailyQueuedTripsUsed(user: MUser): number {
 	return user.user.queued_trips_daily_count;
 }
 
-export function getDailyQueuedTripsRemaining(user: MUser): number {
-	return Math.max(0, DAILY_QUEUE_CAP - getDailyQueuedTripsUsed(user));
+export function getDailyQueuedTripsRemaining(user: MUser, perkTier?: PerkTier): number {
+	const cap = perkTier !== undefined ? getDailyQueueCap(perkTier) : DAILY_QUEUE_CAP;
+	return Math.max(0, cap - getDailyQueuedTripsUsed(user));
 }
 
 export function createSyntheticInteraction({
@@ -215,9 +222,10 @@ export async function queueTrip({
 		return `Your trip queue is currently full (${currentQueue.length}/${maxDepth} trips). Your patron tier allows up to ${maxDepth} queued trips at a time.`;
 	}
 
-	const remainingToday = getDailyQueuedTripsRemaining(user);
+	const dailyCap = getDailyQueueCap(perkTier);
+	const remainingToday = getDailyQueuedTripsRemaining(user, perkTier);
 	if (remainingToday <= 0) {
-		return `You have already used all ${DAILY_QUEUE_CAP} queued trips for today. The daily cap resets at midnight EST.`;
+		return `You have already used all ${dailyCap} queued trip${dailyCap === 1 ? '' : 's'} for today. The daily cap resets at midnight EST.`;
 	}
 
 	await prisma.queuedTrip.create({
@@ -345,18 +353,20 @@ export async function processNextQueuedTrip(userID: string, channelId: string): 
 export async function getQueueStatus(user: MUser): Promise<{
 	trips: QueuedTrip[];
 	depthLimit: number;
+	dailyCap: number;
 	dailyUsed: number;
 	dailyRemaining: number;
 }> {
 	const perkTier = await user.fetchPerkTier();
 	const depthLimit = getMaxQueueDepth(perkTier);
+	const dailyCap = getDailyQueueCap(perkTier);
 	const trips = await prisma.queuedTrip.findMany({
 		where: { user_id: user.id },
 		orderBy: { created_at: 'asc' }
 	});
 	const dailyUsed = getDailyQueuedTripsUsed(user);
-	const dailyRemaining = getDailyQueuedTripsRemaining(user);
-	return { trips, depthLimit, dailyUsed, dailyRemaining };
+	const dailyRemaining = getDailyQueuedTripsRemaining(user, perkTier);
+	return { trips, depthLimit, dailyCap, dailyUsed, dailyRemaining };
 }
 
 export async function clearQueue(user: MUser): Promise<number> {

@@ -22,6 +22,7 @@ export const rumourTask: MinionTask = {
 		let str = `${user}, ${user.minionName} finished completing ${quantity} ${hunterLabel} rumours.\nThey caught: `;
 		let xpStr = '';
 		let chinPetSource = '';
+		let herbiPetSource = '';
 
 		let herbXP = 0;
 		let huntXP = 0;
@@ -69,6 +70,9 @@ export const rumourTask: MinionTask = {
 						chinPetSource = creature.name;
 					}
 				}
+			}
+			if (loot.amount('Herbi') > 0) {
+				herbiPetSource = creature.name;
 			}
 
 			await user.incrementCreatureScore(creature.id, Math.floor(rumour.quantity));
@@ -159,15 +163,25 @@ export const rumourTask: MinionTask = {
 		str += `\nTotal rumours completed: **${newTotalRumours.toLocaleString()}**.`;
 		if (milestoneLoot.length > 0) str += `\n**Milestone rewards:** ${milestoneLoot}.`;
 
-		if (totalLoot.amount('Baby chinchompa') > 0 || totalLoot.amount('Herbi') > 0) {
+		const gotChin = totalLoot.amount('Baby chinchompa') > 0;
+		const gotHerbi = totalLoot.amount('Herbi') > 0;
+		if (gotChin || gotHerbi) {
 			str += "\n\n**You have a funny feeling like you're being followed....**";
+			const petText =
+				gotChin && gotHerbi
+					? '**Baby chinchompa** <:Baby_chinchompa_red:324127375539306497> and **Herbi** <:Herbi:357773175318249472>'
+					: gotChin
+						? '**Baby chinchompa** <:Baby_chinchompa_red:324127375539306497>'
+						: '**Herbi** <:Herbi:357773175318249472>';
+			const sourceText =
+				gotChin && gotHerbi
+					? `${chinPetSource} & ${herbiPetSource || 'Herbiboar'}`
+					: gotChin
+						? chinPetSource
+						: herbiPetSource || 'Herbiboar';
 			globalClient.emit(
 				Events.ServerNotification,
-				`**${user.usernameOrMention}'s** minion, ${user.minionName}, just received a ${
-					totalLoot.amount('Baby chinchompa') > 0
-						? '**Baby chinchompa** <:Baby_chinchompa_red:324127375539306497>'
-						: '**Herbi** <:Herbi:357773175318249472>'
-				} while hunting a ${chinPetSource}, their Hunter level is ${currentLevel}!`
+				`**${user.usernameOrMention}'s** minion, ${user.minionName}, just received a ${petText} while hunting a ${sourceText}, their Hunter level is ${currentLevel}!`
 			);
 		}
 

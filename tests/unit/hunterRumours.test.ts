@@ -1,6 +1,6 @@
 import { Time } from '@oldschoolgg/toolkit';
 import { MathRNG } from 'node-rng';
-import { Bank, convertLVLtoXP } from 'oldschooljs';
+import { Bank, convertLVLtoXP, LootTable } from 'oldschooljs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import './setup.js';
@@ -28,10 +28,22 @@ function getCreature(name: string) {
 	return creature;
 }
 
-function makeUser(outfit?: 'full' | 'partial') {
+function makeUser(outfit?: 'full' | 'partial', withGear = true) {
 	const user = mockMUser({
 		id: '123',
 		QP: 300,
+		bank: withGear
+			? new Bank({
+					'Bird snare': 5,
+					'Box trap': 5,
+					'Butterfly net': 1,
+					'Butterfly jar': 5000,
+					'Small fishing net': 5,
+					Rope: 5,
+					'Teasing stick': 1,
+					'Noose wand': 1
+				})
+			: new Bank(),
 		meleeGear:
 			outfit === 'full'
 				? {
@@ -56,7 +68,12 @@ function makeUser(outfit?: 'full' | 'partial') {
 function mockTripStart(user: MUser, maxLength = 40 * Time.Minute) {
 	const startTrip = vi.fn<(data: RumourTrip) => Promise<void>>().mockResolvedValue(undefined);
 	vi.stubGlobal('ActivityManager', { startTrip });
+	vi.stubGlobal('ClientSettings', { updateBankSetting: vi.fn().mockResolvedValue(undefined) });
 	vi.spyOn(user, 'calcMaxTripLength').mockResolvedValue(maxLength);
+	vi.spyOn(user, 'removeItemsFromBank').mockResolvedValue({
+		previousBank: user.bank.clone(),
+		newBank: user.bank.clone()
+	} as any);
 	return startTrip;
 }
 
@@ -284,5 +301,57 @@ describe('Hunter Rumours trip rewards', () => {
 			expect(loot.length).toBe(1);
 			expect(message.content).not.toContain('**Milestone rewards:**');
 		}
+	});
+
+	it('requires hunter gear in bank or equipped before starting rumours', async () => {
+		const user = makeUser(undefined, false);
+		const startTrip = mockTripStart(user);
+		const res = await rumoursCommand(user, '123', 'wolf');
+		expect(res).toContain('You need the following hunter gear');
+		expect(startTrip).not.toHaveBeenCalled();
+	});
+
+	it('includes Herbiboar in the server notification when receiving Herbi', async () => {
+		const user = makeUser();
+		const emit = vi.fn();
+		vi.stubGlobal('globalClient', { emit });
+		vi.spyOn(bankImageModule, 'makeBankImage').mockResolvedValue({ name: 'bank.png', buffer: Buffer.from('bank') });
+		vi.spyOn(lootTrackModule, 'trackLoot').mockResolvedValue(undefined);
+		vi.spyOn(user, 'fetchStats').mockResolvedValue({ rumours: {} } as any);
+		vi.spyOn(user, 'statsUpdate').mockResolvedValue({} as any);
+		vi.spyOn(user, 'incrementCreatureScore').mockResolvedValue({ newKC: 1 });
+		vi.spyOn(user, 'addXP').mockResolvedValue('');
+		vi.stubGlobal('ClientSettings', { updateBankSetting: vi.fn().mockResolvedValue(undefined) });
+		vi.spyOn(user, 'transactItems').mockImplementation(async ({ itemsToAdd }) => ({
+			previousCL: new Bank(),
+			itemsAdded: new Bank(itemsToAdd),
+			itemsRemoved: undefined,
+			newBank: new Bank(itemsToAdd),
+			newCL: new Bank(itemsToAdd),
+			newUser: user,
+			clLootBank: new Bank(itemsToAdd)
+		}));
+
+		const herbiCreature = getCreature('Herbiboar');
+		vi.spyOn(LootTable.prototype, 'roll').mockReturnValueOnce(new Bank().add('Herbi'));
+
+		await rumourTask.run(
+			{
+				id: 2,
+				userID: user.id,
+				channelId: '123',
+				type: 'Rumour',
+				tier: 'master',
+				hunter: 'wolf',
+				quantity: 1,
+				duration: 10 * Time.Minute,
+				finishDate: Date.now(),
+				rumours: [{ creatureID: herbiCreature.id, quantity: 1, duration: 10 * Time.Minute }]
+			},
+			{ user, handleTripFinish: vi.fn(), rng: MathRNG }
+		);
+
+		expect(emit).toHaveBeenCalledTimes(1);
+		expect(emit.mock.calls[0][1]).toContain('while hunting a Herbiboar');
 	});
 });

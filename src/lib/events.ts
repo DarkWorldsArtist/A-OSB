@@ -13,6 +13,7 @@ import pets from '@/lib/data/pets.js';
 import { roboChimpSyncData } from '@/lib/roboChimp.js';
 import { processNextQueuedTrip } from '@/lib/tripQueue.js';
 import type { ActivityTaskData } from '@/lib/types/minions.js';
+import { getESTDateKey, getNextESTMidnight, getNextESTWeekReset } from '@/lib/util/estTime.js';
 import { makeBankImage } from '@/lib/util/makeBankImage.js';
 import { minionStatsEmbed } from '@/lib/util/minionStatsEmbed.js';
 import { refreshUserCache } from '@/lib/util/refreshCache.js';
@@ -112,26 +113,36 @@ Type \`/tools user mypets\` to see your pets.`
 
 const mentionText = `<@${globalConfig.clientID}>`;
 
+interface CooldownStats {
+	last_daily_timestamp: bigint;
+	last_tears_of_guthix_timestamp: bigint;
+	last_daily_date: string | null;
+}
+
 const cooldownTimers: {
 	name: string;
-	timeStamp: (user: MUser, stats: { last_daily_timestamp: bigint; last_tears_of_guthix_timestamp: bigint }) => number;
+	timeStamp: (user: MUser, stats: CooldownStats) => number;
 	cd: number | ((user: MUser) => number);
 	command: [string] | [string, string] | [string, string, string];
 	utcReset: boolean;
+	nextReset?: (lastDone: number, user?: MUser, stats?: CooldownStats) => number;
 }[] = [
 	{
 		name: 'Tears of Guthix',
 		timeStamp: (_, stats) => Number(stats.last_tears_of_guthix_timestamp),
 		cd: CONSTANTS.TEARS_OF_GUTHIX_CD,
 		command: ['minigames', 'tears_of_guthix', 'start'],
-		utcReset: true
+		utcReset: false,
+		nextReset: lastDone => (lastDone > 0 ? getNextESTWeekReset(new Date(lastDone)).getTime() : 0)
 	},
 	{
 		name: 'Daily',
 		timeStamp: (_, stats) => Number(stats.last_daily_timestamp),
-		cd: CONSTANTS.DAILY_COOLDOWN,
+		cd: 0,
 		command: ['minion', 'daily'],
-		utcReset: false
+		utcReset: false,
+		nextReset: (_, _user, stats) =>
+			stats?.last_daily_date === getESTDateKey() ? getNextESTMidnight().getTime() : 0
 	}
 ];
 
@@ -263,7 +274,11 @@ const mentionCommands: MentionCommand[] = [
 					.map(cd => {
 						const lastDone = cd.timeStamp(user, stats);
 						const cooldown = isFunction(cd.cd) ? cd.cd(user) : cd.cd;
-						const nextReset = cd.utcReset ? getNextUTCReset(lastDone, cooldown) : lastDone + cooldown;
+						const nextReset = cd.nextReset
+							? cd.nextReset(lastDone, user, stats)
+							: cd.utcReset
+								? getNextUTCReset(lastDone, cooldown)
+								: lastDone + cooldown;
 
 						if (Date.now() < nextReset) {
 							const durationRemaining = dateFm(new Date(nextReset));

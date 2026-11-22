@@ -37,9 +37,9 @@ export interface ILeftListStatus {
 
 export interface IKCActivity {
 	[key: string]:
-	| string
-	| string[]
-	| ((user: MUser, minigameScores: MinigameScore[], stats: MUserStats) => Promise<number>);
+		| string
+		| string[]
+		| ((user: MUser, minigameScores: MinigameScore[], stats: MUserStats) => Promise<number>);
 }
 
 export type FormatProgressFunction = ({

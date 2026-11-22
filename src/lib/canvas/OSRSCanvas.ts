@@ -39,6 +39,7 @@ for (const [fontFamily, fontPath] of Object.entries(fonts)) {
 export class OSRSCanvas {
 	public static LOCAL_ICON_CACHE = new Map<number, CanvasImage>();
 	public static ITEM_ICON_CACHE_DIR = path.resolve('icon_cache');
+	public static ITEM_BSO_ICON_DIR = path.resolve('src/lib/resources/images/bso_icons');
 	public static Fonts = Fonts;
 	public static COLORS = {
 		ORANGE: '#FF981F',
@@ -72,7 +73,7 @@ export class OSRSCanvas {
 		sprite,
 		iconPackId
 	}: { width: number; height: number; sprite?: IBgSprite | undefined | null; iconPackId?: IconPackID | null }) {
-		this.canvas = new SkiaCanvas(width, height);
+		this.canvas = new SkiaCanvas(width, height, { textContrast: 1, textGamma: 1 });
 		this.canvas.gpu = false;
 		this.ctx = this.canvas.getContext('2d');
 		this.ctx.imageSmoothingEnabled = false;
@@ -223,6 +224,51 @@ export class OSRSCanvas {
 		});
 	}
 
+	drawSegmentedText({
+		segments,
+		x,
+		y,
+		font = 'Bold',
+		center
+	}: {
+		segments: Array<{ text: string; color?: string }>;
+		x: number;
+		y: number;
+		font?: FontName;
+		center?: boolean;
+	}) {
+		this.ctx.font = OSRSCanvas.Fonts[font];
+		const rawCombined = segments.map(s => s.text).join('');
+		const trimmedCombined = rawCombined.trim();
+		if (trimmedCombined.length === 0) return;
+
+		const leadingTrimmedCount = rawCombined.length - rawCombined.trimStart().length;
+		const totalWidth = this.measureTextWidth(trimmedCombined, font);
+		const baseStartX = center ? x - Math.floor(totalWidth / 2) : x;
+
+		const sentinelWidth = this.measureTextWidth('|', font);
+		let rawOffset = 0;
+		for (const seg of segments) {
+			const segLen = seg.text.length;
+			const trimmedSeg = seg.text.trim();
+			if (trimmedSeg.length > 0) {
+				const segLeadingSpaces = segLen - seg.text.trimStart().length;
+				const charIndexInTrimmed = Math.max(0, rawOffset + segLeadingSpaces - leadingTrimmedCount);
+				const prefix = trimmedCombined.slice(0, charIndexInTrimmed);
+				const prefixWidth = prefix.length > 0 ? this.measureTextWidth(`${prefix}|`, font) - sentinelWidth : 0;
+				const segX = baseStartX + Math.round(prefixWidth);
+				const segColor = seg.color ?? OSRSCanvas.COLORS.ORANGE;
+
+				this.ctx.fillStyle = 'black';
+				this.rawDrawText({ text: trimmedSeg, x: segX + 1, y: y + 1, font });
+
+				this.ctx.fillStyle = segColor;
+				this.rawDrawText({ text: trimmedSeg, x: segX, y, font });
+			}
+			rawOffset += segLen;
+		}
+	}
+
 	drawSquare(x: number, y: number, w: number, h: number, color?: string) {
 		const ctx = this.ctx;
 		const pixelSize = 1;
@@ -329,7 +375,7 @@ export class OSRSCanvas {
 		}
 	}
 
-	private static getItemSpriteData(itemID: number): CanvasSpritesheet | null {
+	public static getItemSpriteData(itemID: number): CanvasSpritesheet | null {
 		if (BOT_TYPE === 'BSO' && CanvasModule.Spritesheet.BSOItems.has(itemID)) {
 			return CanvasModule.Spritesheet.BSOItems;
 		}
@@ -353,6 +399,8 @@ export class OSRSCanvas {
 			return ItemIconPacks[iconPackId].icons.get(itemID) as Image;
 		}
 
+		// Ensure Spritesheets are fully loaded first.
+		await CanvasModule.ensureInit();
 		// Spritesheet icons
 		const itemSpriteData = OSRSCanvas.getItemSpriteData(itemID);
 		if (itemSpriteData) {
@@ -367,7 +415,10 @@ export class OSRSCanvas {
 	private static async loadLocalIcon(itemID: number): Promise<Image> {
 		const cached = OSRSCanvas.LOCAL_ICON_CACHE.get(itemID);
 		if (cached) return cached;
-		const onDisk = await readFile(path.join(OSRSCanvas.ITEM_ICON_CACHE_DIR, `${itemID}.png`)).catch(() => null);
+		let onDisk = await readFile(path.join(OSRSCanvas.ITEM_ICON_CACHE_DIR, `${itemID}.png`)).catch(() => null);
+		// BSO only: Check if the image is in the bso_icons folder
+		if (!onDisk)
+			onDisk = await readFile(path.join(OSRSCanvas.ITEM_BSO_ICON_DIR, `${itemID}.png`)).catch(() => null);
 		if (onDisk) {
 			const image = await loadImage(onDisk);
 			OSRSCanvas.LOCAL_ICON_CACHE.set(itemID, image);
@@ -392,7 +443,10 @@ export class OSRSCanvas {
 		iconPackId = this.iconPackId ?? undefined,
 		quantity,
 		textColor,
-		glow
+		glow,
+		user: _user,
+		override_show_paints: _show_paints,
+		effect
 	}: {
 		itemID: number;
 		x: number;
@@ -406,6 +460,9 @@ export class OSRSCanvas {
 			radius: number;
 			blur: number;
 		};
+		user?: MUser | null | undefined;
+		override_show_paints?: boolean | undefined;
+		effect?: Image | undefined;
 	}) {
 		const itemIcon: Image | Canvas = await OSRSCanvas.getItemImage({ itemID, iconPackId });
 		const destX = Math.floor(x + (this.itemSize.width - itemIcon.width) / 2);
@@ -423,6 +480,14 @@ export class OSRSCanvas {
 			itemIcon.height
 		] as const;
 
+		if (effect) {
+			const centerX = destX + itemIcon.width / 2;
+			const centerY = destY + itemIcon.height / 2;
+			const effectX = centerX - effect.width / 2;
+			const effectY = centerY - effect.height / 2;
+			this.ctx.drawImage(effect, effectX, effectY, effect.width, effect.height);
+		}
+
 		if (glow) {
 			this.drawGlowingBlur(
 				destX + itemIcon.width / 2,
@@ -434,7 +499,7 @@ export class OSRSCanvas {
 		}
 
 		if (outline) {
-			drawImageWithOutline(this.ctx, ...args);
+			drawImageWithOutline(this.ctx, ...args, outline.outlineColor, outline.alpha);
 		} else {
 			this.ctx.drawImage(...args);
 		}
