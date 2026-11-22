@@ -45,8 +45,8 @@ const IronmanDailySupplyTable = new LootTable()
 	.add('Clue scroll (elite)', 1);
 
 const DailyTable = new LootTable()
-	.every('Coins', [1_500_000, 3_500_000])
-	.add('Coins', [500_000, 2_000_000])
+	.every('Coins', [150_000, 350_000])
+	.add('Coins', [50_000, 200_000])
 	.add(UncommonTable)
 	.add(CommonTable, 1, 2)
 	.add('Mystery box', 1, 2);
